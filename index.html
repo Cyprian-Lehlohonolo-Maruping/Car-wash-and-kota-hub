@@ -447,6 +447,7 @@
     <script>
         let activeOrderId = null;
         let statusSyncInterval = null;
+        let adminSyncInterval = null;
 
         window.onload = function() {
             const deal = localStorage.getItem('kasi_flash_deal');
@@ -460,6 +461,9 @@
                 document.getElementById('pin-login').style.display = 'none';
                 document.getElementById('admin-dashboard').style.display = 'block';
                 loadAdminDashboard();
+                // Start live background sync for owner dashboard every 3 seconds
+                if (adminSyncInterval) clearInterval(adminSyncInterval);
+                adminSyncInterval = setInterval(loadAdminDashboard, 3000);
             }
         };
 
@@ -573,7 +577,6 @@
             document.getElementById('status-tracker-box').style.display = 'block';
             updateCustomerTracker(newOrder);
 
-            // Start live syncing status on the customer tracker screen
             if (statusSyncInterval) clearInterval(statusSyncInterval);
             statusSyncInterval = setInterval(syncCustomerStatus, 3000);
 
@@ -630,6 +633,8 @@
                 document.getElementById('pin-login').style.display = 'none';
                 document.getElementById('admin-dashboard').style.display = 'block';
                 loadAdminDashboard();
+                if (adminSyncInterval) clearInterval(adminSyncInterval);
+                adminSyncInterval = setInterval(loadAdminDashboard, 3000);
             } else {
                 alert('Incorrect email/PIN, please try again');
                 document.getElementById('admin-pin').value = '';
@@ -638,6 +643,7 @@
 
         function adminLogout() {
             localStorage.removeItem('kasi_admin_logged_in');
+            if (adminSyncInterval) clearInterval(adminSyncInterval);
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('pin-login').style.display = 'block';
             document.getElementById('admin-email').value = '';
