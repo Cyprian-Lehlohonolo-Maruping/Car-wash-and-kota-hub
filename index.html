@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kasi Wash & Kota Hub</title>
+    <title>Kasi Wash & Kota Hub - Live Orders</title>
     <style>
         :root {
             --primary: #ff6b00;
@@ -71,10 +71,6 @@
             background: #fff;
             border: 1px solid #eee;
             border-radius: 8px;
-            transition: 0.2s;
-        }
-        .item-card:hover {
-            border-color: var(--primary);
         }
         .item-info h3 {
             font-size: 1rem;
@@ -123,42 +119,91 @@
             text-decoration: none;
             transition: 0.2s;
         }
-        .btn:hover {
-            opacity: 0.9;
+        .btn:hover { opacity: 0.9; }
+        
+        /* Status Badges */
+        .status-tracker {
+            background: #fff3e0;
+            border: 1px solid var(--primary);
+            padding: 15px;
+            border-radius: 8px;
+            margin-top: 15px;
+            text-align: center;
         }
+        .badge {
+            display: inline-block;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-weight: bold;
+            font-size: 0.9rem;
+            margin-top: 5px;
+        }
+        .badge-pending { background: #ffe0b2; color: #e65100; }
+        .badge-confirmed { background: #c8e6c9; color: #2e7d32; }
+        .badge-completed { background: #bbdefb; color: #1565c0; }
+
+        /* Admin Section */
         .admin-section {
             background: #1a1a1a;
             color: white;
+        }
+        .admin-section h2 { color: white; border-left-color: var(--primary); }
+        .admin-controls { display: none; }
+        
+        .stats-box {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            margin-bottom: 20px;
+        }
+        .stat-card {
+            background: #2a2a2a;
+            padding: 15px;
+            border-radius: 8px;
             text-align: center;
+            border: 1px solid #444;
         }
-        .admin-section h2 {
-            color: white;
-            border-left-color: var(--primary);
+        .stat-card h3 { font-size: 0.8rem; color: #aaa; }
+        .stat-card p { font-size: 1.5rem; color: var(--primary); font-weight: bold; }
+
+        .order-row {
+            background: #2a2a2a;
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            border-left: 4px solid var(--primary);
+            font-size: 0.9rem;
         }
-        .admin-controls {
-            display: none;
+        .order-actions {
+            margin-top: 8px;
+            display: flex;
+            gap: 5px;
         }
-        .pin-box input {
-            text-align: center;
-            letter-spacing: 5px;
-            font-size: 1.5rem;
+        .order-actions button {
+            padding: 6px 10px;
+            font-size: 0.8rem;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
         }
+        .btn-confirm { background: #2e7d32; color: white; }
+        .btn-done { background: #1565c0; color: white; }
     </style>
 </head>
 <body>
 
     <header>
         <h1>Kasi Wash & Kota Hub</h1>
-        <p>Sparkling Clean Cars & Delicious Kasi Kotas!</p>
+        <p>Live Order System & Tracking</p>
     </header>
 
     <div class="container">
 
         <!-- SERVICES & MENU SELECTION -->
-        <div class="section">
-            <h2>Select Car Wash & Food</h2>
-            <div id="order-form">
-                
+        <div class="section" id="customer-view">
+            <h2>Place Order / Booking</h2>
+            <div id="order-form-box">
                 <h3 style="font-size: 1rem; margin-bottom: 10px; color: #555;">Car Wash Services</h3>
                 <div class="service-grid" style="margin-bottom: 20px;">
                     <label class="item-card">
@@ -197,7 +242,7 @@
                     </label>
                     <label class="item-card">
                         <div class="item-info">
-                            <h3>The Beast Kota</h3>	
+                            <h3>The Beast Kota</h3>    
                             <p>Russian, Egg, Cheese, Polony, Chips</p>
                         </div>
                         <div style="display: flex; align-items: center; gap: 15px;">
@@ -207,15 +252,21 @@
                     </label>
                 </div>
 
-                <!-- CUSTOMER DETAILS -->
-                <h2>Your Details</h2>
                 <label for="cust-name">Full Name</label>
                 <input type="text" id="cust-name" placeholder="Enter your name">
 
-                <label for="cust-note">Special Instructions / Car Model</label>
-                <textarea id="cust-note" rows="2" placeholder="e.g. White VW Polo, extra atchar"></textarea>
+                <label for="cust-note">Car Model / Instructions</label>
+                <textarea id="cust-note" rows="2" placeholder="e.g. Silver Toyota Corolla"></textarea>
 
-                <button class="btn" onclick="sendWhatsAppOrder()">Send Order via WhatsApp</button>
+                <button class="btn" onclick="submitOrder()">Submit & Send WhatsApp Order</button>
+            </div>
+
+            <!-- Live Status Tracker for Customer -->
+            <div id="status-tracker-box" class="status-tracker" style="display:none;">
+                <p style="font-weight: bold; color: #333;">Order Status Tracking</p>
+                <p id="tracker-order-id" style="font-size: 0.85rem; color: #666;"></p>
+                <div id="tracker-badge-container"></div>
+                <button class="btn" style="background: #666; margin-top: 15px; font-size: 0.9rem; padding: 8px;" onclick="location.reload()">Place Another Order</button>
             </div>
         </div>
 
@@ -223,66 +274,177 @@
         <div class="section admin-section">
             <h2>Owner Portal</h2>
             
-            <div id="pin-login" class="pin-box">
-                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ccc;">Enter Admin PIN to Access</p>
-                <input type="password" id="admin-pin" maxlength="4" placeholder="••••">
-                <button class="btn" style="background: var(--primary);" onclick="verifyPin()">Login</button>
+            <div id="pin-login">
+                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ccc;">Secure Owner Login</p>
+                <input type="email" id="admin-email" placeholder="cyprianmaruping09@gmail.com">
+                <input type="password" id="admin-pin" maxlength="4" placeholder="4-digit PIN (1472)">
+                <button class="btn" style="background: var(--primary);" onclick="verifyAdminLogin()">Owner Login</button>
             </div>
 
             <div id="admin-dashboard" class="admin-controls">
-                <p style="color: var(--accent); margin-bottom: 15px; font-weight: bold;">✔ Admin Verified (PIN: 1472)</p>
-                <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 15px;">You can update your business notice board or active status below:</p>
-                <textarea id="admin-announcement" rows="3" placeholder="e.g. Open for business! Special on Beast Kotas today.">Open for business!</textarea>
-                <button class="btn" style="background: var(--primary);" onclick="saveNotice()">Update Status</button>
+                <p style="color: var(--accent); margin-bottom: 15px; font-weight: bold;">✔ Logged in as Cyprian</p>
+                
+                <!-- Daily Statistics -->
+                <div class="stats-box">
+                    <div class="stat-card">
+                        <h3>Orders Today</h3>
+                        <p id="stat-count">0</p>
+                    </div>
+                    <div class="stat-card">
+                        <h3>Total Revenue</h3>
+                        <p id="stat-revenue">R0</p>
+                    </div>
+                </div>
+
+                <h3 style="font-size: 1rem; margin-bottom: 10px; color: #fff;">Live Customer Orders</h3>
+                <div id="admin-orders-list">
+                    <p style="color: #aaa; font-size: 0.85rem;">No active orders right now.</p>
+                </div>
+                
+                <button class="btn" style="background: #444; margin-top: 15px;" onclick="adminLogout()">Log Out</button>
             </div>
         </div>
 
     </div>
 
     <script>
-        function sendWhatsAppOrder() {
+        function getOrders() {
+            return JSON.parse(localStorage.getItem('kasi_orders') || '[]');
+        }
+
+        function saveOrders(orders) {
+            localStorage.setItem('kasi_orders', JSON.stringify(orders));
+        }
+
+        function submitOrder() {
             const name = document.getElementById('cust-name').value.trim();
             const note = document.getElementById('cust-note').value.trim();
             const checkboxes = document.querySelectorAll('.order-item:checked');
 
             if (!name) {
-                alert('Please enter your name before sending the order.');
+                alert('Please enter your name.');
                 return;
             }
             if (checkboxes.length === 0) {
-                alert('Please select at least one car wash service or kota item.');
+                alert('Please select at least one item.');
                 return;
             }
 
-            let orderList = "";
+            let orderItems = [];
             let total = 0;
             checkboxes.forEach(item => {
-                const itemName = item.getAttribute('data-name');
-                const itemPrice = parseFloat(item.getAttribute('data-price'));
-                orderList += `- ${itemName} (R${itemPrice})\n`;
-                total += itemPrice;
+                orderItems.push({
+                    name: item.getAttribute('data-name'),
+                    price: parseFloat(item.getAttribute('data-price'))
+                });
+                total += parseFloat(item.getAttribute('data-price'));
             });
 
-            const message = `*New Order - Kasi Wash & Kota Hub*\n\n*Customer:* ${name}\n*Items:*\n${orderList}\n*Total:* R${total}\n*Notes:* ${note || 'None'}`;
-            const encodedMessage = encodeURIComponent(message);
-            const whatsappNumber = '27794789949';
+            const orderId = 'KW-' + Math.floor(1000 + Math.random() * 9000);
+            const newOrder = {
+                id: orderId,
+                name: name,
+                note: note || 'None',
+                items: orderItems,
+                total: total,
+                status: 'Pending',
+                date: new Date().toLocaleDateString()
+            };
 
-            window.location.href = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+            const orders = getOrders();
+            orders.unshift(newOrder);
+            saveOrders(orders);
+
+            document.getElementById('order-form-box').style.display = 'none';
+            document.getElementById('status-tracker-box').style.display = 'block';
+            updateCustomerTracker(newOrder);
+
+            let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
+            const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
+            const whatsappNumber = '27794789949';
+            
+            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
-        function verifyPin() {
-            const enteredPin = document.getElementById('admin-pin').value;
-            if (enteredPin === '1472') {
+        function updateCustomerTracker(order) {
+            document.getElementById('tracker-order-id').innerText = `Order ID: ${order.id} | Name: ${order.name}`;
+            let badgeClass = 'badge-pending';
+            if (order.status === 'Confirmed') badgeClass = 'badge-confirmed';
+            if (order.status === 'Completed') badgeClass = 'badge-completed';
+
+            document.getElementById('tracker-badge-container').innerHTML = `<span class="badge ${badgeClass}">Status: ${order.status}</span>`;
+        }
+
+        function verifyAdminLogin() {
+            const email = document.getElementById('admin-email').value.trim().toLowerCase();
+            const pin = document.getElementById('admin-pin').value.trim();
+
+            if (email === 'cyprianmaruping09@gmail.com' && pin === '1472') {
                 document.getElementById('pin-login').style.display = 'none';
                 document.getElementById('admin-dashboard').style.display = 'block';
+                loadAdminDashboard();
             } else {
-                alert('Incorrect PIN!');
-                document.getElementById('admin-pin').value = '';
+                alert('Invalid Gmail or PIN! (Email must be cyprianmaruping09@gmail.com and PIN is 1472)');
             }
         }
 
-        function saveNotice() {
-            alert('Business status updated successfully!');
+        function adminLogout() {
+            document.getElementById('admin-dashboard').style.display = 'none';
+            document.getElementById('pin-login').style.display = 'block';
+            document.getElementById('admin-email').value = '';
+            document.getElementById('admin-pin').value = '';
+        }
+
+        function loadAdminDashboard() {
+            const orders = getOrders();
+            const today = new Date().toLocaleDateString();
+            
+            const todayOrders = orders.filter(o => o.date === today);
+            const totalRevenue = todayOrders.reduce((sum, o) => sum + o.total, 0);
+
+            document.getElementById('stat-count').innerText = todayOrders.length;
+            document.getElementById('stat-revenue').innerText = 'R' + totalRevenue;
+
+            const listContainer = document.getElementById('admin-orders-list');
+            if (todayOrders.length === 0) {
+                listContainer.innerHTML = `<p style="color: #aaa; font-size: 0.85rem;">No orders placed today yet.</p>`;
+                return;
+            }
+
+            let html = '';
+            todayOrders.forEach(order => {
+                let itemsStr = order.items.map(i => `${i.name} (R${i.price})`).join(', ');
+                let badgeColor = '#ffb74d';
+                if (order.status === 'Confirmed') badgeColor = '#81c784';
+                if (order.status === 'Completed') badgeColor = '#64b5f6';
+
+                html += `
+                    <div class="order-row">
+                        <strong>#${order.id} - ${order.name}</strong><br>
+                        <span style="color: #ccc; font-size: 0.8rem;">Items: ${itemsStr}</span><br>
+                        <span style="color: var(--primary); font-weight: bold;">Total: R${order.total}</span> | 
+                        <span style="color: ${badgeColor}; font-weight: bold;">Status: ${order.status}</span>
+                        <div class="order-actions">
+                            <button class="btn-confirm" onclick="updateOrderStatus('${order.id}', 'Confirmed')">Confirm Order</button>
+                            <button class="btn-done" onclick="updateOrderStatus('${order.id}', 'Completed')">Mark Done</button>
+                        </div>
+                    </div>
+                `;
+            });
+            listContainer.innerHTML = html;
+        }
+
+        function updateOrderStatus(orderId, newStatus) {
+            let orders = getOrders();
+            orders = orders.map(o => {
+                if (o.id === orderId) {
+                    o.status = newStatus;
+                }
+                return o;
+            });
+            saveOrders(orders);
+            loadAdminDashboard();
+            alert(`Order #${orderId} updated to ${newStatus}!`);
         }
     </script>
 </body>
