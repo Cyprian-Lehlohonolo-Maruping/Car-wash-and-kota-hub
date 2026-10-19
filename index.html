@@ -445,6 +445,9 @@
     </div>
 
     <script>
+        let activeOrderId = null;
+        let statusSyncInterval = null;
+
         window.onload = function() {
             const deal = localStorage.getItem('kasi_flash_deal');
             const banner = document.getElementById('flash-deal-banner');
@@ -453,7 +456,6 @@
                 banner.style.display = 'block';
             }
 
-            // Check if admin was logged in before refresh
             if (localStorage.getItem('kasi_admin_logged_in') === 'true') {
                 document.getElementById('pin-login').style.display = 'none';
                 document.getElementById('admin-dashboard').style.display = 'block';
@@ -548,6 +550,8 @@
             });
 
             const orderId = 'KW-' + Math.floor(1000 + Math.random() * 9000);
+            activeOrderId = orderId;
+
             const newOrder = {
                 id: orderId,
                 name: name,
@@ -555,7 +559,7 @@
                 items: orderItems,
                 total: total,
                 bookingDate: bookingDate || 'N/A (Food Only)',
-                bookingTime: bookingTime || 'N/App',
+                bookingTime: bookingTime || 'N/A',
                 queueStyle: hasCarWash ? queueStyle : 'N/A',
                 status: 'Pending',
                 date: new Date().toLocaleDateString()
@@ -569,6 +573,10 @@
             document.getElementById('status-tracker-box').style.display = 'block';
             updateCustomerTracker(newOrder);
 
+            // Start live syncing status on the customer tracker screen
+            if (statusSyncInterval) clearInterval(statusSyncInterval);
+            statusSyncInterval = setInterval(syncCustomerStatus, 3000);
+
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
             let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} @ ${bookingTime} (${queueStyle})` : '';
             const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
@@ -577,6 +585,15 @@
             setTimeout(() => {
                 window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
             }, 300);
+        }
+
+        function syncCustomerStatus() {
+            if (!activeOrderId) return;
+            const orders = getOrders();
+            const currentOrder = orders.find(o => o.id === activeOrderId);
+            if (currentOrder) {
+                updateCustomerTracker(currentOrder);
+            }
         }
 
         function updateCustomerTracker(order) {
@@ -593,6 +610,7 @@
                 badgeClass = 'badge-completed';
                 badgeText = 'Status: Order Done / Ready 🎉';
                 document.getElementById('feedback-container').style.display = 'block';
+                if (statusSyncInterval) clearInterval(statusSyncInterval);
             }
 
             document.getElementById('tracker-badge-container').innerHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
