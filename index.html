@@ -47,6 +47,19 @@
             font-size: 0.9rem;
             color: #ade8f4;
         }
+        
+        /* Flash Deal Announcement Banner */
+        #flash-deal-banner {
+            background: #ffb703;
+            color: #03045e;
+            text-align: center;
+            padding: 10px 15px;
+            font-weight: bold;
+            font-size: 0.95rem;
+            display: none;
+            border-bottom: 2px solid #fb8500;
+        }
+
         .container {
             max-width: 600px;
             margin: 20px auto;
@@ -244,6 +257,9 @@
 </head>
 <body>
 
+    <!-- Flash Deal Banner -->
+    <div id="flash-deal-banner"></div>
+
     <header>
         <h1>Kasi Wash & Kota Hub</h1>
         <p>Sparkling Clean Cars & Delicious Kasi Kotas!</p>
@@ -256,7 +272,7 @@
             <h2>Select & Order</h2>
             <div id="order-form-box">
                 
-                <!-- CAR WASH ACCORDION WITH DATE & TIME -->
+                <!-- CAR WASH ACCORDION WITH DATE, TIME & QUEUE STYLE -->
                 <div class="accordion-header" onclick="toggleAccordion('wash-content')">
                     <span>🚗 Book a Spot (Car Wash Services)</span>
                     <span>▼</span>
@@ -293,7 +309,7 @@
                         </div>
                     </label>
 
-                    <!-- Date & Time Slot Selection for Car Wash -->
+                    <!-- Date, Time Slot & Queue Style -->
                     <div style="margin-top: 10px; background: #f0f8ff; padding: 12px; border-radius: 8px; border: 1px solid #90e0ef;">
                         <label for="booking-date">Select Booking Date</label>
                         <input type="date" id="booking-date" onchange="checkSlotAvailability()">
@@ -308,6 +324,12 @@
                             <option value="16:00 - 18:00">04:00 PM - 06:00 PM</option>
                         </select>
                         <div id="slot-status" class="slot-availability"></div>
+
+                        <label for="queue-style">Queue Preference</label>
+                        <select id="queue-style">
+                            <option value="Wait & Chill (Staying on-site)">☕ Wait & Chill (Enjoy a Kota while you wait)</option>
+                            <option value="Drop & Go (Leaving car)">🚗 Drop & Go (Leave car & collect later)</option>
+                        </select>
                     </div>
                 </div>
 
@@ -373,7 +395,17 @@
                 <p style="font-weight: bold; font-size: 1.1rem; color: #03045e;">Order Placed Successfully!</p>
                 <p id="tracker-order-id" style="font-size: 0.9rem; color: #0077b6; margin-top: 5px;"></p>
                 <div id="tracker-badge-container"></div>
-                <p style="font-size: 0.8rem; color: #555; margin-top: 10px;">Your status updates live here as the owner processes your order.</p>
+                
+                <!-- Emoji Feedback Section (Appears when Completed) -->
+                <div id="feedback-container" style="display:none; margin-top: 15px; padding: 12px; background: white; border-radius: 8px;">
+                    <p style="font-size: 0.9rem; font-weight: bold; color: #03045e;">How was your experience?</p>
+                    <div style="font-size: 1.8rem; display: flex; justify-content: center; gap: 15px; margin-top: 8px; cursor: pointer;">
+                        <span onclick="sendFeedback('🤩')">🤩</span>
+                        <span onclick="sendFeedback('👍')">👍</span>
+                        <span onclick="sendFeedback('😐')">😐</span>
+                    </div>
+                </div>
+
                 <button class="btn" style="background: #03045e; margin-top: 15px; font-size: 0.9rem; padding: 10px;" onclick="location.reload()">Place Another Order</button>
             </div>
         </div>
@@ -392,6 +424,13 @@
             <div id="admin-dashboard" class="admin-controls">
                 <p style="color: #90e0ef; margin-bottom: 15px; font-weight: bold;">✔ Logged in as Cyprian</p>
                 
+                <!-- Flash Deal Manager -->
+                <div style="background: #023e8a; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #0077b6;">
+                    <h3 style="font-size: 0.95rem; color: #ade8f4; margin-bottom: 8px;">📢 Broadcast Flash Deal Banner</h3>
+                    <input type="text" id="admin-deal-input" placeholder="e.g. 🔥 Special: Beast Kota + Full Wash for R120!" style="margin-bottom: 8px; background: #fff; color: #333;">
+                    <button class="btn" style="background: #ffb703; color: #03045e; padding: 8px;" onclick="saveFlashDeal()">Publish Deal</button>
+                </div>
+
                 <!-- Daily Statistics -->
                 <div class="stats-box">
                     <div class="stat-card">
@@ -416,6 +455,30 @@
     </div>
 
     <script>
+        // Load Flash Deal on startup
+        window.onload = function() {
+            const deal = localStorage.getItem('kasi_flash_deal');
+            const banner = document.getElementById('flash-deal-banner');
+            if (deal) {
+                banner.innerText = deal;
+                banner.style.display = 'block';
+            }
+        };
+
+        function saveFlashDeal() {
+            const dealText = document.getElementById('admin-deal-input').value.trim();
+            localStorage.setItem('kasi_flash_deal', dealText);
+            const banner = document.getElementById('flash-deal-banner');
+            if (dealText) {
+                banner.innerText = dealText;
+                banner.style.display = 'block';
+                alert('Flash deal published successfully!');
+            } else {
+                banner.style.display = 'none';
+                alert('Flash deal banner removed.');
+            }
+        }
+
         function toggleAccordion(id) {
             const content = document.getElementById(id);
             content.classList.toggle('active');
@@ -429,7 +492,6 @@
             localStorage.setItem('kasi_orders', JSON.stringify(orders));
         }
 
-        // Check slot availability based on existing bookings in localStorage (Max 2 per slot)
         function checkSlotAvailability() {
             const date = document.getElementById('booking-date').value;
             const time = document.getElementById('booking-time').value;
@@ -441,7 +503,6 @@
             }
 
             const orders = getOrders();
-            // Count how many orders are booked for this specific date and time slot
             const bookedCount = orders.filter(o => o.bookingDate === date && o.bookingTime === time && o.status !== 'Completed').length;
 
             statusBox.style.display = 'block';
@@ -459,6 +520,7 @@
             const note = document.getElementById('cust-note').value.trim();
             const bookingDate = document.getElementById('booking-date').value;
             const bookingTime = document.getElementById('booking-time').value;
+            const queueStyle = document.getElementById('queue-style').value;
             const checkboxes = document.querySelectorAll('.order-item:checked');
 
             if (!name) {
@@ -470,7 +532,6 @@
                 return;
             }
 
-            // Check if car wash was selected, require date and time if so
             const hasCarWash = Array.from(checkboxes).some(item => 
                 item.getAttribute('data-name').includes('Wash')
             );
@@ -499,6 +560,7 @@
                 total: total,
                 bookingDate: bookingDate || 'N/A (Food Only)',
                 bookingTime: bookingTime || 'N/A',
+                queueStyle: hasCarWash ? queueStyle : 'N/A',
                 status: 'Pending',
                 date: new Date().toLocaleDateString()
             };
@@ -512,7 +574,7 @@
             updateCustomerTracker(newOrder);
 
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
-            let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} at ${bookingTime}` : '';
+            let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} @ ${bookingTime} (${queueStyle})` : '';
             const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
             const whatsappNumber = '27794789949';
             
@@ -520,7 +582,7 @@
         }
 
         function updateCustomerTracker(order) {
-            let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br>📅 Slot: ${order.bookingDate} (${order.bookingTime})` : '';
+            let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br>📅 Slot: ${order.bookingDate} (${order.bookingTime})<br>📌 Type: ${order.queueStyle}` : '';
             document.getElementById('tracker-order-id').innerHTML = `Order ID: ${order.id} | Name: ${order.name}${bookingInfo}`;
             
             let badgeClass = 'badge-pending';
@@ -532,9 +594,15 @@
             if (order.status === 'Completed') {
                 badgeClass = 'badge-completed';
                 badgeText = 'Status: Order Done / Ready 🎉';
+                document.getElementById('feedback-container').style.display = 'block';
             }
 
             document.getElementById('tracker-badge-container').innerHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
+        }
+
+        function sendFeedback(emoji) {
+            alert(`Thank you for your rating (${emoji})! We appreciate your support.`);
+            document.getElementById('feedback-container').style.display = 'none';
         }
 
         function verifyAdminLogin() {
@@ -577,7 +645,7 @@
             let html = '';
             todayOrders.forEach(order => {
                 let itemsStr = order.items.map(i => `${i.name} (R${i.price})`).join(', ');
-                let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br><span style="color: #90e0ef;">Slot: ${order.bookingDate} @ ${order.bookingTime}</span>` : '';
+                let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br><span style="color: #90e0ef;">Slot: ${order.bookingDate} @ ${order.bookingTime} (${order.queueStyle})</span>` : '';
                 let badgeColor = '#ffb74d';
                 if (order.status === 'Confirmed') badgeColor = '#81c784';
                 if (order.status === 'Completed') badgeColor = '#64b5f6';
