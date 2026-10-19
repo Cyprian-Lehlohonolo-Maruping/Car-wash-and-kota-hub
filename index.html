@@ -277,8 +277,8 @@
             
             <div id="pin-login">
                 <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ccc;">Secure Owner Login</p>
-                <input type="email" id="admin-email" placeholder="cyprianmaruping09@gmail.com">
-                <input type="password" id="admin-pin" maxlength="4" placeholder="4-digit PIN (1472)">
+                <input type="email" id="admin-email" placeholder="">
+                <input type="password" id="admin-pin" maxlength="4" placeholder="">
                 <button class="btn" style="background: var(--primary);" onclick="verifyAdminLogin()">Owner Login</button>
             </div>
 
@@ -356,12 +356,11 @@
             orders.unshift(newOrder);
             saveOrders(orders);
 
-            // Show Customer Tracking View immediately without redirecting away
             document.getElementById('order-form-box').style.display = 'none';
             document.getElementById('status-tracker-box').style.display = 'block';
             updateCustomerTracker(newOrder);
 
-            // Open WhatsApp notification quietly for the owner
+            // Trigger WhatsApp notification for the owner
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
             const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
             const whatsappNumber = '27794789949';
@@ -394,7 +393,8 @@
                 document.getElementById('admin-dashboard').style.display = 'block';
                 loadAdminDashboard();
             } else {
-                alert('Invalid Gmail or PIN! (Email must be cyprianmaruping09@gmail.com and PIN is 1472)');
+                alert('Incorrect email/PIN, please try again');
+                document.getElementById('admin-pin').value = '';
             }
         }
 
