@@ -19,7 +19,6 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
-            /* Soapy bubbles background pattern combined with oceanic blue tones */
             background-color: var(--bg);
             background-image: 
                 radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 8%, transparent 9%),
@@ -143,6 +142,19 @@
             font-size: 1rem;
             background: #f8f9fa;
         }
+        .slot-availability {
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-top: -10px;
+            margin-bottom: 15px;
+            padding: 8px;
+            border-radius: 6px;
+            text-align: center;
+            display: none;
+        }
+        .slot-available { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
+        .slot-full { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
+
         .btn {
             display: block;
             width: 100%;
@@ -244,7 +256,7 @@
             <h2>Select & Order</h2>
             <div id="order-form-box">
                 
-                <!-- CAR WASH ACCORDION -->
+                <!-- CAR WASH ACCORDION WITH DATE & TIME -->
                 <div class="accordion-header" onclick="toggleAccordion('wash-content')">
                     <span>🚗 Book a Spot (Car Wash Services)</span>
                     <span>▼</span>
@@ -280,6 +292,23 @@
                             <input type="checkbox" class="order-item" data-name="Engine Wash" data-price="50">
                         </div>
                     </label>
+
+                    <!-- Date & Time Slot Selection for Car Wash -->
+                    <div style="margin-top: 10px; background: #f0f8ff; padding: 12px; border-radius: 8px; border: 1px solid #90e0ef;">
+                        <label for="booking-date">Select Booking Date</label>
+                        <input type="date" id="booking-date" onchange="checkSlotAvailability()">
+
+                        <label for="booking-time">Select Time Slot</label>
+                        <select id="booking-time" onchange="checkSlotAvailability()">
+                            <option value="">-- Choose Time Slot --</option>
+                            <option value="08:00 - 10:00">08:00 AM - 10:00 AM</option>
+                            <option value="10:00 - 12:00">10:00 AM - 12:00 PM</option>
+                            <option value="12:00 - 14:00">12:00 PM - 02:00 PM</option>
+                            <option value="14:00 - 16:00">02:00 PM - 04:00 PM</option>
+                            <option value="16:00 - 18:00">04:00 PM - 06:00 PM</option>
+                        </select>
+                        <div id="slot-status" class="slot-availability"></div>
+                    </div>
                 </div>
 
                 <!-- KOTA MENU ACCORDION -->
@@ -336,7 +365,7 @@
                 <label for="cust-note">Car Model / Instructions</label>
                 <textarea id="cust-note" rows="2" placeholder="e.g. Silver Toyota Corolla / No atchar"></textarea>
 
-                <button class="btn" onclick="submitOrder()">Submit Order</button>
+                <button class="btn" onclick="submitOrder()">Submit Order & Booking</button>
             </div>
 
             <!-- Live Status Tracker for Customer -->
@@ -400,9 +429,36 @@
             localStorage.setItem('kasi_orders', JSON.stringify(orders));
         }
 
+        // Check slot availability based on existing bookings in localStorage (Max 2 per slot)
+        function checkSlotAvailability() {
+            const date = document.getElementById('booking-date').value;
+            const time = document.getElementById('booking-time').value;
+            const statusBox = document.getElementById('slot-status');
+
+            if (!date || !time) {
+                statusBox.style.display = 'none';
+                return;
+            }
+
+            const orders = getOrders();
+            // Count how many orders are booked for this specific date and time slot
+            const bookedCount = orders.filter(o => o.bookingDate === date && o.bookingTime === time && o.status !== 'Completed').length;
+
+            statusBox.style.display = 'block';
+            if (bookedCount >= 2) {
+                statusBox.className = 'slot-availability slot-full';
+                statusBox.innerText = `❌ Slot Fully Booked (${bookedCount}/2 cars). Please choose another time.`;
+            } else {
+                statusBox.className = 'slot-availability slot-available';
+                statusBox.innerText = `✔ Slot Available! (${2 - bookedCount} spot(s) left)`;
+            }
+        }
+
         function submitOrder() {
             const name = document.getElementById('cust-name').value.trim();
             const note = document.getElementById('cust-note').value.trim();
+            const bookingDate = document.getElementById('booking-date').value;
+            const bookingTime = document.getElementById('booking-time').value;
             const checkboxes = document.querySelectorAll('.order-item:checked');
 
             if (!name) {
@@ -411,6 +467,16 @@
             }
             if (checkboxes.length === 0) {
                 alert('Please select at least one car wash service or kota item.');
+                return;
+            }
+
+            // Check if car wash was selected, require date and time if so
+            const hasCarWash = Array.from(checkboxes).some(item => 
+                item.getAttribute('data-name').includes('Wash')
+            );
+
+            if (hasCarWash && (!bookingDate || !bookingTime)) {
+                alert('Please select a booking date and time slot for your car wash service.');
                 return;
             }
 
@@ -431,6 +497,8 @@
                 note: note || 'None',
                 items: orderItems,
                 total: total,
+                bookingDate: bookingDate || 'N/A (Food Only)',
+                bookingTime: bookingTime || 'N/A',
                 status: 'Pending',
                 date: new Date().toLocaleDateString()
             };
@@ -444,14 +512,17 @@
             updateCustomerTracker(newOrder);
 
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
-            const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
+            let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} at ${bookingTime}` : '';
+            const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
             const whatsappNumber = '27794789949';
             
             window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
         }
 
         function updateCustomerTracker(order) {
-            document.getElementById('tracker-order-id').innerText = `Order ID: ${order.id} | Name: ${order.name}`;
+            let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br>📅 Slot: ${order.bookingDate} (${order.bookingTime})` : '';
+            document.getElementById('tracker-order-id').innerHTML = `Order ID: ${order.id} | Name: ${order.name}${bookingInfo}`;
+            
             let badgeClass = 'badge-pending';
             let badgeText = 'Status: Pending Confirmation';
             if (order.status === 'Confirmed') {
@@ -506,13 +577,14 @@
             let html = '';
             todayOrders.forEach(order => {
                 let itemsStr = order.items.map(i => `${i.name} (R${i.price})`).join(', ');
+                let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br><span style="color: #90e0ef;">Slot: ${order.bookingDate} @ ${order.bookingTime}</span>` : '';
                 let badgeColor = '#ffb74d';
                 if (order.status === 'Confirmed') badgeColor = '#81c784';
                 if (order.status === 'Completed') badgeColor = '#64b5f6';
 
                 html += `
                     <div class="order-row">
-                        <strong>#${order.id} - ${order.name}</strong><br>
+                        <strong>#${order.id} - ${order.name}</strong>${bookingInfo}<br>
                         <span style="color: #ade8f4; font-size: 0.80rem;">Items: ${itemsStr}</span><br>
                         <span style="color: #90e0ef; font-weight: bold;">Total: R${order.total}</span> | 
                         <span style="color: ${badgeColor}; font-weight: bold;">Status: ${order.status}</span>
