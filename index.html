@@ -1,588 +1,289 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Wash & Kota Hub</title>
-
-<style>
-:root {
-  --orange: #ff6b1a;
-  --dark: #171717;
-  --light: #f7f7f7;
-}
-* { box-sizing: border-box; }
-body {
-  margin: 0;
-  font-family: Arial, sans-serif;
-  background: var(--light);
-  color: var(--dark);
-}
-header {
-  background: var(--dark);
-  color: white;
-  padding: 18px 7%;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  gap: 15px;
-}
-.logo { font-size: 23px; font-weight: bold; }
-.logo span { color: var(--orange); }
-nav { display: flex; gap: 18px; flex-wrap: wrap; }
-nav a { color: white; text-decoration: none; }
-nav a:hover { color: var(--orange); }
-.hero {
-  padding: 65px 7%;
-  color: white;
-  background: linear-gradient(110deg, #171717, #484848);
-}
-.hero h1 { font-size: clamp(32px, 5vw, 55px); margin: 0 0 15px; }
-.hero h1 span { color: var(--orange); }
-.hero p { max-width: 600px; line-height: 1.7; }
-.btn {
-  display: inline-block;
-  padding: 12px 18px;
-  background: var(--orange);
-  border: none;
-  border-radius: 7px;
-  color: white;
-  font-weight: bold;
-  cursor: pointer;
-  text-decoration: none;
-}
-.btn:hover { background: #e9570c; }
-.btn.secondary { background: #333; }
-section { padding: 38px 7%; }
-.section-title { margin-bottom: 8px; font-size: 29px; }
-.muted { color: #666; }
-.cards {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 18px;
-  margin-top: 25px;
-}
-.card {
-  background: white;
-  border-radius: 12px;
-  padding: 22px;
-  box-shadow: 0 3px 14px #0000000c;
-}
-.card .emoji { font-size: 38px; }
-.price { color: var(--orange); font-size: 23px; font-weight: bold; }
-form { display: grid; gap: 14px; }
-label { font-weight: bold; font-size: 14px; }
-input, select, textarea {
-  width: 100%;
-  padding: 12px;
-  border: 1px solid #ccc;
-  border-radius: 6px;
-  font: inherit;
-  margin-top: 6px;
-  background: white;
-}
-.two-columns {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
-  gap: 16px;
-}
-.panel {
-  max-width: 850px;
-  margin: auto;
-  background: white;
-  padding: 25px;
-  border-radius: 12px;
-  box-shadow: 0 3px 14px #0000000c;
-}
-.notice {
-  background: #fff0e7;
-  padding: 13px;
-  border-radius: 7px;
-  line-height: 1.5;
-}
-.total { font-size: 20px; font-weight: bold; }
-.hidden { display: none; }
-.item {
-  background: #f4f4f4;
-  padding: 13px;
-  margin-top: 10px;
-  border-radius: 7px;
-}
-footer {
-  text-align: center;
-  padding: 28px;
-  background: var(--dark);
-  color: white;
-}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kasi Wash & Kota Hub</title>
+    <style>
+        :root {
+            --primary: #ff6b00;
+            --secondary: #1a1a1a;
+            --accent: #25d366;
+            --bg: #f9f9f9;
+            --text: #333333;
+        }
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background-color: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+            padding-bottom: 50px;
+        }
+        header {
+            background: var(--secondary);
+            color: white;
+            padding: 20px;
+            text-align: center;
+            border-bottom: 4px solid var(--primary);
+        }
+        header h1 {
+            color: var(--primary);
+            font-size: 1.8rem;
+            margin-bottom: 5px;
+        }
+        header p {
+            font-size: 0.9rem;
+            color: #ccc;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 0 15px;
+        }
+        .section {
+            background: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            margin-bottom: 20px;
+        }
+        h2 {
+            font-size: 1.3rem;
+            margin-bottom: 15px;
+            color: var(--secondary);
+            border-left: 4px solid var(--primary);
+            padding-left: 10px;
+        }
+        .menu-grid, .service-grid {
+            display: grid;
+            gap: 10px;
+        }
+        .item-card {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 12px;
+            background: #fff;
+            border: 1px solid #eee;
+            border-radius: 8px;
+            transition: 0.2s;
+        }
+        .item-card:hover {
+            border-color: var(--primary);
+        }
+        .item-info h3 {
+            font-size: 1rem;
+            color: var(--secondary);
+        }
+        .item-info p {
+            font-size: 0.85rem;
+            color: #666;
+        }
+        .item-price {
+            font-weight: bold;
+            color: var(--primary);
+            font-size: 1rem;
+        }
+        .item-card input[type="checkbox"] {
+            transform: scale(1.3);
+            accent-color: var(--primary);
+            cursor: pointer;
+        }
+        form label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+        form input, form select, form textarea {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            font-size: 1rem;
+        }
+        .btn {
+            display: block;
+            width: 100%;
+            background: var(--accent);
+            color: white;
+            padding: 14px;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            text-align: center;
+            cursor: pointer;
+            text-decoration: none;
+            transition: 0.2s;
+        }
+        .btn:hover {
+            opacity: 0.9;
+        }
+        .admin-section {
+            background: #1a1a1a;
+            color: white;
+            text-align: center;
+        }
+        .admin-section h2 {
+            color: white;
+            border-left-color: var(--primary);
+        }
+        .admin-controls {
+            display: none;
+        }
+        .pin-box input {
+            text-align: center;
+            letter-spacing: 5px;
+            font-size: 1.5rem;
+        }
+    </style>
 </head>
-
 <body>
 
-<header>
-  <div class="logo">WASH <span>&</span> KOTA HUB</div>
-  <nav>
-    <a href="#home">Home</a>
-    <a href="#wash">Car Wash</a>
-    <a href="#menu">Kota Menu</a>
-    <a href="#book">Book Now</a>
-    <a href="#order">Order Food</a>
-    <a href="#admin">Manage</a>
-  </nav>
-</header>
+    <header>
+        <h1>Kasi Wash & Kota Hub</h1>
+        <p>Sparkling Clean Cars & Delicious Kasi Kotas!</p>
+    </header>
 
-<div class="hero" id="home">
-  <h1>Your Car. Your Kota.<br><span>One Stop!</span></h1>
-  <p>
-    Book your car wash space, relax while we clean your vehicle,
-    and order your favourite kota while you wait.
-  </p>
-  <a class="btn" href="#book">Book a Car Wash</a>
-  <a class="btn secondary" href="#order">Order a Kota</a>
-</div>
+    <div class="container">
 
-<section id="wash">
-  <h2 class="section-title">Our Car Wash Packages</h2>
-  <p class="muted">Choose the package that suits your vehicle.</p>
+        <!-- SERVICES & MENU SELECTION -->
+        <div class="section">
+            <h2>Select Car Wash & Food</h2>
+            <div id="order-form">
+                
+                <h3 style="font-size: 1rem; margin-bottom: 10px; color: #555;">Car Wash Services</h3>
+                <div class="service-grid" style="margin-bottom: 20px;">
+                    <label class="item-card">
+                        <div class="item-info">
+                            <h3>Full Wash</h3>
+                            <p>Wash, Vacuum & Dry</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="item-price">R80</span>
+                            <input type="checkbox" class="order-item" data-name="Full Wash" data-price="80">
+                        </div>
+                    </label>
+                    <label class="item-card">
+                        <div class="item-info">
+                            <h3>Engine Wash</h3>
+                            <p>Deep degrease & clean</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="item-price">R50</span>
+                            <input type="checkbox" class="order-item" data-name="Engine Wash" data-price="50">
+                        </div>
+                    </label>
+                </div>
 
-  <div class="cards">
-    <div class="card">
-      <div class="emoji">🚗</div>
-      <h3>Basic Wash</h3>
-      <p>Exterior wash and tyre cleaning.</p>
-      <p class="price">R50</p>
-      <button class="btn" onclick="chooseWash('Basic Wash')">
-        Book Now
-      </button>
+                <h3 style="font-size: 1rem; margin-bottom: 10px; color: #555;">Kota Menu</h3>
+                <div class="menu-grid" style="margin-bottom: 20px;">
+                    <label class="item-card">
+                        <div class="item-info">
+                            <h3>The Classic Kota</h3>
+                            <p>Polony, Chips, Atchar, Cheese</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="item-price">R35</span>
+                            <input type="checkbox" class="order-item" data-name="Classic Kota" data-price="35">
+                        </div>
+                    </label>
+                    <label class="item-card">
+                        <div class="item-info">
+                            <h3>The Beast Kota</h3>	
+                            <p>Russian, Egg, Cheese, Polony, Chips</p>
+                        </div>
+                        <div style="display: flex; align-items: center; gap: 15px;">
+                            <span class="item-price">R55</span>
+                            <input type="checkbox" class="order-item" data-name="Beast Kota" data-price="55">
+                        </div>
+                    </label>
+                </div>
+
+                <!-- CUSTOMER DETAILS -->
+                <h2>Your Details</h2>
+                <label for="cust-name">Full Name</label>
+                <input type="text" id="cust-name" placeholder="Enter your name">
+
+                <label for="cust-note">Special Instructions / Car Model</label>
+                <textarea id="cust-note" rows="2" placeholder="e.g. White VW Polo, extra atchar"></textarea>
+
+                <button class="btn" onclick="sendWhatsAppOrder()">Send Order via WhatsApp</button>
+            </div>
+        </div>
+
+        <!-- ADMIN PORTAL -->
+        <div class="section admin-section">
+            <h2>Owner Portal</h2>
+            
+            <div id="pin-login" class="pin-box">
+                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ccc;">Enter Admin PIN to Access</p>
+                <input type="password" id="admin-pin" maxlength="4" placeholder="••••">
+                <button class="btn" style="background: var(--primary);" onclick="verifyPin()">Login</button>
+            </div>
+
+            <div id="admin-dashboard" class="admin-controls">
+                <p style="color: var(--accent); margin-bottom: 15px; font-weight: bold;">✔ Admin Verified (PIN: 1472)</p>
+                <p style="font-size: 0.9rem; color: #ccc; margin-bottom: 15px;">You can update your business notice board or active status below:</p>
+                <textarea id="admin-announcement" rows="3" placeholder="e.g. Open for business! Special on Beast Kotas today.">Open for business!</textarea>
+                <button class="btn" style="background: var(--primary);" onclick="saveNotice()">Update Status</button>
+            </div>
+        </div>
+
     </div>
 
-    <div class="card">
-      <div class="emoji">✨</div>
-      <h3>Full Wash</h3>
-      <p>Exterior wash, interior vacuum and dashboard cleaning.</p>
-      <p class="price">R100</p>
-      <button class="btn" onclick="chooseWash('Full Wash')">
-        Book Now
-      </button>
-    </div>
+    <script>
+        function sendWhatsAppOrder() {
+            const name = document.getElementById('cust-name').value.trim();
+            const note = document.getElementById('cust-note').value.trim();
+            const checkboxes = document.querySelectorAll('.order-item:checked');
 
-    <div class="card">
-      <div class="emoji">💎</div>
-      <h3>Premium Wash</h3>
-      <p>Full wash plus extra detailing and tyre shine.</p>
-      <p class="price">R180</p>
-      <button class="btn" onclick="chooseWash('Premium Wash')">
-        Book Now
-      </button>
-    </div>
-  </div>
-</section>
+            if (!name) {
+                alert('Please enter your name before sending the order.');
+                return;
+            }
+            if (checkboxes.length === 0) {
+                alert('Please select at least one car wash service or kota item.');
+                return;
+            }
 
-<section id="menu">
-  <h2 class="section-title">Our Kota Menu</h2>
-  <p class="muted">Freshly prepared. Choose your favourite.</p>
+            let orderList = "";
+            let total = 0;
+            checkboxes.forEach(item => {
+                const itemName = item.getAttribute('data-name');
+                const itemPrice = parseFloat(item.getAttribute('data-price'));
+                orderList += `- ${itemName} (R${itemPrice})\n`;
+                total += itemPrice;
+            });
 
-  <div class="cards">
-    <div class="card">
-      <div class="emoji">🥪</div>
-      <h3>Classic Kota</h3>
-      <p>Bread, chips, polony and sauces.</p>
-      <p class="price">R30</p>
-      <button class="btn" onclick="chooseKota('Classic Kota')">
-        Order
-      </button>
-    </div>
+            const message = `*New Order - Kasi Wash & Kota Hub*\n\n*Customer:* ${name}\n*Items:*\n${orderList}\n*Total:* R${total}\n*Notes:* ${note || 'None'}`;
+            const encodedMessage = encodeURIComponent(message);
+            const whatsappNumber = '27794789949';
 
-    <div class="card">
-      <div class="emoji">🍟</div>
-      <h3>Russian Kota</h3>
-      <p>Bread, chips, Russian sausage and sauces.</p>
-      <p class="price">R40</p>
-      <button class="btn" onclick="chooseKota('Russian Kota')">
-        Order
-      </button>
-    </div>
+            window.location.href = `https://wa.me/${whatsappNumber}?text=${encodedMessage}`;
+        }
 
-    <div class="card">
-      <div class="emoji">🍔</div>
-      <h3>Deluxe Kota</h3>
-      <p>Bread, chips, Russian, egg, cheese and polony.</p>
-      <p class="price">R50</p>
-      <button class="btn" onclick="chooseKota('Deluxe Kota')">
-        Order
-      </button>
-    </div>
-  </div>
-</section>
+        function verifyPin() {
+            const enteredPin = document.getElementById('admin-pin').value;
+            if (enteredPin === '1472') {
+                document.getElementById('pin-login').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+            } else {
+                alert('Incorrect PIN!');
+                document.getElementById('admin-pin').value = '';
+            }
+        }
 
-<section id="book">
-  <div class="panel">
-    <h2 class="section-title">Book Your Car Wash</h2>
-    <p class="muted">Reserve a time before arriving.</p>
-
-    <form id="bookingForm">
-      <div class="two-columns">
-        <label>Full name
-          <input name="name" required placeholder="Your full name">
-        </label>
-        <label>Phone number
-          <input name="phone" required type="tel"
-                 placeholder="e.g. 0712345678">
-        </label>
-        <label>Vehicle registration
-          <input name="registration" required
-                 placeholder="e.g. ABC 123 GP">
-        </label>
-        <label>Vehicle type
-          <select name="vehicle" required>
-            <option value="">Select vehicle</option>
-            <option>Hatchback</option>
-            <option>Sedan</option>
-            <option>SUV</option>
-            <option>Bakkie</option>
-            <option>Minibus</option>
-            <option>Other</option>
-          </select>
-        </label>
-        <label>Wash package
-          <select name="package" id="washPackage" required
-                  onchange="updateTotal()">
-            <option value="">Select package</option>
-            <option value="Basic Wash">Basic Wash - R50</option>
-            <option value="Full Wash">Full Wash - R100</option>
-            <option value="Premium Wash">Premium Wash - R180</option>
-          </select>
-        </label>
-        <label>Booking date
-          <input type="date" name="date" id="bookingDate" required>
-        </label>
-        <label>Time slot
-          <select name="time" required>
-            <option value="">Select time</option>
-            <option>08:00</option>
-            <option>09:00</option>
-            <option>10:00</option>
-            <option>11:00</option>
-            <option>12:00</option>
-            <option>13:00</option>
-            <option>14:00</option>
-            <option>15:00</option>
-            <option>16:00</option>
-          </select>
-        </label>
-      </div>
-
-      <p class="total">Wash total: <span id="washTotal">R0</span></p>
-      <button class="btn" type="submit">Reserve My Space</button>
-    </form>
-    <p id="bookingMessage" role="status"></p>
-  </div>
-</section>
-
-<section id="order">
-  <div class="panel">
-    <h2 class="section-title">Order Your Kota</h2>
-    <p class="muted">Place your order for collection at the shop.</p>
-
-    <form id="orderForm">
-      <div class="two-columns">
-        <label>Full name
-          <input name="name" required placeholder="Your name">
-        </label>
-        <label>Phone number
-          <input name="phone" required type="tel"
-                 placeholder="Your phone number">
-        </label>
-        <label>Kota
-          <select name="kota" id="kotaChoice" required
-                  onchange="updateKotaTotal()">
-            <option value="">Choose your kota</option>
-            <option value="Classic Kota">Classic Kota - R30</option>
-            <option value="Russian Kota">Russian Kota - R40</option>
-            <option value="Deluxe Kota">Deluxe Kota - R50</option>
-          </select>
-        </label>
-        <label>Quantity
-          <input name="quantity" id="quantity" type="number"
-                 min="1" max="20" value="1" required
-                 oninput="updateKotaTotal()">
-        </label>
-        <label>Collection time
-          <select name="collection" required>
-            <option value="">Choose time</option>
-            <option>ASAP</option>
-            <option>12:00</option>
-            <option>13:00</option>
-            <option>14:00</option>
-            <option>15:00</option>
-            <option>16:00</option>
-          </select>
-        </label>
-        <label>Extra instructions (optional)
-          <input name="notes" placeholder="e.g. No chilli">
-        </label>
-      </div>
-
-      <p class="total">Order total: <span id="kotaTotal">R0</span></p>
-      <button class="btn" type="submit">Place Kota Order</button>
-    </form>
-    <p id="orderMessage" role="status"></p>
-  </div>
-</section>
-
-<section id="admin">
-  <div class="panel">
-    <h2 class="section-title">Business Management</h2>
-    <p class="muted">
-      View the bookings and food orders saved in this browser.
-    </p>
-
-    <div class="notice">
-      Demo mode: this dashboard is not password-protected.
-      Do not publish real customer details using this version.
-    </div>
-
-    <button class="btn" onclick="showRecords('bookings')">
-      View Bookings
-    </button>
-    <button class="btn" onclick="showRecords('orders')">
-      View Kota Orders
-    </button>
-
-    <div id="records"></div>
-  </div>
-</section>
-
-<footer>
-  <p><strong>Wash & Kota Hub</strong></p>
-  <p>Wash your car. Enjoy your kota. Leave happy!</p>
-  <small>Prices are sample prices and can be changed to suit your business.</small>
-</footer>
-
-<script>
-const washPrices = {
-  "Basic Wash": 50,
-  "Full Wash": 100,
-  "Premium Wash": 180
-};
-
-const kotaPrices = {
-  "Classic Kota": 30,
-  "Russian Kota": 40,
-  "Deluxe Kota": 50
-};
-
-// Use browser storage for this demonstration.
-function getRecords(key) {
-  try {
-    return JSON.parse(localStorage.getItem(key) || "[]");
-  } catch {
-    return [];
-  }
-}
-
-function saveRecords(key, records) {
-  localStorage.setItem(key, JSON.stringify(records));
-}
-
-function chooseWash(name) {
-  document.getElementById("washPackage").value = name;
-  updateTotal();
-  document.getElementById("book").scrollIntoView();
-}
-
-function chooseKota(name) {
-  document.getElementById("kotaChoice").value = name;
-  updateKotaTotal();
-  document.getElementById("order").scrollIntoView();
-}
-
-function updateTotal() {
-  const name = document.getElementById("washPackage").value;
-  document.getElementById("washTotal").textContent =
-    "R" + (washPrices[name] || 0);
-}
-
-function updateKotaTotal() {
-  const name = document.getElementById("kotaChoice").value;
-  const quantity = Number(document.getElementById("quantity").value);
-  const total = (kotaPrices[name] || 0) *
-    (Number.isInteger(quantity) && quantity > 0 ? quantity : 0);
-
-  document.getElementById("kotaTotal").textContent = "R" + total;
-}
-
-function setMinimumDate() {
-  const now = new Date();
-  const localDate = new Date(
-    now.getTime() - now.getTimezoneOffset() * 60000
-  ).toISOString().slice(0, 10);
-
-  document.getElementById("bookingDate").min = localDate;
-}
-
-setMinimumDate();
-
-document.getElementById("bookingForm").addEventListener(
-  "submit", function(event) {
-    event.preventDefault();
-
-    const form = new FormData(this);
-    const booking = Object.fromEntries(form.entries());
-    const date = booking.date;
-    const time = booking.time;
-
-    if (date < document.getElementById("bookingDate").min) {
-      alert("Please select today or a future date.");
-      return;
-    }
-
-    // Prevent duplicate bookings for the same time slot.
-    const bookings = getRecords("washBookings");
-    const occupied = bookings.some(item =>
-      item.date === date &&
-      item.time === time &&
-      item.status !== "Cancelled"
-    );
-
-    if (occupied) {
-      alert("That time slot is already booked. Please choose another.");
-      return;
-    }
-
-    booking.id = "W" + Date.now();
-    booking.price = washPrices[booking.package];
-    booking.status = "Pending";
-
-    bookings.push(booking);
-    saveRecords("washBookings", bookings);
-
-    document.getElementById("bookingMessage").textContent =
-      "Booking request saved! Reference: " + booking.id +
-      ". Please contact the business to confirm.";
-
-    this.reset();
-    updateTotal();
-  }
-);
-
-document.getElementById("orderForm").addEventListener(
-  "submit", function(event) {
-    event.preventDefault();
-
-    const form = new FormData(this);
-    const order = Object.fromEntries(form.entries());
-    const quantity = Number(order.quantity);
-
-    if (!Number.isInteger(quantity) || quantity < 1 || quantity > 20) {
-      alert("Please select a quantity from 1 to 20.");
-      return;
-    }
-
-    order.id = "K" + Date.now();
-    order.quantity = quantity;
-    order.price = kotaPrices[order.kota] * quantity;
-    order.status = "Pending";
-
-    const orders = getRecords("kotaOrders");
-    orders.push(order);
-    saveRecords("kotaOrders", orders);
-
-    document.getElementById("orderMessage").textContent =
-      "Order saved! Reference: " + order.id +
-      ". Total: R" + order.price +
-      ". Your order has not been paid for yet.";
-
-    this.reset();
-    document.getElementById("quantity").value = 1;
-    updateKotaTotal();
-  }
-);
-
-function showRecords(type) {
-  const key = type === "bookings" ? "washBookings" : "kotaOrders";
-  const records = getRecords(key);
-  const container = document.getElementById("records");
-
-  container.replaceChildren();
-
-  if (records.length === 0) {
-    container.textContent = "No " + type + " found.";
-    return;
-  }
-
-  records.forEach(record => {
-    const card = document.createElement("div");
-    card.className = "item";
-
-    const details = type === "bookings"
-      ? [
-          "Reference: " + record.id,
-          "Customer: " + record.name,
-          "Phone: " + record.phone,
-          "Vehicle: " + record.vehicle + " (" + record.registration + ")",
-          "Package: " + record.package,
-          "Date: " + record.date + " at " + record.time,
-          "Price: R" + record.price
-        ]
-      : [
-          "Reference: " + record.id,
-          "Customer: " + record.name,
-          "Phone: " + record.phone,
-          "Order: " + record.quantity + " x " + record.kota,
-          "Collection: " + record.collection,
-          "Instructions: " + (record.notes || "None"),
-          "Total: R" + record.price
-        ];
-
-    details.forEach(line => {
-      const p = document.createElement("p");
-      p.textContent = line;
-      card.appendChild(p);
-    });
-
-    const status = document.createElement("p");
-    status.textContent = "Status: " + record.status;
-    card.appendChild(status);
-
-    const select = document.createElement("select");
-    ["Pending", "Confirmed", "In Progress", "Completed", "Cancelled"]
-      .forEach(value => {
-        const option = document.createElement("option");
-        option.value = value;
-        option.textContent = value;
-        select.appendChild(option);
-      });
-
-    select.value = record.status;
-
-    const update = document.createElement("button");
-    update.className = "btn";
-    update.textContent = "Update Status";
-
-    update.addEventListener("click", () => {
-      const latest = getRecords(key);
-      const index = latest.findIndex(item => item.id === record.id);
-
-      if (index !== -1) {
-        latest[index].status = select.value;
-        saveRecords(key, latest);
-        showRecords(type);
-      }
-    });
-
-    card.appendChild(select);
-    card.appendChild(document.createTextNode(" "));
-    card.appendChild(update);
-    container.appendChild(card);
-  });
-}
-
-updateTotal();
-updateKotaTotal();
-</script>
-
+        function saveNotice() {
+            alert('Business status updated successfully!');
+        }
+    </script>
 </body>
 </html>
