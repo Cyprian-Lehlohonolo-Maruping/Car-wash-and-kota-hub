@@ -393,6 +393,7 @@
             <!-- Live Status Tracker for Customer -->
             <div id="status-tracker-box" class="status-tracker" style="display:none;">
                 <p style="font-weight: bold; font-size: 1.1rem; color: #03045e;">Order Placed Successfully!</p>
+                <p style="font-size: 0.85rem; color: #d90429; margin-top: 3px; font-weight: bold;">👉 Switch back to this browser tab after sending WhatsApp to view live status!</p>
                 <p id="tracker-order-id" style="font-size: 0.9rem; color: #0077b6; margin-top: 5px;"></p>
                 <div id="tracker-badge-container"></div>
                 
@@ -455,7 +456,6 @@
     </div>
 
     <script>
-        // Load Flash Deal on startup
         window.onload = function() {
             const deal = localStorage.getItem('kasi_flash_deal');
             const banner = document.getElementById('flash-deal-banner');
@@ -569,16 +569,20 @@
             orders.unshift(newOrder);
             saveOrders(orders);
 
+            // Display tracking box immediately on screen
             document.getElementById('order-form-box').style.display = 'none';
             document.getElementById('status-tracker-box').style.display = 'block';
             updateCustomerTracker(newOrder);
 
+            // Open WhatsApp so the owner gets the alert
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
             let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} @ ${bookingTime} (${queueStyle})` : '';
             const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
             const whatsappNumber = '27794789949';
             
-            window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            setTimeout(() => {
+                window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+            }, 300);
         }
 
         function updateCustomerTracker(order) {
