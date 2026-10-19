@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kasi Wash & Kota Hub - Live Orders</title>
+    <title>Kasi Wash & Kota Hub</title>
     <style>
         :root {
             --primary: #ff6b00;
@@ -125,18 +125,18 @@
         .status-tracker {
             background: #fff3e0;
             border: 1px solid var(--primary);
-            padding: 15px;
+            padding: 20px;
             border-radius: 8px;
             margin-top: 15px;
             text-align: center;
         }
         .badge {
             display: inline-block;
-            padding: 5px 15px;
+            padding: 6px 18px;
             border-radius: 20px;
             font-weight: bold;
-            font-size: 0.9rem;
-            margin-top: 5px;
+            font-size: 1rem;
+            margin-top: 10px;
         }
         .badge-pending { background: #ffe0b2; color: #e65100; }
         .badge-confirmed { background: #c8e6c9; color: #2e7d32; }
@@ -195,14 +195,14 @@
 
     <header>
         <h1>Kasi Wash & Kota Hub</h1>
-        <p>Live Order System & Tracking</p>
+        <p>Sparkling Clean Cars & Delicious Kasi Kotas!</p>
     </header>
 
     <div class="container">
 
         <!-- SERVICES & MENU SELECTION -->
         <div class="section" id="customer-view">
-            <h2>Place Order / Booking</h2>
+            <h2>Place Your Order</h2>
             <div id="order-form-box">
                 <h3 style="font-size: 1rem; margin-bottom: 10px; color: #555;">Car Wash Services</h3>
                 <div class="service-grid" style="margin-bottom: 20px;">
@@ -258,15 +258,16 @@
                 <label for="cust-note">Car Model / Instructions</label>
                 <textarea id="cust-note" rows="2" placeholder="e.g. Silver Toyota Corolla"></textarea>
 
-                <button class="btn" onclick="submitOrder()">Submit & Send WhatsApp Order</button>
+                <button class="btn" onclick="submitOrder()">Submit Order</button>
             </div>
 
             <!-- Live Status Tracker for Customer -->
             <div id="status-tracker-box" class="status-tracker" style="display:none;">
-                <p style="font-weight: bold; color: #333;">Order Status Tracking</p>
-                <p id="tracker-order-id" style="font-size: 0.85rem; color: #666;"></p>
+                <p style="font-weight: bold; font-size: 1.1rem; color: #333;">Order Placed Successfully!</p>
+                <p id="tracker-order-id" style="font-size: 0.9rem; color: #666; margin-top: 5px;"></p>
                 <div id="tracker-badge-container"></div>
-                <button class="btn" style="background: #666; margin-top: 15px; font-size: 0.9rem; padding: 8px;" onclick="location.reload()">Place Another Order</button>
+                <p style="font-size: 0.8rem; color: #777; margin-top: 10px;">Your status updates live here as the owner processes your order.</p>
+                <button class="btn" style="background: #666; margin-top: 15px; font-size: 0.9rem; padding: 10px;" onclick="location.reload()">Place Another Order</button>
             </div>
         </div>
 
@@ -355,10 +356,12 @@
             orders.unshift(newOrder);
             saveOrders(orders);
 
+            // Show Customer Tracking View immediately without redirecting away
             document.getElementById('order-form-box').style.display = 'none';
             document.getElementById('status-tracker-box').style.display = 'block';
             updateCustomerTracker(newOrder);
 
+            // Open WhatsApp notification quietly for the owner
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
             const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
             const whatsappNumber = '27794789949';
@@ -369,10 +372,17 @@
         function updateCustomerTracker(order) {
             document.getElementById('tracker-order-id').innerText = `Order ID: ${order.id} | Name: ${order.name}`;
             let badgeClass = 'badge-pending';
-            if (order.status === 'Confirmed') badgeClass = 'badge-confirmed';
-            if (order.status === 'Completed') badgeClass = 'badge-completed';
+            let badgeText = 'Status: Pending Confirmation';
+            if (order.status === 'Confirmed') {
+                badgeClass = 'badge-confirmed';
+                badgeText = 'Status: Order Confirmed ✔';
+            }
+            if (order.status === 'Completed') {
+                badgeClass = 'badge-completed';
+                badgeText = 'Status: Order Done / Ready 🎉';
+            }
 
-            document.getElementById('tracker-badge-container').innerHTML = `<span class="badge ${badgeClass}">Status: ${order.status}</span>`;
+            document.getElementById('tracker-badge-container').innerHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
         }
 
         function verifyAdminLogin() {
