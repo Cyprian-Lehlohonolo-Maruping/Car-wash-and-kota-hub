@@ -6,11 +6,11 @@
     <title>Kasi Wash & Kota Hub</title>
     <style>
         :root {
-            --primary: #ff6b00;
-            --secondary: #1a1a1a;
+            --primary: #0077b6; /* Oceanic Blue */
+            --secondary: #03045e;
             --accent: #25d366;
-            --bg: #f9f9f9;
-            --text: #333333;
+            --bg: #e0fbfc;
+            --text: #2b2d42;
         }
         * {
             box-sizing: border-box;
@@ -19,7 +19,15 @@
             font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
         body {
+            /* Soapy bubbles background pattern combined with oceanic blue tones */
             background-color: var(--bg);
+            background-image: 
+                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 8%, transparent 9%),
+                radial-gradient(circle at 85% 15%, rgba(144, 224, 239, 0.5) 0%, rgba(144, 224, 239, 0.5) 12%, transparent 13%),
+                radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 15%, transparent 16%),
+                radial-gradient(circle at 20% 80%, rgba(144, 224, 239, 0.6) 0%, rgba(144, 224, 239, 0.6) 10%, transparent 11%),
+                radial-gradient(circle at 80% 85%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 7%, transparent 8%);
+            background-size: 300px 300px;
             color: var(--text);
             line-height: 1.6;
             padding-bottom: 50px;
@@ -32,13 +40,13 @@
             border-bottom: 4px solid var(--primary);
         }
         header h1 {
-            color: var(--primary);
+            color: #90e0ef;
             font-size: 1.8rem;
             margin-bottom: 5px;
         }
         header p {
             font-size: 0.9rem;
-            color: #ccc;
+            color: #ade8f4;
         }
         .container {
             max-width: 600px;
@@ -46,11 +54,12 @@
             padding: 0 15px;
         }
         .section {
-            background: white;
+            background: rgba(255, 255, 255, 0.95);
             padding: 20px;
             border-radius: 10px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 15px rgba(0, 119, 182, 0.15);
             margin-bottom: 20px;
+            backdrop-filter: blur(5px);
         }
         h2 {
             font-size: 1.3rem;
@@ -62,7 +71,7 @@
         
         /* Interactive Collapsible Accordions */
         .accordion-header {
-            background: #2a2a2a;
+            background: #00b4d8;
             color: white;
             padding: 14px 18px;
             font-size: 1.05rem;
@@ -98,7 +107,7 @@
             align-items: center;
             padding: 12px;
             background: #fff;
-            border: 1px solid #eee;
+            border: 1px solid #b8e0f2;
             border-radius: 8px;
         }
         .item-info h3 {
@@ -107,7 +116,7 @@
         }
         .item-info p {
             font-size: 0.85rem;
-            color: #666;
+            color: #555;
         }
         .item-price {
             font-weight: bold;
@@ -129,14 +138,15 @@
             width: 100%;
             padding: 12px;
             margin-bottom: 15px;
-            border: 1px solid #ccc;
+            border: 1px solid #90e0ef;
             border-radius: 6px;
             font-size: 1rem;
+            background: #f8f9fa;
         }
         .btn {
             display: block;
             width: 100%;
-            background: var(--accent);
+            background: var(--primary);
             color: white;
             padding: 14px;
             border: none;
@@ -152,7 +162,7 @@
         
         /* Status Badges */
         .status-tracker {
-            background: #fff3e0;
+            background: #caf0f8;
             border: 1px solid var(--primary);
             padding: 20px;
             border-radius: 8px;
@@ -167,16 +177,16 @@
             font-size: 1rem;
             margin-top: 10px;
         }
-        .badge-pending { background: #ffe0b2; color: #e65100; }
+        .badge-pending { background: #ade8f4; color: #03045e; }
         .badge-confirmed { background: #c8e6c9; color: #2e7d32; }
         .badge-completed { background: #bbdefb; color: #1565c0; }
 
         /* Admin Section */
         .admin-section {
-            background: #1a1a1a;
+            background: var(--secondary);
             color: white;
         }
-        .admin-section h2 { color: white; border-left-color: var(--primary); }
+        .admin-section h2 { color: white; border-left-color: #90e0ef; }
         .admin-controls { display: none; }
         
         .stats-box {
@@ -186,21 +196,21 @@
             margin-bottom: 20px;
         }
         .stat-card {
-            background: #2a2a2a;
+            background: #023e8a;
             padding: 15px;
             border-radius: 8px;
             text-align: center;
-            border: 1px solid #444;
+            border: 1px solid #0077b6;
         }
-        .stat-card h3 { font-size: 0.8rem; color: #aaa; }
-        .stat-card p { font-size: 1.5rem; color: var(--primary); font-weight: bold; }
+        .stat-card h3 { font-size: 0.8rem; color: #ade8f4; }
+        .stat-card p { font-size: 1.5rem; color: #90e0ef; font-weight: bold; }
 
         .order-row {
-            background: #2a2a2a;
+            background: #023e8a;
             padding: 12px;
             border-radius: 8px;
             margin-bottom: 10px;
-            border-left: 4px solid var(--primary);
+            border-left: 4px solid #90e0ef;
             font-size: 0.9rem;
         }
         .order-actions {
@@ -331,11 +341,11 @@
 
             <!-- Live Status Tracker for Customer -->
             <div id="status-tracker-box" class="status-tracker" style="display:none;">
-                <p style="font-weight: bold; font-size: 1.1rem; color: #333;">Order Placed Successfully!</p>
-                <p id="tracker-order-id" style="font-size: 0.9rem; color: #666; margin-top: 5px;"></p>
+                <p style="font-weight: bold; font-size: 1.1rem; color: #03045e;">Order Placed Successfully!</p>
+                <p id="tracker-order-id" style="font-size: 0.9rem; color: #0077b6; margin-top: 5px;"></p>
                 <div id="tracker-badge-container"></div>
-                <p style="font-size: 0.8rem; color: #777; margin-top: 10px;">Your status updates live here as the owner processes your order.</p>
-                <button class="btn" style="background: #666; margin-top: 15px; font-size: 0.9rem; padding: 10px;" onclick="location.reload()">Place Another Order</button>
+                <p style="font-size: 0.8rem; color: #555; margin-top: 10px;">Your status updates live here as the owner processes your order.</p>
+                <button class="btn" style="background: #03045e; margin-top: 15px; font-size: 0.9rem; padding: 10px;" onclick="location.reload()">Place Another Order</button>
             </div>
         </div>
 
@@ -344,14 +354,14 @@
             <h2>Owner Portal</h2>
             
             <div id="pin-login">
-                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ccc;">Secure Owner Login</p>
+                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ade8f4;">Secure Owner Login</p>
                 <input type="email" id="admin-email" placeholder="">
                 <input type="password" id="admin-pin" maxlength="4" placeholder="">
-                <button class="btn" style="background: var(--primary);" onclick="verifyAdminLogin()">Owner Login</button>
+                <button class="btn" style="background: #00b4d8;" onclick="verifyAdminLogin()">Owner Login</button>
             </div>
 
             <div id="admin-dashboard" class="admin-controls">
-                <p style="color: var(--accent); margin-bottom: 15px; font-weight: bold;">✔ Logged in as Cyprian</p>
+                <p style="color: #90e0ef; margin-bottom: 15px; font-weight: bold;">✔ Logged in as Cyprian</p>
                 
                 <!-- Daily Statistics -->
                 <div class="stats-box">
@@ -367,17 +377,16 @@
 
                 <h3 style="font-size: 1rem; margin-bottom: 10px; color: #fff;">Live Customer Orders</h3>
                 <div id="admin-orders-list">
-                    <p style="color: #aaa; font-size: 0.85rem;">No active orders right now.</p>
+                    <p style="color: #ade8f4; font-size: 0.85rem;">No active orders right now.</p>
                 </div>
                 
-                <button class="btn" style="background: #444; margin-top: 15px;" onclick="adminLogout()">Log Out</button>
+                <button class="btn" style="background: #0077b6; margin-top: 15px;" onclick="adminLogout()">Log Out</button>
             </div>
         </div>
 
     </div>
 
     <script>
-        // Toggle Accordion sections
         function toggleAccordion(id) {
             const content = document.getElementById(id);
             content.classList.toggle('active');
@@ -490,7 +499,7 @@
 
             const listContainer = document.getElementById('admin-orders-list');
             if (todayOrders.length === 0) {
-                listContainer.innerHTML = `<p style="color: #aaa; font-size: 0.85rem;">No orders placed today yet.</p>`;
+                listContainer.innerHTML = `<p style="color: #ade8f4; font-size: 0.85rem;">No orders placed today yet.</p>`;
                 return;
             }
 
@@ -504,8 +513,8 @@
                 html += `
                     <div class="order-row">
                         <strong>#${order.id} - ${order.name}</strong><br>
-                        <span style="color: #ccc; font-size: 0.8rem;">Items: ${itemsStr}</span><br>
-                        <span style="color: var(--primary); font-weight: bold;">Total: R${order.total}</span> | 
+                        <span style="color: #ade8f4; font-size: 0.80rem;">Items: ${itemsStr}</span><br>
+                        <span style="color: #90e0ef; font-weight: bold;">Total: R${order.total}</span> | 
                         <span style="color: ${badgeColor}; font-weight: bold;">Status: ${order.status}</span>
                         <div class="order-actions">
                             <button class="btn-confirm" onclick="updateOrderStatus('${order.id}', 'Confirmed')">Confirm Order</button>
