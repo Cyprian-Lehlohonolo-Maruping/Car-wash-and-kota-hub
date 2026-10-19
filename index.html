@@ -48,7 +48,6 @@
             color: #ade8f4;
         }
         
-        /* Flash Deal Announcement Banner */
         #flash-deal-banner {
             background: #ffb703;
             color: #03045e;
@@ -81,7 +80,6 @@
             padding-left: 10px;
         }
         
-        /* Interactive Collapsible Accordions */
         .accordion-header {
             background: #00b4d8;
             color: white;
@@ -185,7 +183,6 @@
         }
         .btn:hover { opacity: 0.9; }
         
-        /* Status Badges */
         .status-tracker {
             background: #caf0f8;
             border: 1px solid var(--primary);
@@ -206,7 +203,6 @@
         .badge-confirmed { background: #c8e6c9; color: #2e7d32; }
         .badge-completed { background: #bbdefb; color: #1565c0; }
 
-        /* Admin Section */
         .admin-section {
             background: var(--secondary);
             color: white;
@@ -257,7 +253,6 @@
 </head>
 <body>
 
-    <!-- Flash Deal Banner -->
     <div id="flash-deal-banner"></div>
 
     <header>
@@ -272,7 +267,6 @@
             <h2>Select & Order</h2>
             <div id="order-form-box">
                 
-                <!-- CAR WASH ACCORDION WITH DATE, TIME & QUEUE STYLE -->
                 <div class="accordion-header" onclick="toggleAccordion('wash-content')">
                     <span>🚗 Book a Spot (Car Wash Services)</span>
                     <span>▼</span>
@@ -309,7 +303,6 @@
                         </div>
                     </label>
 
-                    <!-- Date, Time Slot & Queue Style -->
                     <div style="margin-top: 10px; background: #f0f8ff; padding: 12px; border-radius: 8px; border: 1px solid #90e0ef;">
                         <label for="booking-date">Select Booking Date</label>
                         <input type="date" id="booking-date" onchange="checkSlotAvailability()">
@@ -333,7 +326,6 @@
                     </div>
                 </div>
 
-                <!-- KOTA MENU ACCORDION -->
                 <div class="accordion-header" onclick="toggleAccordion('kota-content')">
                     <span>🍔 Order a Kota (R15 - R55 Menu)</span>
                     <span>▼</span>
@@ -397,7 +389,6 @@
                 <p id="tracker-order-id" style="font-size: 0.9rem; color: #0077b6; margin-top: 5px;"></p>
                 <div id="tracker-badge-container"></div>
                 
-                <!-- Emoji Feedback Section (Appears when Completed) -->
                 <div id="feedback-container" style="display:none; margin-top: 15px; padding: 12px; background: white; border-radius: 8px;">
                     <p style="font-size: 0.9rem; font-weight: bold; color: #03045e;">How was your experience?</p>
                     <div style="font-size: 1.8rem; display: flex; justify-content: center; gap: 15px; margin-top: 8px; cursor: pointer;">
@@ -425,14 +416,12 @@
             <div id="admin-dashboard" class="admin-controls">
                 <p style="color: #90e0ef; margin-bottom: 15px; font-weight: bold;">✔ Logged in as Cyprian</p>
                 
-                <!-- Flash Deal Manager -->
                 <div style="background: #023e8a; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #0077b6;">
                     <h3 style="font-size: 0.95rem; color: #ade8f4; margin-bottom: 8px;">📢 Broadcast Flash Deal Banner</h3>
                     <input type="text" id="admin-deal-input" placeholder="e.g. 🔥 Special: Beast Kota + Full Wash for R120!" style="margin-bottom: 8px; background: #fff; color: #333;">
                     <button class="btn" style="background: #ffb703; color: #03045e; padding: 8px;" onclick="saveFlashDeal()">Publish Deal</button>
                 </div>
 
-                <!-- Daily Statistics -->
                 <div class="stats-box">
                     <div class="stat-card">
                         <h3>Orders Today</h3>
@@ -462,6 +451,13 @@
             if (deal) {
                 banner.innerText = deal;
                 banner.style.display = 'block';
+            }
+
+            // Check if admin was logged in before refresh
+            if (localStorage.getItem('kasi_admin_logged_in') === 'true') {
+                document.getElementById('pin-login').style.display = 'none';
+                document.getElementById('admin-dashboard').style.display = 'block';
+                loadAdminDashboard();
             }
         };
 
@@ -559,7 +555,7 @@
                 items: orderItems,
                 total: total,
                 bookingDate: bookingDate || 'N/A (Food Only)',
-                bookingTime: bookingTime || 'N/A',
+                bookingTime: bookingTime || 'N/App',
                 queueStyle: hasCarWash ? queueStyle : 'N/A',
                 status: 'Pending',
                 date: new Date().toLocaleDateString()
@@ -569,12 +565,10 @@
             orders.unshift(newOrder);
             saveOrders(orders);
 
-            // Display tracking box immediately on screen
             document.getElementById('order-form-box').style.display = 'none';
             document.getElementById('status-tracker-box').style.display = 'block';
             updateCustomerTracker(newOrder);
 
-            // Open WhatsApp so the owner gets the alert
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
             let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} @ ${bookingTime} (${queueStyle})` : '';
             const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
@@ -614,6 +608,7 @@
             const pin = document.getElementById('admin-pin').value.trim();
 
             if (email === 'cyprianmaruping09@gmail.com' && pin === '1472') {
+                localStorage.setItem('kasi_admin_logged_in', 'true');
                 document.getElementById('pin-login').style.display = 'none';
                 document.getElementById('admin-dashboard').style.display = 'block';
                 loadAdminDashboard();
@@ -624,6 +619,7 @@
         }
 
         function adminLogout() {
+            localStorage.removeItem('kasi_admin_logged_in');
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('pin-login').style.display = 'block';
             document.getElementById('admin-email').value = '';
@@ -680,7 +676,6 @@
             });
             saveOrders(orders);
             loadAdminDashboard();
-            alert(`Order #${orderId} updated to ${newStatus}!`);
         }
     </script>
 </body>
