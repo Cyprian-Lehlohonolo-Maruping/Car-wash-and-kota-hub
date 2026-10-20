@@ -64,6 +64,27 @@
             background-position: center;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
+            filter: brightness(1.25) contrast(1.05);
+        }
+
+        .slide.active {
+            opacity: 0.65;
+        }
+
+        /* Floating Bubble Canvas & Animation Styling */
+        #bubble-canvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        /* Gradient Glow Effects */
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.45);
         }
 
         .slide.active {
@@ -104,13 +125,13 @@
         }
         ::-webkit-scrollbar-thumb:hover {
             background: #00b4d8;
-        }
-    </style>
-</head>
-<body class="bg-navy-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyanGlow selection:text-navy-900">
+<body class="bg-navy-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyanGlow selection:text-navy-900 relative overflow-x-hidden">
+
+    <!-- Interactive Soapy Bubble Canvas Overlay -->
+    <canvas id="bubble-canvas"></canvas>
 
     <!-- Flash Deal Notification Marquee Banner -->
-    <div id="flash-deal-banner" class="hidden bg-gradient-to-r from-amberGold via-amberHover to-amberGold text-navy-900 font-bold text-center py-2 px-4 text-sm shadow-md transition-all">
+    <div id="flash-deal-banner" class="hidden relative z-50 bg-gradient-to-r from-amberGold via-amberHover to-amberGold text-navy-900 font-bold text-center py-2 px-4 text-sm shadow-md transition-all">
         <span id="flash-deal-text"></span>
     </div>
 
@@ -583,6 +604,87 @@
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
+        // Interactive Animated Soapy Bubbles Engine
+        (function initBubbles() {
+            const canvas = document.getElementById('bubble-canvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+            let width = (canvas.width = window.innerWidth);
+            let height = (canvas.height = window.innerHeight);
+
+            window.addEventListener('resize', () => {
+                width = canvas.width = window.innerWidth;
+                height = canvas.height = window.innerHeight;
+            });
+
+            const bubbles = Array.from({ length: 35 }, () => createBubble(true));
+
+            function createBubble(randomY = false) {
+                return {
+                    x: Math.random() * width,
+                    y: randomY ? Math.random() * height : height + Math.random() * 100,
+                    radius: Math.random() * 22 + 8,
+                    speedY: Math.random() * 1.2 + 0.4,
+                    speedX: Math.sin(Math.random() * Math.PI * 2) * 0.6,
+                    pulse: Math.random() * Math.PI,
+                    opacity: Math.random() * 0.4 + 0.35
+                };
+            }
+
+            function animateBubbles() {
+                ctx.clearRect(0, 0, width, height);
+
+                bubbles.forEach((b) => {
+                    b.y -= b.speedY;
+                    b.x += Math.sin(b.pulse) * 0.5;
+                    b.pulse += 0.02;
+
+                    if (b.y < -b.radius * 2) {
+                        Object.assign(b, createBubble(false));
+                    }
+
+                    // Draw glossy iridescent bubble shell
+                    ctx.save();
+                    ctx.beginPath();
+                    ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+
+                    // Bubble Radial Gradient Fill
+                    const gradient = ctx.createRadialGradient(
+                        b.x - b.radius * 0.3,
+                        b.y - b.radius * 0.3,
+                        b.radius * 0.1,
+                        b.x,
+                        b.y,
+                        b.radius
+                    );
+                    gradient.addColorStop(0, `rgba(255, 255, 255, ${b.opacity + 0.2})`);
+                    gradient.addColorStop(0.5, `rgba(56, 189, 248, ${b.opacity * 0.4})`);
+                    gradient.addColorStop(0.85, `rgba(244, 114, 182, ${b.opacity * 0.25})`);
+                    gradient.addColorStop(1, `rgba(6, 182, 212, ${b.opacity * 0.6})`);
+
+                    ctx.fillStyle = gradient;
+                    ctx.fill();
+
+                    // Glossy Highlight Ring
+                    ctx.lineWidth = 1.2;
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${b.opacity + 0.3})`;
+                    ctx.stroke();
+
+                    // Bubble Top Crescent Reflection Highlight
+                    ctx.beginPath();
+                    ctx.arc(b.x - b.radius * 0.35, b.y - b.radius * 0.35, b.radius * 0.3, 0, Math.PI * 2);
+                    ctx.fillStyle = `rgba(255, 255, 255, ${b.opacity + 0.4})`;
+                    ctx.fill();
+
+                    ctx.restore();
+                });
+
+                requestAnimationFrame(animateBubbles);
+            }
+
+            animateBubbles();
+        })();
+
         // Authorized Admin Emails & Shared PIN
         const validAdminEmails = [
             "cyprianmaruping09@gmail.com",
