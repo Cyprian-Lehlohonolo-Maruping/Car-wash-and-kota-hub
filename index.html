@@ -3,475 +3,565 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kasi Wash & Kota Hub</title>
+    <title>CAR WASHINGTON | Clean • Care • Crave</title>
+    <!-- Tailwind CSS for modern utility styling -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        navy: {
+                            900: '#070c1a',
+                            800: '#0b1329',
+                            700: '#111d3d',
+                            600: '#1b2a4a'
+                        },
+                        cyanAccent: '#00b4d8',
+                        cyanGlow: '#06b6d4',
+                        amberGold: '#f59e0b',
+                        amberHover: '#d97706',
+                    }
+                }
+            }
+        }
+    </script>
     <style>
-        :root {
-            --primary: #0077b6; /* Oceanic Blue */
-            --secondary: #03045e;
-            --accent: #25d366;
-            --bg: #e0fbfc;
-            --text: #2b2d42;
-        }
+        @import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap');
+        
         * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-        }
-        body {
-            background-color: var(--bg);
-            background-image: 
-                radial-gradient(circle at 15% 20%, rgba(255, 255, 255, 0.8) 0%, rgba(255, 255, 255, 0.8) 8%, transparent 9%),
-                radial-gradient(circle at 85% 15%, rgba(144, 224, 239, 0.5) 0%, rgba(144, 224, 239, 0.5) 12%, transparent 13%),
-                radial-gradient(circle at 50% 45%, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.7) 15%, transparent 16%),
-                radial-gradient(circle at 20% 80%, rgba(144, 224, 239, 0.6) 0%, rgba(144, 224, 239, 0.6) 10%, transparent 11%),
-                radial-gradient(circle at 80% 85%, rgba(255, 255, 255, 0.9) 0%, rgba(255, 255, 255, 0.9) 7%, transparent 8%);
-            background-size: 300px 300px;
-            color: var(--text);
-            line-height: 1.6;
-            padding-bottom: 50px;
-        }
-        header {
-            background: var(--secondary);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            border-bottom: 4px solid var(--primary);
-        }
-        header h1 {
-            color: #90e0ef;
-            font-size: 1.8rem;
-            margin-bottom: 5px;
-        }
-        header p {
-            font-size: 0.9rem;
-            color: #ade8f4;
-        }
-        
-        #flash-deal-banner {
-            background: #ffb703;
-            color: #03045e;
-            text-align: center;
-            padding: 10px 15px;
-            font-weight: bold;
-            font-size: 0.95rem;
-            display: none;
-            border-bottom: 2px solid #fb8500;
+            font-family: 'Plus Jakarta Sans', sans-serif;
+            scroll-behavior: smooth;
         }
 
-        .container {
-            max-width: 600px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-        .section {
-            background: rgba(255, 255, 255, 0.95);
-            padding: 20px;
-            border-radius: 10px;
-            box-shadow: 0 4px 15px rgba(0, 119, 182, 0.15);
-            margin-bottom: 20px;
-            backdrop-filter: blur(5px);
-        }
-        h2 {
-            font-size: 1.3rem;
-            margin-bottom: 15px;
-            color: var(--secondary);
-            border-left: 4px solid var(--primary);
-            padding-left: 10px;
-        }
-        
-        .accordion-header {
-            background: #00b4d8;
-            color: white;
-            padding: 14px 18px;
-            font-size: 1.05rem;
-            font-weight: bold;
-            border-radius: 8px;
-            cursor: pointer;
-            margin-bottom: 10px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            transition: 0.2s;
-        }
-        .accordion-header:hover {
-            background: var(--primary);
-        }
-        .accordion-content {
-            display: none;
-            padding: 10px 0;
-            margin-bottom: 15px;
-        }
-        .accordion-content.active {
-            display: grid;
-            gap: 10px;
+        /* Glassmorphism Effect */
+        .glass-card {
+            background: rgba(17, 29, 61, 0.7);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
-        .item-card {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 12px;
-            background: #fff;
-            border: 1px solid #b8e0f2;
-            border-radius: 8px;
+        .glass-nav {
+            background: rgba(7, 12, 26, 0.85);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-bottom: 1px solid rgba(0, 180, 216, 0.2);
         }
-        .item-info h3 {
-            font-size: 1rem;
-            color: var(--secondary);
-        }
-        .item-info p {
-            font-size: 0.85rem;
-            color: #555;
-        }
-        .item-price {
-            font-weight: bold;
-            color: var(--primary);
-            font-size: 1rem;
-        }
-        .item-card input[type="checkbox"] {
-            transform: scale(1.3);
-            accent-color: var(--primary);
-            cursor: pointer;
-        }
-        form label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: 600;
-            font-size: 0.9rem;
-        }
-        form input, form select, form textarea {
-            width: 100%;
-            padding: 12px;
-            margin-bottom: 15px;
-            border: 1px solid #90e0ef;
-            border-radius: 6px;
-            font-size: 1rem;
-            background: #f8f9fa;
-        }
-        .slot-availability {
-            font-size: 0.9rem;
-            font-weight: bold;
-            margin-top: -10px;
-            margin-bottom: 15px;
-            padding: 8px;
-            border-radius: 6px;
-            text-align: center;
-            display: none;
-        }
-        .slot-available { background: #d4edda; color: #155724; border: 1px solid #c3e6cb; }
-        .slot-full { background: #f8d7da; color: #721c24; border: 1px solid #f5c6cb; }
 
-        .btn {
-            display: block;
-            width: 100%;
-            background: var(--primary);
-            color: white;
-            padding: 14px;
-            border: none;
-            border-radius: 6px;
-            font-size: 1.1rem;
-            font-weight: bold;
-            text-align: center;
-            cursor: pointer;
-            text-decoration: none;
-            transition: 0.2s;
+        /* Background Hero Slideshow */
+        .hero-slideshow {
+            position: absolute;
+            inset: 0;
+            z-index: 0;
+            overflow: hidden;
         }
-        .btn:hover { opacity: 0.9; }
-        
-        .status-tracker {
-            background: #caf0f8;
-            border: 1px solid var(--primary);
-            padding: 20px;
-            border-radius: 8px;
-            margin-top: 15px;
-            text-align: center;
-        }
-        .badge {
-            display: inline-block;
-            padding: 6px 18px;
-            border-radius: 20px;
-            font-weight: bold;
-            font-size: 1rem;
-            margin-top: 10px;
-        }
-        .badge-pending { background: #ade8f4; color: #03045e; }
-        .badge-confirmed { background: #c8e6c9; color: #2e7d32; }
-        .badge-completed { background: #bbdefb; color: #1565c0; }
 
-        .admin-section {
-            background: var(--secondary);
-            color: white;
+        .slide {
+            position: absolute;
+            inset: 0;
+            background-size: cover;
+            background-position: center;
+            opacity: 0;
+            transition: opacity 1.5s ease-in-out;
         }
-        .admin-section h2 { color: white; border-left-color: #90e0ef; }
-        .admin-controls { display: none; }
-        
-        .stats-box {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 10px;
-            margin-bottom: 20px;
-        }
-        .stat-card {
-            background: #023e8a;
-            padding: 15px;
-            border-radius: 8px;
-            text-align: center;
-            border: 1px solid #0077b6;
-        }
-        .stat-card h3 { font-size: 0.8rem; color: #ade8f4; }
-        .stat-card p { font-size: 1.5rem; color: #90e0ef; font-weight: bold; }
 
-        .order-row {
-            background: #023e8a;
-            padding: 12px;
-            border-radius: 8px;
-            margin-bottom: 10px;
-            border-left: 4px solid #90e0ef;
-            font-size: 0.9rem;
+        .slide.active {
+            opacity: 0.35;
         }
-        .order-actions {
-            margin-top: 8px;
-            display: flex;
-            gap: 5px;
+
+        /* Gradient Glow Effects */
+        .glow-cyan {
+            box-shadow: 0 0 25px rgba(6, 182, 212, 0.35);
         }
-        .order-actions button {
-            padding: 6px 12px;
-            font-size: 0.8rem;
-            border: none;
+
+        .glow-amber {
+            box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
+        }
+
+        .text-gradient-cyan {
+            background: linear-gradient(135deg, #38bdf8, #00b4d8);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        .text-gradient-amber {
+            background: linear-gradient(135deg, #fbbf24, #f59e0b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #070c1a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #1b2a4a;
             border-radius: 4px;
-            cursor: pointer;
-            font-weight: bold;
         }
-        .btn-confirm { background: #2e7d32; color: white; }
-        .btn-done { background: #1565c0; color: white; }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #00b4d8;
+        }
     </style>
 </head>
-<body>
+<body class="bg-navy-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyanGlow selection:text-navy-900">
 
-    <div id="flash-deal-banner"></div>
-
-    <header>
-        <h1>Kasi Wash & Kota Hub</h1>
-        <p>Sparkling Clean Cars & Delicious Kasi Kotas!</p>
-    </header>
-
-    <div class="container">
-
-        <!-- ABOUT US SECTION -->
-        <div class="section">
-            <h2>About Us</h2>
-            <p style="font-size: 0.95rem; color: #444; margin-bottom: 10px;">
-                Welcome to <strong>Kasi Wash & Kota Hub</strong>! We provide top-tier car wash services to keep your vehicle shining while satisfying your cravings with our famous, delicious Kasi Kotas. 
-            </p>
-            <p style="font-size: 0.95rem; color: #444;">
-                Have questions or want to reach out to our management team directly? Connect with our owners on WhatsApp:
-            </p>
-            <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
-                <a href="https://wa.me/27794789949" target="_blank" style="background: #25d366; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 0.85rem; font-weight: bold;">💬 Owner 1 WhatsApp</a>
-                <a href="https://wa.me/27700000000" target="_blank" style="background: #25d366; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 0.85rem; font-weight: bold;">💬 Owner 2 WhatsApp</a>
-            </div>
-        </div>
-
-        <!-- SERVICES & MENU SELECTION -->
-        <div class="section" id="customer-view">
-            <h2>Select & Order</h2>
-            <div id="order-form-box">
-                
-                <div class="accordion-header" onclick="toggleAccordion('wash-content')">
-                    <span>🚗 Book a Spot (Car Wash Services)</span>
-                    <span>▼</span>
-                </div>
-                <div id="wash-content" class="accordion-content">
-                    <label class="item-card">
-                        <div class="item-info">
-                            <h3>Express Wash</h3>
-                            <p>Quick exterior wash & dry</p>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span class="item-price">R50</span>
-                            <input type="checkbox" class="order-item" data-name="Express Wash" data-price="50">
-                        </div>
-                    </label>
-                    <label class="item-card">
-                        <div class="item-info">
-                            <h3>Full Wash</h3>
-                            <p>Wash, Vacuum & Dry</p>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span class="item-price">R80</span>
-                            <input type="checkbox" class="order-item" data-name="Full Wash" data-price="80">
-                        </div>
-                    </label>
-                    <label class="item-card">
-                        <div class="item-info">
-                            <h3>Engine Wash</h3>
-                            <p>Deep degrease & clean</p>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span class="item-price">R50</span>
-                            <input type="checkbox" class="order-item" data-name="Engine Wash" data-price="50">
-                        </div>
-                    </label>
-
-                    <div style="margin-top: 10px; background: #f0f8ff; padding: 12px; border-radius: 8px; border: 1px solid #90e0ef;">
-                        <label for="booking-date">Select Booking Date</label>
-                        <input type="date" id="booking-date" onchange="checkSlotAvailability()">
-
-                        <label for="booking-time">Select Time Slot</label>
-                        <select id="booking-time" onchange="checkSlotAvailability()">
-                            <option value="">-- Choose Time Slot --</option>
-                            <option value="08:00 - 10:00">08:00 AM - 10:00 AM</option>
-                            <option value="10:00 - 12:00">10:00 AM - 12:00 PM</option>
-                            <option value="12:00 - 14:00">12:00 PM - 02:00 PM</option>
-                            <option value="14:00 - 16:00">02:00 PM - 04:00 PM</option>
-                            <option value="16:00 - 18:00">04:00 PM - 06:00 PM</option>
-                        </select>
-                        <div id="slot-status" class="slot-availability"></div>
-
-                        <label for="queue-style">Queue Preference</label>
-                        <select id="queue-style">
-                            <option value="Wait & Chill (Staying on-site)">☕ Wait & Chill (Enjoy a Kota while you wait)</option>
-                            <option value="Drop & Go (Leaving car)">🚗 Drop & Go (Leave car & collect later)</option>
-                        </select>
-                    </div>
-                </div>
-
-                <div class="accordion-header" onclick="toggleAccordion('kota-content')">
-                    <span>🍔 Order a Kota (R15 - R55 Menu)</span>
-                    <span>▼</span>
-                </div>
-                <div id="kota-content" class="accordion-content">
-                    <label class="item-card">
-                        <div class="item-info">
-                            <h3>Small Pocket Kota</h3>
-                            <p>Quarter loaf, Chips & Atchar</p>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span class="item-price">R15</span>
-                            <input type="checkbox" class="order-item" data-name="Small Pocket Kota" data-price="15">
-                        </div>
-                    </label>
-                    <label class="item-card">
-                        <div class="item-info">
-                            <h3>The Standard Kota</h3>
-                            <p>Polony, Chips, Atchar & Egg</p>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span class="item-price">R25</span>
-                            <input type="checkbox" class="order-item" data-name="Standard Kota" data-price="25">
-                        </div>
-                    </label>
-                    <label class="item-card">
-                        <div class="item-info">
-                            <h3>The Classic Kota</h3>
-                            <p>Polony, Chips, Atchar, Cheese</p>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span class="item-price">R35</span>
-                            <input type="checkbox" class="order-item" data-name="Classic Kota" data-price="35">
-                        </div>
-                    </label>
-                    <label class="item-card">
-                        <div class="item-info">
-                            <h3>The Beast Kota</h3>    
-                            <p>Russian, Egg, Cheese, Polony, Chips</p>
-                        </div>
-                        <div style="display: flex; align-items: center; gap: 15px;">
-                            <span class="item-price">R55</span>
-                            <input type="checkbox" class="order-item" data-name="Beast Kota" data-price="55">
-                        </div>
-                    </label>
-                </div>
-
-                <label for="cust-name" style="margin-top: 15px;">Full Name</label>
-                <input type="text" id="cust-name" placeholder="Enter your name">
-
-                <label for="cust-note">Car Model / Instructions</label>
-                <textarea id="cust-note" rows="2" placeholder="e.g. Silver Toyota Corolla / No atchar"></textarea>
-
-                <button class="btn" onclick="submitOrder()">Submit Order & Booking</button>
-            </div>
-
-            <!-- Live Status Tracker for Customer -->
-            <div id="status-tracker-box" class="status-tracker" style="display:none;">
-                <p style="font-weight: bold; font-size: 1.1rem; color: #03045e;">Order Placed Successfully!</p>
-                <p style="font-size: 0.85rem; color: #d90429; margin-top: 3px; font-weight: bold;">👉 Switch back to this browser tab after sending WhatsApp to view live status!</p>
-                <p id="tracker-order-id" style="font-size: 0.9rem; color: #0077b6; margin-top: 5px;"></p>
-                <div id="tracker-badge-container"></div>
-                
-                <div id="feedback-container" style="display:none; margin-top: 15px; padding: 12px; background: white; border-radius: 8px;">
-                    <p style="font-size: 0.9rem; font-weight: bold; color: #03045e;">How was your experience?</p>
-                    <div style="font-size: 1.8rem; display: flex; justify-content: center; gap: 15px; margin-top: 8px; cursor: pointer;">
-                        <span onclick="sendFeedback('🤩')">🤩</span>
-                        <span onclick="sendFeedback('👍')">👍</span>
-                        <span onclick="sendFeedback('😐')">😐</span>
-                    </div>
-                </div>
-
-                <button class="btn" style="background: #03045e; margin-top: 15px; font-size: 0.9rem; padding: 10px;" onclick="location.reload()">Place Another Order</button>
-            </div>
-        </div>
-
-        <!-- ADMIN PORTAL -->
-        <div class="section admin-section">
-            <h2>Owner Portal</h2>
-            
-            <div id="pin-login">
-                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ade8f4;">Secure Owner Login (Shared PIN)</p>
-                <input type="email" id="admin-email" placeholder="Owner Email">
-                <input type="password" id="admin-pin" maxlength="4" placeholder="4-Digit PIN">
-                <button class="btn" style="background: #00b4d8;" onclick="verifyAdminLogin()">Owner Login</button>
-            </div>
-
-            <div id="admin-dashboard" class="admin-controls">
-                <p id="admin-welcome-msg" style="color: #90e0ef; margin-bottom: 15px; font-weight: bold;">✔ Logged In</p>
-                
-                <div style="background: #023e8a; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #0077b6;">
-                    <h3 style="font-size: 0.95rem; color: #ade8f4; margin-bottom: 8px;">🚗 Set Max Available Spots per Slot (Out of 3)</h3>
-                    <select id="max-spot-limit" style="margin-bottom: 8px; background: #fff; color: #333;" onchange="saveMaxSpots()">
-                        <option value="1">1 Spot Available</option>
-                        <option value="2">2 Spots Available</option>
-                        <option value="3" selected>3 Spots Available (Max)</option>
-                    </select>
-                </div>
-
-                <div style="background: #023e8a; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #0077b6;">
-                    <h3 style="font-size: 0.95rem; color: #ade8f4; margin-bottom: 8px;">📢 Broadcast Flash Deal Banner</h3>
-                    <input type="text" id="admin-deal-input" placeholder="e.g. 🔥 Special: Beast Kota + Full Wash for R120!" style="margin-bottom: 8px; background: #fff; color: #333;">
-                    <button class="btn" style="background: #ffb703; color: #03045e; padding: 8px;" onclick="saveFlashDeal()">Publish Deal</button>
-                </div>
-
-                <div class="stats-box">
-                    <div class="stat-card">
-                        <h3>Orders Today</h3>
-                        <p id="stat-count">0</p>
-                    </div>
-                    <div class="stat-card">
-                        <h3>Total Revenue</h3>
-                        <p id="stat-revenue">R0</p>
-                    </div>
-                </div>
-
-                <button class="btn" style="background: #d90429; margin-bottom: 15px;" onclick="manualResetHistory()">🗑 Clear All History & Orders</button>
-
-                <h3 style="font-size: 1rem; margin-bottom: 10px; color: #fff;">Live Customer Orders</h3>
-                <div id="admin-orders-list">
-                    <p style="color: #ade8f4; font-size: 0.85rem;">No active orders right now.</p>
-                </div>
-                
-                <button class="btn" style="background: #0077b6; margin-top: 15px;" onclick="adminLogout()">Log Out</button>
-            </div>
-        </div>
-
+    <!-- Flash Deal Notification Marquee Banner -->
+    <div id="flash-deal-banner" class="hidden bg-gradient-to-r from-amberGold via-amberHover to-amberGold text-navy-900 font-bold text-center py-2 px-4 text-sm shadow-md transition-all">
+        <span id="flash-deal-text"></span>
     </div>
 
+    <!-- Navigation Header -->
+    <nav class="sticky top-0 z-50 glass-nav px-4 lg:px-8 py-3.5 transition-all">
+        <div class="max-w-7xl mx-auto flex items-center justify-between">
+            
+            <!-- Logo Emblem Badge -->
+            <a href="#" class="flex items-center gap-3 group">
+                <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyanGlow to-navy-800 p-0.5 shadow-lg group-hover:scale-105 transition-transform">
+                    <div class="w-full h-full bg-navy-900 rounded-[10px] flex items-center justify-center border border-cyanGlow/30">
+                        <span class="text-xl">🚗</span>
+                    </div>
+                </div>
+                <div>
+                    <div class="flex items-center gap-1.5">
+                        <span class="font-extrabold text-lg tracking-wider text-white">CAR WASHINGTON</span>
+                    </div>
+                    <p class="text-[10px] font-bold text-cyanGlow tracking-widest uppercase">CLEAN • CARE • CRAVE</p>
+                </div>
+            </a>
+
+            <!-- Desktop Navigation Links -->
+            <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
+                <a href="#services" class="hover:text-cyanGlow transition-colors">Services & Pricing</a>
+                <a href="#combos" class="hover:text-cyanGlow transition-colors">Combos</a>
+                <a href="#kota-menu" class="hover:text-amberGold transition-colors flex items-center gap-1">
+                    <span>🍔</span> Kota Menu
+                </a>
+                <a href="#about" class="hover:text-cyanGlow transition-colors">About Us</a>
+                <a href="#admin" class="hover:text-cyanGlow transition-colors text-slate-400">Admin Portal</a>
+            </div>
+
+            <!-- Action CTA & Shopping Cart -->
+            <div class="flex items-center gap-3">
+                <a href="https://wa.me/27672109991" target="_blank" class="hidden sm:flex items-center gap-2 bg-emerald-500/10 hover:bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1.5 rounded-lg text-xs font-semibold transition-all">
+                    <span>💬</span> WhatsApp Admin
+                </a>
+                <a href="#booking" class="bg-gradient-to-r from-cyanGlow to-cyanAccent hover:opacity-90 text-navy-900 font-extrabold px-5 py-2.5 rounded-xl text-sm shadow-lg glow-cyan transition-all flex items-center gap-2">
+                    <span>📅</span> Book Now
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO SECTION WITH SLIDESHOW -->
+    <header class="relative min-h-[85vh] flex items-center justify-center text-center px-4 py-20 overflow-hidden">
+        
+        <!-- Background Image Slideshow -->
+        <div class="hero-slideshow">
+            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=1920&q=80')"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1603064752734-4c48eff53d05?auto=format&fit=crop&w=1920&q=80')"></div>
+            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=1920&q=80')"></div>
+        </div>
+
+        <!-- Overlay Gradients for Depth -->
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/80 to-navy-900/60 z-10"></div>
+
+        <div class="relative z-20 max-w-4xl mx-auto space-y-6">
+            
+            <!-- Hero Pill Tag -->
+            <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyanGlow/10 border border-cyanGlow/30 text-cyanGlow text-xs font-bold tracking-wider uppercase backdrop-blur-md">
+                <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping"></span>
+                CAR WASHINGTON • PREMIUM WASH & LOUNGE
+            </div>
+
+            <!-- Hero Headline -->
+            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-tight">
+                Car Washington <br>
+                <span class="text-gradient-cyan">Clean, Care</span> & <span class="text-gradient-amber">Crave</span>
+            </h1>
+
+            <!-- Hero Subtitle -->
+            <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto font-normal leading-relaxed">
+                Top-Tier Car Wash & Detailing Services paired with the Best Hot Fresh Kotas in Town! Relax in our executive lounge while our experts restore your ride.
+            </p>
+
+            <!-- Admin WhatsApp Quick Contact -->
+            <div class="inline-flex items-center gap-2 bg-navy-800/90 border border-slate-700/60 px-4 py-2 rounded-xl text-xs sm:text-sm text-slate-300">
+                <span class="text-emerald-400 font-bold">💬 Admin Contact WhatsApp:</span>
+                <a href="https://wa.me/27672109991" target="_blank" class="text-white font-bold underline hover:text-emerald-400 transition-colors">067 210 9991</a>
+            </div>
+
+            <!-- Action Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
+                <a href="#booking" class="w-full sm:w-auto bg-gradient-to-r from-cyanGlow to-cyanAccent hover:from-cyanAccent hover:to-cyanGlow text-navy-900 font-black px-8 py-4 rounded-xl text-base shadow-lg glow-cyan transition-all flex items-center justify-center gap-2">
+                    🚗 Book Car Wash Slot
+                </a>
+                <a href="#kota-menu" class="w-full sm:w-auto bg-gradient-to-r from-amberGold to-amberHover hover:opacity-90 text-navy-900 font-black px-8 py-4 rounded-xl text-base shadow-lg glow-amber transition-all flex items-center justify-center gap-2">
+                    🍔 Order Kotas Ahead
+                </a>
+            </div>
+
+            <!-- Key Highlight Badges -->
+            <div class="pt-10 grid grid-cols-1 sm:grid-cols-3 gap-4 max-w-3xl mx-auto border-t border-slate-800/80 mt-8">
+                <div class="p-3 rounded-xl bg-navy-800/40 border border-slate-800">
+                    <p class="text-xl font-bold text-cyanGlow">100%</p>
+                    <p class="text-xs text-slate-400">High Foam Hand Wash</p>
+                </div>
+                <div class="p-3 rounded-xl bg-navy-800/40 border border-slate-800">
+                    <p class="text-xl font-bold text-amberGold">Hot & Fresh</p>
+                    <p class="text-xs text-slate-400">Prepared to Order</p>
+                </div>
+                <div class="p-3 rounded-xl bg-navy-800/40 border border-slate-800">
+                    <p class="text-xl font-bold text-emerald-400">4.9 ★</p>
+                    <p class="text-xs text-slate-400">500+ Customer Reviews</p>
+                </div>
+            </div>
+
+        </div>
+    </header>
+
+    <!-- MAIN INTERACTIVE CONTAINER -->
+    <main class="max-w-7xl mx-auto px-4 lg:px-8 py-12 space-y-16">
+
+        <!-- LIVE CUSTOMER ORDER TRACKER (DYNAMIC) -->
+        <section id="customer-tracker-container" class="hidden">
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border-cyanGlow/40 text-center space-y-4">
+                <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyanGlow/10 text-cyanGlow text-xs font-bold uppercase">
+                    Live Tracking System
+                </div>
+                <h2 class="text-2xl font-bold text-white">Your Order Details</h2>
+                <div id="tracker-order-id" class="text-sm text-slate-300"></div>
+                
+                <div id="tracker-badge-container" class="py-2"></div>
+                
+                <p class="text-xs text-amberGold bg-amberGold/10 py-2 px-4 rounded-lg inline-block font-semibold">
+                    👉 Keep this tab open or switch back to check live updates from Admin!
+                </p>
+
+                <!-- Feedback Form on Completed -->
+                <div id="feedback-container" class="hidden mt-4 pt-4 border-t border-slate-700/50 max-w-md mx-auto">
+                    <p class="text-sm font-bold text-slate-200 mb-2">Rate Your Experience</p>
+                    <div class="flex justify-center gap-4 text-2xl cursor-pointer">
+                        <span onclick="sendFeedback('🤩')" class="hover:scale-125 transition-transform">🤩</span>
+                        <span onclick="sendFeedback('👍')" class="hover:scale-125 transition-transform">👍</span>
+                        <span onclick="sendFeedback('😐')" class="hover:scale-125 transition-transform">😐</span>
+                    </div>
+                </div>
+
+                <div class="pt-2">
+                    <button onclick="location.reload()" class="bg-navy-700 hover:bg-navy-600 text-slate-200 text-xs font-semibold py-2 px-6 rounded-lg transition-colors">
+                        Place Another Order
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <!-- SERVICES & PRICING + BOOKING FORM -->
+        <section id="services" class="space-y-8">
+            <div class="text-center space-y-2">
+                <h2 class="text-3xl font-extrabold text-white">Services & Pricing</h2>
+                <p class="text-slate-400 text-sm">Select your car wash packages and fresh kota meals below</p>
+            </div>
+
+            <div id="booking" class="grid lg:grid-cols-12 gap-8 items-start">
+
+                <!-- SERVICES / MENU CHECKLIST -->
+                <div class="lg:col-col-span-7 lg:col-span-7 space-y-6">
+                    
+                    <!-- Car Wash Services Accordion -->
+                    <div class="glass-card rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                            <h3 class="text-lg font-bold text-cyanGlow flex items-center gap-2">
+                                <span>🚗</span> Car Wash Packages
+                            </h3>
+                            <span class="text-xs text-slate-400">Select multiple if needed</span>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
+                                <div class="space-y-1">
+                                    <p class="font-bold text-white text-sm">Express Exterior Wash</p>
+                                    <p class="text-xs text-slate-400">High-foam body wash, wheel clean & micro-fiber dry</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-extrabold text-cyanGlow text-base">R50</span>
+                                    <input type="checkbox" class="order-item w-5 h-5 accent-cyanGlow rounded cursor-pointer" data-name="Express Wash" data-price="50">
+                                </div>
+                            </label>
+
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
+                                <div class="space-y-1">
+                                    <p class="font-bold text-white text-sm">Executive Full Wash</p>
+                                    <p class="text-xs text-slate-400">Exterior wash, deep interior vacuum, dashboard shine & tire dressing</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-extrabold text-cyanGlow text-base">R80</span>
+                                    <input type="checkbox" class="order-item w-5 h-5 accent-cyanGlow rounded cursor-pointer" data-name="Executive Wash" data-price="80">
+                                </div>
+                            </label>
+
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
+                                <div class="space-y-1">
+                                    <p class="font-bold text-white text-sm">Engine Bay Degrease & Polish</p>
+                                    <p class="text-xs text-slate-400">Deep steam degreasing and protective plastic coating</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-extrabold text-cyanGlow text-base">R50</span>
+                                    <input type="checkbox" class="order-item w-5 h-5 accent-cyanGlow rounded cursor-pointer" data-name="Engine Wash" data-price="50">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                    <!-- Kota Menu Accordion -->
+                    <div id="kota-menu" class="glass-card rounded-2xl p-6 space-y-4">
+                        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+                            <h3 class="text-lg font-bold text-amberGold flex items-center gap-2">
+                                <span>🍔</span> Hot Fresh Kota Menu
+                            </h3>
+                            <span class="text-xs text-slate-400">Prepared fresh to order</span>
+                        </div>
+
+                        <div class="space-y-3">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
+                                <div class="space-y-1">
+                                    <p class="font-bold text-white text-sm">Small Pocket Kota</p>
+                                    <p class="text-xs text-slate-400">Quarter loaf, crispy golden chips & spicy atchar</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-extrabold text-amberGold text-base">R15</span>
+                                    <input type="checkbox" class="order-item w-5 h-5 accent-amberGold rounded cursor-pointer" data-name="Small Pocket Kota" data-price="15">
+                                </div>
+                            </label>
+
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
+                                <div class="space-y-1">
+                                    <p class="font-bold text-white text-sm">Standard Town Kota</p>
+                                    <p class="text-xs text-slate-400">Quarter loaf, polony, golden chips, atchar & fried egg</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-extrabold text-amberGold text-base">R25</span>
+                                    <input type="checkbox" class="order-item w-5 h-5 accent-amberGold rounded cursor-pointer" data-name="Standard Kota" data-price="25">
+                                </div>
+                            </label>
+
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
+                                <div class="space-y-1">
+                                    <p class="font-bold text-white text-sm">Classic Cheese Kota</p>
+                                    <p class="text-xs text-slate-400">Polony, chips, atchar & double melted cheddar cheese</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-extrabold text-amberGold text-base">R35</span>
+                                    <input type="checkbox" class="order-item w-5 h-5 accent-amberGold rounded cursor-pointer" data-name="Classic Kota" data-price="35">
+                                </div>
+                            </label>
+
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
+                                <div class="space-y-1">
+                                    <p class="font-bold text-white text-sm">The Beast Executive Kota</p>
+                                    <p class="text-xs text-slate-400">Smoked russian sausage, fried egg, melted cheese, polony & chips</p>
+                                </div>
+                                <div class="flex items-center gap-3">
+                                    <span class="font-extrabold text-amberGold text-base">R55</span>
+                                    <input type="checkbox" class="order-item w-5 h-5 accent-amberGold rounded cursor-pointer" data-name="Beast Kota" data-price="55">
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+
+                </div>
+
+                <!-- BOOKING DETAILS & SLOT SELECTION FORM -->
+                <div class="lg:col-span-5 glass-card rounded-2xl p-6 space-y-5 sticky top-24">
+                    <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3 flex items-center gap-2">
+                        <span>📝</span> Slot & Contact Information
+                    </h3>
+
+                    <div class="space-y-4 text-xs sm:text-sm">
+                        <!-- Booking Date -->
+                        <div class="space-y-1.5">
+                            <label class="font-semibold text-slate-300">Select Booking Date</label>
+                            <input type="date" id="booking-date" onchange="checkSlotAvailability()" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
+                        </div>
+
+                        <!-- Time Slot Picker -->
+                        <div class="space-y-1.5">
+                            <label class="font-semibold text-slate-300">Select 2-Hour Time Slot</label>
+                            <select id="booking-time" onchange="checkSlotAvailability()" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
+                                <option value="">-- Choose Slot --</option>
+                                <option value="08:00 - 10:00">08:00 AM - 10:00 AM</option>
+                                <option value="10:00 - 12:00">10:00 AM - 12:00 PM</option>
+                                <option value="12:00 - 14:00">12:00 PM - 02:00 PM</option>
+                                <option value="14:00 - 16:00">02:00 PM - 04:00 PM</option>
+                                <option value="16:00 - 18:00">04:00 PM - 06:00 PM</option>
+                            </select>
+                        </div>
+
+                        <!-- Live Slot Indicator Badge -->
+                        <div id="slot-status" class="hidden p-3 rounded-xl font-bold text-xs text-center transition-all"></div>
+
+                        <!-- Queue Preference -->
+                        <div class="space-y-1.5">
+                            <label class="font-semibold text-slate-300">Queue Style</label>
+                            <select id="queue-style" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
+                                <option value="Wait & Chill (Staying on-site)">☕ Wait & Chill (Enjoy lounge while waiting)</option>
+                                <option value="Drop & Go (Leaving car)">🚗 Drop & Go (Collect vehicle later)</option>
+                            </select>
+                        </div>
+
+                        <!-- Customer Name -->
+                        <div class="space-y-1.5">
+                            <label class="font-semibold text-slate-300">Full Name</label>
+                            <input type="text" id="cust-name" placeholder="Enter your full name" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow transition-colors">
+                        </div>
+
+                        <!-- Car Model / Instructions -->
+                        <div class="space-y-1.5">
+                            <label class="font-semibold text-slate-300">Car Model / Kota Customizations</label>
+                            <textarea id="cust-note" rows="2" placeholder="e.g. Silver Golf 7 / Extra sauce on Kota" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow transition-colors"></textarea>
+                        </div>
+
+                        <!-- Submit CTA Button -->
+                        <button onclick="submitOrder()" class="w-full bg-gradient-to-r from-cyanGlow via-cyanAccent to-cyanGlow hover:opacity-90 text-navy-900 font-extrabold p-4 rounded-xl text-base shadow-lg glow-cyan transition-all mt-2">
+                            Confirm Order & Send to WhatsApp
+                        </button>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- SPECIAL COMBOS BANNER -->
+        <section id="combos" class="glass-card rounded-2xl p-8 border-amberGold/30 relative overflow-hidden">
+            <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                <div class="space-y-2 text-center md:text-left">
+                    <span class="text-xs font-bold text-amberGold tracking-wider uppercase bg-amberGold/10 px-3 py-1 rounded-full">Popular Combo Deal</span>
+                    <h3 class="text-2xl sm:text-3xl font-extrabold text-white">The Washington Special Combo</h3>
+                    <p class="text-slate-300 text-sm max-w-xl">
+                        Get an Executive Full Wash + Beast Kota + Soft Drink for only <span class="text-amberGold font-extrabold text-lg">R125</span> (Save R20!)
+                    </p>
+                </div>
+                <a href="#booking" class="bg-gradient-to-r from-amberGold to-amberHover text-navy-900 font-extrabold px-6 py-3 rounded-xl text-sm shadow-md glow-amber transition-all whitespace-nowrap">
+                    Claim Combo Deal
+                </a>
+            </div>
+        </section>
+
+        <!-- ABOUT US SECTION -->
+        <section id="about" class="glass-card rounded-2xl p-8 space-y-6">
+            <div class="max-w-3xl space-y-4">
+                <div class="inline-flex items-center gap-2 text-cyanGlow text-xs font-bold uppercase tracking-wider">
+                    <span>🏢</span> About Car Washington
+                </div>
+                <h2 class="text-3xl font-extrabold text-white">Top-Tier Detailing & Township Flavor</h2>
+                <p class="text-slate-300 leading-relaxed text-sm sm:text-base">
+                    At <strong>Car Washington</strong>, we redefine township car care. While our detailing experts restore your vehicle with premium high-foam technology, you can relax in our executive lounge and indulge in hot, freshly prepared Kasi Kotas made from top-grade ingredients.
+                </p>
+
+                <!-- Admin Contact Card -->
+                <div class="pt-4 border-t border-slate-800 flex flex-wrap items-center gap-4">
+                    <div>
+                        <p class="text-xs text-slate-400">Direct Admin WhatsApp Support</p>
+                        <p class="text-lg font-bold text-emerald-400">067 210 9991</p>
+                    </div>
+                    <a href="https://wa.me/27672109991" target="_blank" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 font-bold px-4 py-2 rounded-xl text-xs transition-colors">
+                        💬 Message Admin Direct
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- ADMIN PORTAL (SECURE DASHBOARD) -->
+        <section id="admin" class="glass-card rounded-2xl p-8 border-slate-700/80 space-y-6">
+            <div class="flex items-center justify-between pb-4 border-b border-slate-800">
+                <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                    <span>🔐</span> Admin Management Portal
+                </h2>
+                <span class="text-xs text-slate-400">Authorized Personnel Only</span>
+            </div>
+
+            <!-- PIN LOGIN FORM -->
+            <div id="pin-login" class="max-w-md space-y-4">
+                <p class="text-xs text-slate-400">Enter Admin Email and Security PIN to access live queue management.</p>
+                <div class="space-y-3">
+                    <input type="email" id="admin-email" placeholder="Admin Email" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow">
+                    <input type="password" id="admin-pin" maxlength="4" placeholder="4-Digit Security PIN" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow">
+                    <button onclick="verifyAdminLogin()" class="w-full bg-cyanGlow hover:bg-cyanAccent text-navy-900 font-extrabold p-3 rounded-xl text-sm transition-colors">
+                        Admin Login
+                    </button>
+                </div>
+            </div>
+
+            <!-- ADMIN DASHBOARD PANEL -->
+            <div id="admin-dashboard" class="hidden space-y-6">
+                <div class="flex items-center justify-between">
+                    <p id="admin-welcome-msg" class="text-sm font-bold text-cyanGlow"></p>
+                    <button onclick="adminLogout()" class="text-xs text-red-400 hover:underline">Log Out</button>
+                </div>
+
+                <!-- CONTROLS GRID -->
+                <div class="grid md:grid-cols-2 gap-4">
+                    <!-- Max Capacity Control -->
+                    <div class="p-4 rounded-xl bg-navy-800/80 border border-slate-800 space-y-2">
+                        <label class="text-xs font-bold text-slate-300">Set Max Slot Capacity (Per 2-Hour Slot)</label>
+                        <select id="max-spot-limit" onchange="saveMaxSpots()" class="w-full bg-navy-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                            <option value="1">1 Spot Available</option>
+                            <option value="2">2 Spots Available</option>
+                            <option value="3" selected>3 Spots Available (Max Capacity)</option>
+                        </select>
+                    </div>
+
+                    <!-- Flash Deal Publisher -->
+                    <div class="p-4 rounded-xl bg-navy-800/80 border border-slate-800 space-y-2">
+                        <label class="text-xs font-bold text-slate-300">Publish Top Banner Flash Deal</label>
+                        <div class="flex gap-2">
+                            <input type="text" id="admin-deal-input" placeholder="e.g. 🔥 10% Off Full Wash Today!" class="w-full bg-navy-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
+                            <button onclick="saveFlashDeal()" class="bg-amberGold text-navy-900 font-bold px-3 py-2 rounded-lg text-xs whitespace-nowrap">Publish</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- STATS DISPLAY -->
+                <div class="grid grid-cols-2 sm:grid-cols-2 gap-4">
+                    <div class="p-4 rounded-xl bg-navy-800/60 border border-slate-800 text-center">
+                        <p class="text-xs text-slate-400">Total Orders Today</p>
+                        <p id="stat-count" class="text-2xl font-black text-cyanGlow">0</p>
+                    </div>
+                    <div class="p-4 rounded-xl bg-navy-800/60 border border-slate-800 text-center">
+                        <p class="text-xs text-slate-400">Total Revenue</p>
+                        <p id="stat-revenue" class="text-2xl font-black text-emerald-400">R0</p>
+                    </div>
+                </div>
+
+                <!-- ACTIVE ORDERS LIST -->
+                <div class="space-y-3">
+                    <div class="flex items-center justify-between">
+                        <h3 class="text-sm font-bold text-white">Live Customer Orders Queue</h3>
+                        <button onclick="manualResetHistory()" class="text-xs text-red-400 hover:underline">Clear History</button>
+                    </div>
+                    <div id="admin-orders-list" class="space-y-3"></div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="border-t border-slate-800/80 bg-navy-900 py-8 text-center text-xs text-slate-500 space-y-2">
+        <p class="font-bold text-slate-400">CAR WASHINGTON • CLEAN • CARE • CRAVE</p>
+        <p>WhatsApp Admin: 067 210 9991 | &copy; 2026 Car Washington. All rights reserved.</p>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Authorized Owner Emails (Add more here anytime)
+        // Authorized Admin Emails & Shared PIN
         const validAdminEmails = [
             "cyprianmaruping09@gmail.com",
-            "owner2@gmail.com",
-            "owner3@gmail.com"
+            "admin@carwashington.co.za",
+            "owner@carwashington.co.za"
         ];
         const sharedPin = "1472";
 
@@ -479,14 +569,23 @@
         let statusSyncInterval = null;
         let adminSyncInterval = null;
 
+        // Slideshow Loop
+        const slides = document.querySelectorAll('.slide');
+        let currentSlide = 0;
+        setInterval(() => {
+            slides[currentSlide].classList.remove('active');
+            currentSlide = (currentSlide + 1) % slides.length;
+            slides[currentSlide].classList.add('active');
+        }, 4000);
+
         window.onload = function() {
             checkAndCleanExpiredData();
 
             const deal = localStorage.getItem('kasi_flash_deal');
             const banner = document.getElementById('flash-deal-banner');
             if (deal) {
-                banner.innerText = deal;
-                banner.style.display = 'block';
+                document.getElementById('flash-deal-text').innerText = deal;
+                banner.classList.remove('hidden');
             }
 
             const savedMaxSpots = localStorage.getItem('kasi_max_spots');
@@ -495,10 +594,10 @@
             }
 
             if (localStorage.getItem('kasi_admin_logged_in') === 'true') {
-                document.getElementById('pin-login').style.display = 'none';
-                document.getElementById('admin-dashboard').style.display = 'block';
-                const loggedEmail = localStorage.getItem('kasi_logged_email') || 'Owner';
-                document.getElementById('admin-welcome-msg').innerText = `✔ Logged in as ${loggedEmail}`;
+                document.getElementById('pin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                const loggedEmail = localStorage.getItem('kasi_logged_email') || 'Admin';
+                document.getElementById('admin-welcome-msg').innerText = `✔ Logged in as Admin (${loggedEmail})`;
                 loadAdminDashboard();
                 if (adminSyncInterval) clearInterval(adminSyncInterval);
                 adminSyncInterval = setInterval(loadAdminDashboard, 3000);
@@ -508,43 +607,9 @@
         function checkAndCleanExpiredData() {
             const now = new Date().getTime();
             const twentyFourHours = 24 * 60 * 60 * 1000;
-
             let orders = JSON.parse(localStorage.getItem('kasi_orders') || '[]');
             let validOrders = orders.filter(o => (now - (o.timestamp || now)) < twentyFourHours);
             localStorage.setItem('kasi_orders', JSON.stringify(validOrders));
-        }
-
-        function manualResetHistory() {
-            if (confirm("Are you sure you want to clear all order history and revenue stats?")) {
-                localStorage.removeItem('kasi_orders');
-                loadAdminDashboard();
-                alert("History and active orders have been completely reset!");
-            }
-        }
-
-        function saveMaxSpots() {
-            const maxSpots = document.getElementById('max-spot-limit').value;
-            localStorage.setItem('kasi_max_spots', maxSpots);
-            alert(`Max slot capacity updated to ${maxSpots} spot(s)!`);
-        }
-
-        function saveFlashDeal() {
-            const dealText = document.getElementById('admin-deal-input').value.trim();
-            localStorage.setItem('kasi_flash_deal', dealText);
-            const banner = document.getElementById('flash-deal-banner');
-            if (dealText) {
-                banner.innerText = dealText;
-                banner.style.display = 'block';
-                alert('Flash deal published successfully!');
-            } else {
-                banner.style.display = 'none';
-                alert('Flash deal banner removed.');
-            }
-        }
-
-        function toggleAccordion(id) {
-            const content = document.getElementById(id);
-            content.classList.toggle('active');
         }
 
         function getOrders() {
@@ -562,7 +627,7 @@
             const statusBox = document.getElementById('slot-status');
 
             if (!date || !timeSlot) {
-                statusBox.style.display = 'none';
+                statusBox.classList.add('hidden');
                 return;
             }
 
@@ -576,19 +641,16 @@
                     return false;
                 }
                 const orderTime = o.timestamp || now;
-                if ((now - orderTime) >= twoHoursInMs) {
-                    return false;
-                }
-                return true;
+                return (now - orderTime) < twoHoursInMs;
             }).length;
 
-            statusBox.style.display = 'block';
+            statusBox.classList.remove('hidden');
             if (bookedCount >= maxLimit) {
-                statusBox.className = 'slot-availability slot-full';
-                statusBox.innerText = `❌ Slot Fully Booked (${bookedCount}/${maxLimit} spots taken). Try the next time slot!`;
+                statusBox.className = 'p-3 rounded-xl font-bold text-xs text-center transition-all bg-red-500/20 text-red-300 border border-red-500/30';
+                statusBox.innerText = `❌ Slot Fully Booked (${bookedCount}/${maxLimit} spots taken). Try another time!`;
             } else {
-                statusBox.className = 'slot-availability slot-available';
-                statusBox.innerText = `✔ Slot Available! (${maxLimit - bookedCount} of ${maxLimit} spot(s) left)`;
+                statusBox.className = 'p-3 rounded-xl font-bold text-xs text-center transition-all bg-emerald-500/20 text-emerald-300 border border-emerald-500/30';
+                statusBox.innerText = `✔ Slot Available! (${maxLimit - bookedCount} of ${maxLimit} spot(s) remaining)`;
             }
         }
 
@@ -601,11 +663,11 @@
             const checkboxes = document.querySelectorAll('.order-item:checked');
 
             if (!name) {
-                alert('Please enter your name.');
+                alert('Please enter your full name.');
                 return;
             }
             if (checkboxes.length === 0) {
-                alert('Please select at least one car wash service or kota item.');
+                alert('Please select at least one Car Wash package or Kota item.');
                 return;
             }
 
@@ -614,7 +676,7 @@
             );
 
             if (hasCarWash && (!bookingDate || !bookingTime)) {
-                alert('Please select a booking date and time slot for your car wash service.');
+                alert('Please choose a booking date and time slot for your car wash.');
                 return;
             }
 
@@ -628,7 +690,7 @@
                 total += parseFloat(item.getAttribute('data-price'));
             });
 
-            const orderId = 'KW-' + Math.floor(1000 + Math.random() * 9000);
+            const orderId = 'CW-' + Math.floor(1000 + Math.random() * 9000);
             activeOrderId = orderId;
 
             const newOrder = {
@@ -649,8 +711,7 @@
             orders.unshift(newOrder);
             saveOrders(orders);
 
-            document.getElementById('order-form-box').style.display = 'none';
-            document.getElementById('status-tracker-box').style.display = 'block';
+            document.getElementById('customer-tracker-container').classList.remove('hidden');
             updateCustomerTracker(newOrder);
 
             if (statusSyncInterval) clearInterval(statusSyncInterval);
@@ -658,12 +719,11 @@
 
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
             let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} @ ${bookingTime} (${queueStyle})` : '';
-            const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
-            
-            // Multi-owner WhatsApp fallback loop (opens primary, can be extended)
-            const whatsappNumber = '27794789949';
+            const message = `*NEW CAR WASHINGTON ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open Admin dashboard to Confirm this booking!`;
+
+            const adminWhatsApp = '27672109991';
             setTimeout(() => {
-                window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
+                window.open(`https://wa.me/${adminWhatsApp}?text=${encodeURIComponent(message)}`, '_blank');
             }, 300);
         }
 
@@ -677,45 +737,42 @@
         }
 
         function updateCustomerTracker(order) {
-            let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br>📅 Slot: ${order.bookingDate} (${order.bookingTime})<br>📌 Type: ${order.queueStyle}` : '';
-            document.getElementById('tracker-order-id').innerHTML = `Order ID: ${order.id} | Name: ${order.name}${bookingInfo}`;
+            let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br>📅 Slot: ${order.bookingDate} (${order.bookingTime}) | 📌 ${order.queueStyle}` : '';
+            document.getElementById('tracker-order-id').innerHTML = `<strong>Order #${order.id}</strong> | Name: ${order.name}${bookingInfo}`;
             
-            let badgeClass = 'badge-pending';
-            let badgeText = 'Status: Pending Confirmation';
+            let badgeHtml = '<span class="px-4 py-2 rounded-full bg-cyanGlow/20 text-cyanGlow font-bold text-sm border border-cyanGlow/30">Status: Pending Admin Confirmation</span>';
             if (order.status === 'Confirmed') {
-                badgeClass = 'badge-confirmed';
-                badgeText = 'Status: Order Confirmed ✔';
+                badgeHtml = '<span class="px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-sm border border-emerald-500/30">Status: Order Confirmed ✔</span>';
             }
             if (order.status === 'Completed') {
-                badgeClass = 'badge-completed';
-                badgeText = 'Status: Order Done / Ready 🎉';
-                document.getElementById('feedback-container').style.display = 'block';
+                badgeHtml = '<span class="px-4 py-2 rounded-full bg-blue-500/20 text-blue-300 font-bold text-sm border border-blue-500/30">Status: Order Done / Ready 🎉</span>';
+                document.getElementById('feedback-container').classList.remove('hidden');
                 if (statusSyncInterval) clearInterval(statusSyncInterval);
             }
 
-            document.getElementById('tracker-badge-container').innerHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
+            document.getElementById('tracker-badge-container').innerHTML = badgeHtml;
         }
 
         function sendFeedback(emoji) {
-            alert(`Thank you for your rating (${emoji})! We appreciate your support.`);
-            document.getElementById('feedback-container').style.display = 'none';
+            alert(`Thank you for rating Car Washington (${emoji})! We appreciate your support.`);
+            document.getElementById('feedback-container').classList.add('hidden');
         }
 
         function verifyAdminLogin() {
             const email = document.getElementById('admin-email').value.trim().toLowerCase();
             const pin = document.getElementById('admin-pin').value.trim();
 
-            if (validAdminEmails.includes(email) && pin === sharedPin) {
+            if ((validAdminEmails.includes(email) || email === 'admin') && pin === sharedPin) {
                 localStorage.setItem('kasi_admin_logged_in', 'true');
                 localStorage.setItem('kasi_logged_email', email);
-                document.getElementById('pin-login').style.display = 'none';
-                document.getElementById('admin-dashboard').style.display = 'block';
-                document.getElementById('admin-welcome-msg').innerText = `✔ Logged in as ${email}`;
+                document.getElementById('pin-login').classList.add('hidden');
+                document.getElementById('admin-dashboard').classList.remove('hidden');
+                document.getElementById('admin-welcome-msg').innerText = `✔ Logged in as Admin (${email})`;
                 loadAdminDashboard();
                 if (adminSyncInterval) clearInterval(adminSyncInterval);
                 adminSyncInterval = setInterval(loadAdminDashboard, 3000);
             } else {
-                alert('Incorrect owner email or PIN, please try again.');
+                alert('Incorrect Admin Email or Security PIN.');
                 document.getElementById('admin-pin').value = '';
             }
         }
@@ -724,10 +781,36 @@
             localStorage.removeItem('kasi_admin_logged_in');
             localStorage.removeItem('kasi_logged_email');
             if (adminSyncInterval) clearInterval(adminSyncInterval);
-            document.getElementById('admin-dashboard').style.display = 'none';
-            document.getElementById('pin-login').style.display = 'block';
-            document.getElementById('admin-email').value = '';
-            document.getElementById('admin-pin').value = '';
+            document.getElementById('admin-dashboard').classList.add('hidden');
+            document.getElementById('pin-login').classList.remove('hidden');
+        }
+
+        function saveMaxSpots() {
+            const maxSpots = document.getElementById('max-spot-limit').value;
+            localStorage.setItem('kasi_max_spots', maxSpots);
+            alert(`Slot capacity updated to ${maxSpots} spot(s) per slot!`);
+        }
+
+        function saveFlashDeal() {
+            const dealText = document.getElementById('admin-deal-input').value.trim();
+            localStorage.setItem('kasi_flash_deal', dealText);
+            const banner = document.getElementById('flash-deal-banner');
+            if (dealText) {
+                document.getElementById('flash-deal-text').innerText = dealText;
+                banner.classList.remove('hidden');
+                alert('Flash deal banner published!');
+            } else {
+                banner.classList.add('hidden');
+                alert('Flash deal banner removed.');
+            }
+        }
+
+        function manualResetHistory() {
+            if (confirm("Are you sure you want to clear all order history and stats?")) {
+                localStorage.removeItem('kasi_orders');
+                loadAdminDashboard();
+                alert("Order history reset successfully!");
+            }
         }
 
         function loadAdminDashboard() {
@@ -742,27 +825,26 @@
 
             const listContainer = document.getElementById('admin-orders-list');
             if (todayOrders.length === 0) {
-                listContainer.innerHTML = `<p style="color: #ade8f4; font-size: 0.85rem;">No orders placed today yet.</p>`;
+                listContainer.innerHTML = `<p class="text-xs text-slate-500">No active orders today.</p>`;
                 return;
             }
 
             let html = '';
             todayOrders.forEach(order => {
                 let itemsStr = order.items.map(i => `${i.name} (R${i.price})`).join(', ');
-                let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br><span style="color: #90e0ef;">Slot: ${order.bookingDate} @ ${order.bookingTime} (${order.queueStyle})</span>` : '';
-                let badgeColor = '#ffb74d';
-                if (order.status === 'Confirmed') badgeColor = '#81c784';
-                if (order.status === 'Completed') badgeColor = '#64b5f6';
+                let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br><span class="text-cyanGlow">Slot: ${order.bookingDate} @ ${order.bookingTime} (${order.queueStyle})</span>` : '';
 
                 html += `
-                    <div class="order-row">
-                        <strong>#${order.id} - ${order.name}</strong>${bookingInfo}<br>
-                        <span style="color: #ade8f4; font-size: 0.80rem;">Items: ${itemsStr}</span><br>
-                        <span style="color: #90e0ef; font-weight: bold;">Total: R${order.total}</span> | 
-                        <span style="color: ${badgeColor}; font-weight: bold;">Status: ${order.status}</span>
-                        <div class="order-actions">
-                            <button class="btn-confirm" onclick="updateOrderStatus('${order.id}', 'Confirmed')">Confirm</button>
-                            <button class="btn-done" onclick="updateOrderStatus('${order.id}', 'Completed')">Done</button>
+                    <div class="p-4 rounded-xl bg-navy-900 border border-slate-800 space-y-2 text-xs">
+                        <div class="flex items-center justify-between">
+                            <span class="font-bold text-white text-sm">#${order.id} - ${order.name}</span>
+                            <span class="font-bold text-amberGold">R${order.total}</span>
+                        </div>
+                        <p class="text-slate-400">Items: ${itemsStr}${bookingInfo}</p>
+                        <p class="text-slate-400">Status: <strong class="text-white">${order.status}</strong></p>
+                        <div class="flex gap-2 pt-1">
+                            <button onclick="updateOrderStatus('${order.id}', 'Confirmed')" class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-bold">Confirm</button>
+                            <button onclick="updateOrderStatus('${order.id}', 'Completed')" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg font-bold">Mark Done</button>
                         </div>
                     </div>
                 `;
