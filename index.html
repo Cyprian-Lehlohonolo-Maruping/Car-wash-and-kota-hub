@@ -537,23 +537,38 @@
 
         function checkSlotAvailability() {
             const date = document.getElementById('booking-date').value;
-            const time = document.getElementById('booking-time').value;
+            const timeSlot = document.getElementById('booking-time').value;
             const statusBox = document.getElementById('slot-status');
 
-            if (!date || !time) {
+            if (!date || !timeSlot) {
                 statusBox.style.display = 'none';
                 return;
             }
 
             const maxLimit = parseInt(localStorage.getItem('kasi_max_spots') || '3');
             const orders = getOrders();
-            // Count active spots that are still taking up space (Pending or Confirmed, but NOT Completed)
-            const bookedCount = orders.filter(o => o.bookingDate === date && o.bookingTime === time && o.status !== 'Completed').length;
+            const now = new Date().getTime();
+            const twoHoursInMs = 2 * 60 * 60 * 1000; // Exact 2-hour duration from exact booking timestamp
+
+            // Count active spots that are still within their precise 2-hour window and not marked Completed
+            const bookedCount = orders.filter(o => {
+                if (o.bookingDate !== date || o.bookingTime !== timeSlot || o.status === 'Completed') {
+                    return false;
+                }
+
+                const orderTime = o.timestamp || now;
+                // If exactly 2 hours (7,200,000 ms) have passed since the exact booking submission time, auto-release slot
+                if ((now - orderTime) >= twoHoursInMs) {
+                    return false;
+                }
+
+                return true;
+            }).length;
 
             statusBox.style.display = 'block';
             if (bookedCount >= maxLimit) {
                 statusBox.className = 'slot-availability slot-full';
-                statusBox.innerText = `❌ Slot Fully Booked (${bookedCount}/${maxLimit} spots taken). Please choose another time.`;
+                statusBox.innerText = `❌ Slot Fully Booked (${bookedCount}/${maxLimit} spots taken). Try the next time slot!`;
             } else {
                 statusBox.className = 'slot-availability slot-available';
                 statusBox.innerText = `✔ Slot Available! (${maxLimit - bookedCount} of ${maxLimit} spot(s) left)`;
@@ -610,7 +625,7 @@
                 queueStyle: hasCarWash ? queueStyle : 'N/A',
                 status: 'Pending',
                 date: new Date().toLocaleDateString(),
-                timestamp: new Date().getTime()
+                timestamp: new Date().getTime() // Exact timestamp when booked
             };
 
             const orders = getOrders();
