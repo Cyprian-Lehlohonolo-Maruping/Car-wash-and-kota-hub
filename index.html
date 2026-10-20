@@ -107,10 +107,6 @@
             gap: 10px;
         }
 
-        .menu-grid, .service-grid {
-            display: grid;
-            gap: 10px;
-        }
         .item-card {
             display: flex;
             justify-content: space-between;
@@ -262,6 +258,21 @@
 
     <div class="container">
 
+        <!-- ABOUT US SECTION -->
+        <div class="section">
+            <h2>About Us</h2>
+            <p style="font-size: 0.95rem; color: #444; margin-bottom: 10px;">
+                Welcome to <strong>Kasi Wash & Kota Hub</strong>! We provide top-tier car wash services to keep your vehicle shining while satisfying your cravings with our famous, delicious Kasi Kotas. 
+            </p>
+            <p style="font-size: 0.95rem; color: #444;">
+                Have questions or want to reach out to our management team directly? Connect with our owners on WhatsApp:
+            </p>
+            <div style="margin-top: 10px; display: flex; gap: 10px; flex-wrap: wrap;">
+                <a href="https://wa.me/27794789949" target="_blank" style="background: #25d366; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 0.85rem; font-weight: bold;">💬 Owner 1 WhatsApp</a>
+                <a href="https://wa.me/27700000000" target="_blank" style="background: #25d366; color: white; padding: 8px 12px; border-radius: 5px; text-decoration: none; font-size: 0.85rem; font-weight: bold;">💬 Owner 2 WhatsApp</a>
+            </div>
+        </div>
+
         <!-- SERVICES & MENU SELECTION -->
         <div class="section" id="customer-view">
             <h2>Select & Order</h2>
@@ -407,14 +418,14 @@
             <h2>Owner Portal</h2>
             
             <div id="pin-login">
-                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ade8f4;">Secure Owner Login</p>
-                <input type="email" id="admin-email" placeholder="">
-                <input type="password" id="admin-pin" maxlength="4" placeholder="">
+                <p style="margin-bottom: 10px; font-size: 0.9rem; color: #ade8f4;">Secure Owner Login (Shared PIN)</p>
+                <input type="email" id="admin-email" placeholder="Owner Email">
+                <input type="password" id="admin-pin" maxlength="4" placeholder="4-Digit PIN">
                 <button class="btn" style="background: #00b4d8;" onclick="verifyAdminLogin()">Owner Login</button>
             </div>
 
             <div id="admin-dashboard" class="admin-controls">
-                <p style="color: #90e0ef; margin-bottom: 15px; font-weight: bold;">✔ Logged in as Cyprian</p>
+                <p id="admin-welcome-msg" style="color: #90e0ef; margin-bottom: 15px; font-weight: bold;">✔ Logged In</p>
                 
                 <div style="background: #023e8a; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #0077b6;">
                     <h3 style="font-size: 0.95rem; color: #ade8f4; margin-bottom: 8px;">🚗 Set Max Available Spots per Slot (Out of 3)</h3>
@@ -456,6 +467,14 @@
     </div>
 
     <script>
+        // Authorized Owner Emails (Add more here anytime)
+        const validAdminEmails = [
+            "cyprianmaruping09@gmail.com",
+            "owner2@gmail.com",
+            "owner3@gmail.com"
+        ];
+        const sharedPin = "1472";
+
         let activeOrderId = null;
         let statusSyncInterval = null;
         let adminSyncInterval = null;
@@ -478,6 +497,8 @@
             if (localStorage.getItem('kasi_admin_logged_in') === 'true') {
                 document.getElementById('pin-login').style.display = 'none';
                 document.getElementById('admin-dashboard').style.display = 'block';
+                const loggedEmail = localStorage.getItem('kasi_logged_email') || 'Owner';
+                document.getElementById('admin-welcome-msg').innerText = `✔ Logged in as ${loggedEmail}`;
                 loadAdminDashboard();
                 if (adminSyncInterval) clearInterval(adminSyncInterval);
                 adminSyncInterval = setInterval(loadAdminDashboard, 3000);
@@ -548,20 +569,16 @@
             const maxLimit = parseInt(localStorage.getItem('kasi_max_spots') || '3');
             const orders = getOrders();
             const now = new Date().getTime();
-            const twoHoursInMs = 2 * 60 * 60 * 1000; // Exact 2-hour duration from exact booking timestamp
+            const twoHoursInMs = 2 * 60 * 60 * 1000;
 
-            // Count active spots that are still within their precise 2-hour window and not marked Completed
             const bookedCount = orders.filter(o => {
                 if (o.bookingDate !== date || o.bookingTime !== timeSlot || o.status === 'Completed') {
                     return false;
                 }
-
                 const orderTime = o.timestamp || now;
-                // If exactly 2 hours (7,200,000 ms) have passed since the exact booking submission time, auto-release slot
                 if ((now - orderTime) >= twoHoursInMs) {
                     return false;
                 }
-
                 return true;
             }).length;
 
@@ -625,7 +642,7 @@
                 queueStyle: hasCarWash ? queueStyle : 'N/A',
                 status: 'Pending',
                 date: new Date().toLocaleDateString(),
-                timestamp: new Date().getTime() // Exact timestamp when booked
+                timestamp: new Date().getTime()
             };
 
             const orders = getOrders();
@@ -642,8 +659,9 @@
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
             let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} @ ${bookingTime} (${queueStyle})` : '';
             const message = `*NEW ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open your website dashboard to Confirm this order!`;
-            const whatsappNumber = '27794789949';
             
+            // Multi-owner WhatsApp fallback loop (opens primary, can be extended)
+            const whatsappNumber = '27794789949';
             setTimeout(() => {
                 window.open(`https://wa.me/${whatsappNumber}?text=${encodeURIComponent(message)}`, '_blank');
             }, 300);
@@ -687,21 +705,24 @@
             const email = document.getElementById('admin-email').value.trim().toLowerCase();
             const pin = document.getElementById('admin-pin').value.trim();
 
-            if (email === 'cyprianmaruping09@gmail.com' && pin === '1472') {
+            if (validAdminEmails.includes(email) && pin === sharedPin) {
                 localStorage.setItem('kasi_admin_logged_in', 'true');
+                localStorage.setItem('kasi_logged_email', email);
                 document.getElementById('pin-login').style.display = 'none';
                 document.getElementById('admin-dashboard').style.display = 'block';
+                document.getElementById('admin-welcome-msg').innerText = `✔ Logged in as ${email}`;
                 loadAdminDashboard();
                 if (adminSyncInterval) clearInterval(adminSyncInterval);
                 adminSyncInterval = setInterval(loadAdminDashboard, 3000);
             } else {
-                alert('Incorrect email/PIN, please try again');
+                alert('Incorrect owner email or PIN, please try again.');
                 document.getElementById('admin-pin').value = '';
             }
         }
 
         function adminLogout() {
             localStorage.removeItem('kasi_admin_logged_in');
+            localStorage.removeItem('kasi_logged_email');
             if (adminSyncInterval) clearInterval(adminSyncInterval);
             document.getElementById('admin-dashboard').style.display = 'none';
             document.getElementById('pin-login').style.display = 'block';
