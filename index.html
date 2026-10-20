@@ -202,7 +202,6 @@
         .badge-pending { background: #ade8f4; color: #03045e; }
         .badge-confirmed { background: #c8e6c9; color: #2e7d32; }
         .badge-completed { background: #bbdefb; color: #1565c0; }
-        .badge-unavailable { background: #f8d7da; color: #721c24; }
 
         .admin-section {
             background: var(--secondary);
@@ -241,8 +240,8 @@
             gap: 5px;
         }
         .order-actions button {
-            padding: 6px 8px;
-            font-size: 0.75rem;
+            padding: 6px 12px;
+            font-size: 0.8rem;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -250,7 +249,6 @@
         }
         .btn-confirm { background: #2e7d32; color: white; }
         .btn-done { background: #1565c0; color: white; }
-        .btn-unavailable { background: #d90429; color: white; }
     </style>
 </head>
 <body>
@@ -444,6 +442,8 @@
                     </div>
                 </div>
 
+                <button class="btn" style="background: #d90429; margin-bottom: 15px;" onclick="manualResetHistory()">🗑 Clear All History & Orders</button>
+
                 <h3 style="font-size: 1rem; margin-bottom: 10px; color: #fff;">Live Customer Orders</h3>
                 <div id="admin-orders-list">
                     <p style="color: #ade8f4; font-size: 0.85rem;">No active orders right now.</p>
@@ -461,6 +461,8 @@
         let adminSyncInterval = null;
 
         window.onload = function() {
+            checkAndCleanExpiredData();
+
             const deal = localStorage.getItem('kasi_flash_deal');
             const banner = document.getElementById('flash-deal-banner');
             if (deal) {
@@ -481,6 +483,23 @@
                 adminSyncInterval = setInterval(loadAdminDashboard, 3000);
             }
         };
+
+        function checkAndCleanExpiredData() {
+            const now = new Date().getTime();
+            const twentyFourHours = 24 * 60 * 60 * 1000;
+
+            let orders = JSON.parse(localStorage.getItem('kasi_orders') || '[]');
+            let validOrders = orders.filter(o => (now - (o.timestamp || now)) < twentyFourHours);
+            localStorage.setItem('kasi_orders', JSON.stringify(validOrders));
+        }
+
+        function manualResetHistory() {
+            if (confirm("Are you sure you want to clear all order history and revenue stats?")) {
+                localStorage.removeItem('kasi_orders');
+                loadAdminDashboard();
+                alert("History and active orders have been completely reset!");
+            }
+        }
 
         function saveMaxSpots() {
             const maxSpots = document.getElementById('max-spot-limit').value;
@@ -508,19 +527,12 @@
         }
 
         function getOrders() {
+            checkAndCleanExpiredData();
             return JSON.parse(localStorage.getItem('kasi_orders') || '[]');
         }
 
         function saveOrders(orders) {
             localStorage.setItem('kasi_orders', JSON.stringify(orders));
-        }
-
-        function getUnavailableSlots() {
-            return JSON.parse(localStorage.getItem('kasi_unavailable_slots') || '[]');
-        }
-
-        function saveUnavailableSlots(slots) {
-            localStorage.setItem('kasi_unavailable_slots', JSON.stringify(slots));
         }
 
         function checkSlotAvailability() {
@@ -533,20 +545,12 @@
                 return;
             }
 
-            const unavailableSlots = getUnavailableSlots();
-            const isManuallyClosed = unavailableSlots.some(s => s.date === date && s.time === time);
-
-            statusBox.style.display = 'block';
-            if (isManuallyClosed) {
-                statusBox.className = 'slot-availability slot-full';
-                statusBox.innerText = `❌ This time slot has been marked as Unavailable by the owner. Please choose another time.`;
-                return;
-            }
-
             const maxLimit = parseInt(localStorage.getItem('kasi_max_spots') || '3');
             const orders = getOrders();
-            const bookedCount = orders.filter(o => o.bookingDate === date && o.bookingTime === time && o.status !== 'Completed' && o.status !== 'Unavailable').length;
+            // Count active spots that are still taking up space (Pending or Confirmed, but NOT Completed)
+            const bookedCount = orders.filter(o => o.bookingDate === date && o.bookingTime === time && o.status !== 'Completed').length;
 
+            statusBox.style.display = 'block';
             if (bookedCount >= maxLimit) {
                 statusBox.className = 'slot-availability slot-full';
                 statusBox.innerText = `❌ Slot Fully Booked (${bookedCount}/${maxLimit} spots taken). Please choose another time.`;
@@ -582,16 +586,6 @@
                 return;
             }
 
-            // Check if slot was manually marked unavailable by owner
-            if (hasCarWash) {
-                const unavailableSlots = getUnavailableSlots();
-                const isClosed = unavailableSlots.some(s => s.date === bookingDate && s.time === bookingTime);
-                if (isClosed) {
-                    alert('Sorry, this time slot has been marked as Unavailable by the owner. Please pick another time.');
-                    return;
-                }
-            }
-
             let orderItems = [];
             let total = 0;
             checkboxes.forEach(item => {
@@ -615,7 +609,8 @@
                 bookingTime: bookingTime || 'N/A',
                 queueStyle: hasCarWash ? queueStyle : 'N/A',
                 status: 'Pending',
-                date: new Date().toLocaleDateString()
+                date: new Date().toLocaleDateString(),
+                timestamp: new Date().getTime()
             };
 
             const orders = getOrders();
@@ -662,11 +657,6 @@
                 badgeClass = 'badge-completed';
                 badgeText = 'Status: Order Done / Ready 🎉';
                 document.getElementById('feedback-container').style.display = 'block';
-                if (statusSyncInterval) clearInterval(statusSyncInterval);
-            }
-            if (order.status === 'Unavailable') {
-                badgeClass = 'badge-unavailable';
-                badgeText = 'Status: Item/Slot Unavailable ❌';
                 if (statusSyncInterval) clearInterval(statusSyncInterval);
             }
 
@@ -727,12 +717,6 @@
                 let badgeColor = '#ffb74d';
                 if (order.status === 'Confirmed') badgeColor = '#81c784';
                 if (order.status === 'Completed') badgeColor = '#64b5f6';
-                if (order.status === 'Unavailable') badgeColor = '#d90429';
-
-                let unavailableSlotBtn = '';
-                if (order.bookingDate !== 'N/A (Food Only)') {
-                    unavailableSlotBtn = `<button class="btn-unavailable" onclick="markSlotUnavailable('${order.bookingDate}', '${order.bookingTime}')">Close Slot</button>`;
-                }
 
                 html += `
                     <div class="order-row">
@@ -743,26 +727,11 @@
                         <div class="order-actions">
                             <button class="btn-confirm" onclick="updateOrderStatus('${order.id}', 'Confirmed')">Confirm</button>
                             <button class="btn-done" onclick="updateOrderStatus('${order.id}', 'Completed')">Done</button>
-                            <button class="btn-unavailable" onclick="updateOrderStatus('${order.id}', 'Unavailable')">Unavailable</button>
-                            ${unavailableSlotBtn}
                         </div>
                     </div>
                 `;
             });
             listContainer.innerHTML = html;
-        }
-
-        function markSlotUnavailable(date, time) {
-            let unavailableSlots = getUnavailableSlots();
-            // Check if already closed
-            const exists = unavailableSlots.some(s => s.date === date && s.time === time);
-            if (!exists) {
-                unavailableSlots.push({ date, time });
-                saveUnavailableSlots(unavailableSlots);
-                alert(`Time slot ${date} @ ${time} has been marked as Unavailable for customers!`);
-            } else {
-                alert(`This slot is already marked unavailable.`);
-            }
         }
 
         function updateOrderStatus(orderId, newStatus) {
