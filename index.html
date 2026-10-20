@@ -202,6 +202,7 @@
         .badge-pending { background: #ade8f4; color: #03045e; }
         .badge-confirmed { background: #c8e6c9; color: #2e7d32; }
         .badge-completed { background: #bbdefb; color: #1565c0; }
+        .badge-unavailable { background: #f8d7da; color: #721c24; }
 
         .admin-section {
             background: var(--secondary);
@@ -240,8 +241,8 @@
             gap: 5px;
         }
         .order-actions button {
-            padding: 6px 10px;
-            font-size: 0.8rem;
+            padding: 6px 8px;
+            font-size: 0.75rem;
             border: none;
             border-radius: 4px;
             cursor: pointer;
@@ -249,6 +250,7 @@
         }
         .btn-confirm { background: #2e7d32; color: white; }
         .btn-done { background: #1565c0; color: white; }
+        .btn-unavailable { background: #d90429; color: white; }
     </style>
 </head>
 <body>
@@ -416,6 +418,15 @@
             <div id="admin-dashboard" class="admin-controls">
                 <p style="color: #90e0ef; margin-bottom: 15px; font-weight: bold;">✔ Logged in as Cyprian</p>
                 
+                <div style="background: #023e8a; padding: 12px; border-radius: 8px; margin-bottom: 15px; border: 1px solid #0077b6;">
+                    <h3 style="font-size: 0.95rem; color: #ade8f4; margin-bottom: 8px;">🚗 Set Max Available Spots per Slot (Out of 3)</h3>
+                    <select id="max-spot-limit" style="margin-bottom: 8px; background: #fff; color: #333;" onchange="saveMaxSpots()">
+                        <option value="1">1 Spot Available</option>
+                        <option value="2">2 Spots Available</option>
+                        <option value="3" selected>3 Spots Available (Max)</option>
+                    </select>
+                </div>
+
                 <div style="background: #023e8a; padding: 12px; border-radius: 8px; margin-bottom: 20px; border: 1px solid #0077b6;">
                     <h3 style="font-size: 0.95rem; color: #ade8f4; margin-bottom: 8px;">📢 Broadcast Flash Deal Banner</h3>
                     <input type="text" id="admin-deal-input" placeholder="e.g. 🔥 Special: Beast Kota + Full Wash for R120!" style="margin-bottom: 8px; background: #fff; color: #333;">
@@ -457,15 +468,25 @@
                 banner.style.display = 'block';
             }
 
+            const savedMaxSpots = localStorage.getItem('kasi_max_spots');
+            if (savedMaxSpots) {
+                document.getElementById('max-spot-limit').value = savedMaxSpots;
+            }
+
             if (localStorage.getItem('kasi_admin_logged_in') === 'true') {
                 document.getElementById('pin-login').style.display = 'none';
                 document.getElementById('admin-dashboard').style.display = 'block';
                 loadAdminDashboard();
-                // Start live background sync for owner dashboard every 3 seconds
                 if (adminSyncInterval) clearInterval(adminSyncInterval);
                 adminSyncInterval = setInterval(loadAdminDashboard, 3000);
             }
         };
+
+        function saveMaxSpots() {
+            const maxSpots = document.getElementById('max-spot-limit').value;
+            localStorage.setItem('kasi_max_spots', maxSpots);
+            alert(`Max slot capacity updated to ${maxSpots} spot(s)!`);
+        }
 
         function saveFlashDeal() {
             const dealText = document.getElementById('admin-deal-input').value.trim();
@@ -494,6 +515,14 @@
             localStorage.setItem('kasi_orders', JSON.stringify(orders));
         }
 
+        function getUnavailableSlots() {
+            return JSON.parse(localStorage.getItem('kasi_unavailable_slots') || '[]');
+        }
+
+        function saveUnavailableSlots(slots) {
+            localStorage.setItem('kasi_unavailable_slots', JSON.stringify(slots));
+        }
+
         function checkSlotAvailability() {
             const date = document.getElementById('booking-date').value;
             const time = document.getElementById('booking-time').value;
@@ -504,16 +533,26 @@
                 return;
             }
 
-            const orders = getOrders();
-            const bookedCount = orders.filter(o => o.bookingDate === date && o.bookingTime === time && o.status !== 'Completed').length;
+            const unavailableSlots = getUnavailableSlots();
+            const isManuallyClosed = unavailableSlots.some(s => s.date === date && s.time === time);
 
             statusBox.style.display = 'block';
-            if (bookedCount >= 2) {
+            if (isManuallyClosed) {
                 statusBox.className = 'slot-availability slot-full';
-                statusBox.innerText = `❌ Slot Fully Booked (${bookedCount}/2 cars). Please choose another time.`;
+                statusBox.innerText = `❌ This time slot has been marked as Unavailable by the owner. Please choose another time.`;
+                return;
+            }
+
+            const maxLimit = parseInt(localStorage.getItem('kasi_max_spots') || '3');
+            const orders = getOrders();
+            const bookedCount = orders.filter(o => o.bookingDate === date && o.bookingTime === time && o.status !== 'Completed' && o.status !== 'Unavailable').length;
+
+            if (bookedCount >= maxLimit) {
+                statusBox.className = 'slot-availability slot-full';
+                statusBox.innerText = `❌ Slot Fully Booked (${bookedCount}/${maxLimit} spots taken). Please choose another time.`;
             } else {
                 statusBox.className = 'slot-availability slot-available';
-                statusBox.innerText = `✔ Slot Available! (${2 - bookedCount} spot(s) left)`;
+                statusBox.innerText = `✔ Slot Available! (${maxLimit - bookedCount} of ${maxLimit} spot(s) left)`;
             }
         }
 
@@ -541,6 +580,16 @@
             if (hasCarWash && (!bookingDate || !bookingTime)) {
                 alert('Please select a booking date and time slot for your car wash service.');
                 return;
+            }
+
+            // Check if slot was manually marked unavailable by owner
+            if (hasCarWash) {
+                const unavailableSlots = getUnavailableSlots();
+                const isClosed = unavailableSlots.some(s => s.date === bookingDate && s.time === bookingTime);
+                if (isClosed) {
+                    alert('Sorry, this time slot has been marked as Unavailable by the owner. Please pick another time.');
+                    return;
+                }
             }
 
             let orderItems = [];
@@ -615,6 +664,11 @@
                 document.getElementById('feedback-container').style.display = 'block';
                 if (statusSyncInterval) clearInterval(statusSyncInterval);
             }
+            if (order.status === 'Unavailable') {
+                badgeClass = 'badge-unavailable';
+                badgeText = 'Status: Item/Slot Unavailable ❌';
+                if (statusSyncInterval) clearInterval(statusSyncInterval);
+            }
 
             document.getElementById('tracker-badge-container').innerHTML = `<span class="badge ${badgeClass}">${badgeText}</span>`;
         }
@@ -673,6 +727,12 @@
                 let badgeColor = '#ffb74d';
                 if (order.status === 'Confirmed') badgeColor = '#81c784';
                 if (order.status === 'Completed') badgeColor = '#64b5f6';
+                if (order.status === 'Unavailable') badgeColor = '#d90429';
+
+                let unavailableSlotBtn = '';
+                if (order.bookingDate !== 'N/A (Food Only)') {
+                    unavailableSlotBtn = `<button class="btn-unavailable" onclick="markSlotUnavailable('${order.bookingDate}', '${order.bookingTime}')">Close Slot</button>`;
+                }
 
                 html += `
                     <div class="order-row">
@@ -681,13 +741,28 @@
                         <span style="color: #90e0ef; font-weight: bold;">Total: R${order.total}</span> | 
                         <span style="color: ${badgeColor}; font-weight: bold;">Status: ${order.status}</span>
                         <div class="order-actions">
-                            <button class="btn-confirm" onclick="updateOrderStatus('${order.id}', 'Confirmed')">Confirm Order</button>
-                            <button class="btn-done" onclick="updateOrderStatus('${order.id}', 'Completed')">Mark Done</button>
+                            <button class="btn-confirm" onclick="updateOrderStatus('${order.id}', 'Confirmed')">Confirm</button>
+                            <button class="btn-done" onclick="updateOrderStatus('${order.id}', 'Completed')">Done</button>
+                            <button class="btn-unavailable" onclick="updateOrderStatus('${order.id}', 'Unavailable')">Unavailable</button>
+                            ${unavailableSlotBtn}
                         </div>
                     </div>
                 `;
             });
             listContainer.innerHTML = html;
+        }
+
+        function markSlotUnavailable(date, time) {
+            let unavailableSlots = getUnavailableSlots();
+            // Check if already closed
+            const exists = unavailableSlots.some(s => s.date === date && s.time === time);
+            if (!exists) {
+                unavailableSlots.push({ date, time });
+                saveUnavailableSlots(unavailableSlots);
+                alert(`Time slot ${date} @ ${time} has been marked as Unavailable for customers!`);
+            } else {
+                alert(`This slot is already marked unavailable.`);
+            }
         }
 
         function updateOrderStatus(orderId, newStatus) {
