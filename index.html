@@ -1,24 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>CAR WASHINGTON | Clean • Care • Crave</title>
-    <!-- Tailwind CSS for modern utility styling -->
+    <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
+            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
                         navy: {
                             900: '#070c1a',
-                            800: '#0b1329',
-                            700: '#111d3d',
-                            600: '#1b2a4a'
+                            800: '#0d1527',
+                            700: '#142038',
+                            600: '#1e2e4a'
                         },
-                        cyanAccent: '#00b4d8',
                         cyanGlow: '#06b6d4',
+                        cyanAccent: '#00b4d8',
                         amberGold: '#f59e0b',
                         amberHover: '#d97706',
                     }
@@ -31,25 +32,31 @@
         
         * {
             font-family: 'Plus Jakarta Sans', sans-serif;
+            box-sizing: border-box;
             scroll-behavior: smooth;
         }
 
-        /* Glassmorphism Effect */
+        body {
+            background-color: #070c1a;
+            color: #f8fafc;
+        }
+
+        /* Glassmorphism Styles */
         .glass-card {
-            background: rgba(17, 29, 61, 0.7);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
+            background: rgba(13, 21, 39, 0.85);
+            backdrop-filter: blur(14px);
+            -webkit-backdrop-filter: blur(14px);
             border: 1px solid rgba(255, 255, 255, 0.08);
         }
 
         .glass-nav {
-            background: rgba(7, 12, 26, 0.85);
+            background: rgba(7, 12, 26, 0.92);
             backdrop-filter: blur(16px);
             -webkit-backdrop-filter: blur(16px);
-            border-bottom: 1px solid rgba(0, 180, 216, 0.2);
+            border-bottom: 1px solid rgba(6, 182, 212, 0.2);
         }
 
-        /* Background Hero Slideshow */
+        /* Hero Slideshow Background */
         .hero-slideshow {
             position: absolute;
             inset: 0;
@@ -64,14 +71,14 @@
             background-position: center;
             opacity: 0;
             transition: opacity 1.5s ease-in-out;
-            filter: brightness(1.25) contrast(1.05);
+            filter: brightness(0.65) contrast(1.1);
         }
 
         .slide.active {
-            opacity: 0.65;
+            opacity: 0.55;
         }
 
-        /* Floating Bubble Canvas & Animation Styling */
+        /* Bubble Canvas Container */
         #bubble-canvas {
             position: fixed;
             top: 0;
@@ -82,26 +89,17 @@
             z-index: 1;
         }
 
-        /* Gradient Glow Effects */
+        /* Gradient Glowing Shadows */
         .glow-cyan {
-            box-shadow: 0 0 25px rgba(6, 182, 212, 0.45);
-        }
-
-        .slide.active {
-            opacity: 0.35;
-        }
-
-        /* Gradient Glow Effects */
-        .glow-cyan {
-            box-shadow: 0 0 25px rgba(6, 182, 212, 0.35);
+            box-shadow: 0 0 20px rgba(6, 182, 212, 0.35);
         }
 
         .glow-amber {
-            box-shadow: 0 0 25px rgba(245, 158, 11, 0.35);
+            box-shadow: 0 0 20px rgba(245, 158, 11, 0.35);
         }
 
         .text-gradient-cyan {
-            background: linear-gradient(135deg, #38bdf8, #00b4d8);
+            background: linear-gradient(135deg, #38bdf8, #06b6d4);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
@@ -120,26 +118,29 @@
             background: #070c1a;
         }
         ::-webkit-scrollbar-thumb {
-            background: #1b2a4a;
+            background: #1e2e4a;
             border-radius: 4px;
         }
         ::-webkit-scrollbar-thumb:hover {
-            background: #00b4d8;
+            background: #06b6d4;
+        }
+    </style>
+</head>
 <body class="bg-navy-900 text-slate-100 min-h-screen flex flex-col justify-between selection:bg-cyanGlow selection:text-navy-900 relative overflow-x-hidden">
 
-    <!-- Interactive Soapy Bubble Canvas Overlay -->
+    <!-- Soapy Bubble Canvas Overlay -->
     <canvas id="bubble-canvas"></canvas>
 
-    <!-- Flash Deal Notification Marquee Banner -->
-    <div id="flash-deal-banner" class="hidden relative z-50 bg-gradient-to-r from-amberGold via-amberHover to-amberGold text-navy-900 font-bold text-center py-2 px-4 text-sm shadow-md transition-all">
+    <!-- Top Flash Deal Banner -->
+    <div id="flash-deal-banner" class="hidden relative z-50 bg-gradient-to-r from-amberGold via-amberHover to-amberGold text-navy-900 font-extrabold text-center py-2 px-4 text-xs sm:text-sm shadow-md transition-all">
         <span id="flash-deal-text"></span>
     </div>
 
-    <!-- Navigation Header -->
+    <!-- Navigation Bar -->
     <nav class="sticky top-0 z-50 glass-nav px-4 lg:px-8 py-3.5 transition-all">
         <div class="max-w-7xl mx-auto flex items-center justify-between">
             
-            <!-- Logo Emblem Badge -->
+            <!-- Logo Emblem -->
             <a href="#" class="flex items-center gap-3 group">
                 <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-cyanGlow to-navy-800 p-0.5 shadow-lg group-hover:scale-105 transition-transform">
                     <div class="w-full h-full bg-navy-900 rounded-[10px] flex items-center justify-center border border-cyanGlow/30">
@@ -148,14 +149,14 @@
                 </div>
                 <div>
                     <div class="flex items-center gap-1.5">
-                        <span class="font-extrabold text-lg tracking-wider text-white">CAR WASHINGTON</span>
+                        <span class="font-black text-lg tracking-wider text-white">CAR WASHINGTON</span>
                     </div>
                     <p class="text-[10px] font-bold text-cyanGlow tracking-widest uppercase">CLEAN • CARE • CRAVE</p>
                 </div>
             </a>
 
-            <!-- Desktop Navigation Links -->
-            <div class="hidden lg:flex items-center gap-8 text-sm font-medium text-slate-300">
+            <!-- Desktop Links -->
+            <div class="hidden lg:flex items-center gap-8 text-sm font-semibold text-slate-300">
                 <a href="#services" class="hover:text-cyanGlow transition-colors">Services & Pricing</a>
                 <a href="#combos" class="hover:text-cyanGlow transition-colors">Combos</a>
                 <a href="#kota-menu" class="hover:text-amberGold transition-colors flex items-center gap-1">
@@ -165,66 +166,63 @@
                 <a href="#admin" class="hover:text-cyanGlow transition-colors text-slate-400">Admin Portal</a>
             </div>
 
-            <!-- Action CTA & Shopping Cart -->
+            <!-- Contacts & Call-To-Action -->
             <div class="flex items-center gap-3">
-                <div class="hidden sm:flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-lg text-xs font-semibold text-emerald-400">
+                <div class="hidden sm:flex items-center gap-2 bg-emerald-500/10 border border-emerald-500/30 px-3 py-1.5 rounded-xl text-xs font-semibold text-emerald-400">
                     <span>💬</span> Admins: 
-                    <a href="https://wa.me/27794789949" target="_blank" class="hover:underline">079 478 9949</a> | 
-                    <a href="https://wa.me/27672109991" target="_blank" class="hover:underline">067 210 9991</a>
+                    <a href="https://wa.me/27794789949" target="_blank" class="hover:underline font-bold">079 478 9949</a> | 
+                    <a href="https://wa.me/27672109991" target="_blank" class="hover:underline font-bold">067 210 9991</a>
                 </div>
-                <a href="#booking" class="bg-gradient-to-r from-cyanGlow to-cyanAccent hover:opacity-90 text-navy-900 font-extrabold px-5 py-2.5 rounded-xl text-sm shadow-lg glow-cyan transition-all flex items-center gap-2">
+                <a href="#booking" class="bg-gradient-to-r from-cyanGlow to-cyanAccent hover:opacity-90 text-navy-900 font-extrabold px-4 sm:px-5 py-2.5 rounded-xl text-xs sm:text-sm shadow-lg glow-cyan transition-all flex items-center gap-2">
                     <span>📅</span> Book Now
                 </a>
             </div>
         </div>
     </nav>
 
-    <!-- HERO SECTION WITH SLIDESHOW -->
-    <header class="relative min-h-[85vh] flex items-center justify-center text-center px-4 py-20 overflow-hidden">
+    <!-- HERO SECTION -->
+    <header class="relative min-h-[80vh] flex items-center justify-center text-center px-4 py-16 overflow-hidden">
         
-        <!-- Background Image Slideshow -->
+        <!-- Hero Image Slideshow -->
         <div class="hero-slideshow">
-            <div class="slide active" style="background-image: url('https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=1920&q=80')"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1603064752734-4c48eff53d05?auto=format&fit=crop&w=1920&q=80')"></div>
-            <div class="slide" style="background-image: url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=1920&q=80')"></div>
+            <div class="slide active" style="background-image: linear-gradient(rgba(7,12,26,0.6), rgba(7,12,26,0.8)), url('https://images.unsplash.com/photo-1520340356584-f9917d1eea6f?auto=format&fit=crop&w=1920&q=80')"></div>
+            <div class="slide" style="background-image: linear-gradient(rgba(7,12,26,0.6), rgba(7,12,26,0.8)), url('https://images.unsplash.com/photo-1603064752734-4c48eff53d05?auto=format&fit=crop&w=1920&q=80')"></div>
+            <div class="slide" style="background-image: linear-gradient(rgba(7,12,26,0.6), rgba(7,12,26,0.8)), url('https://images.unsplash.com/photo-1607860108855-64acf2078ed9?auto=format&fit=crop&w=1920&q=80')"></div>
         </div>
 
-        <!-- Overlay Gradients for Depth -->
-        <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/80 to-navy-900/60 z-10"></div>
+        <!-- Overlay Gradients -->
+        <div class="absolute inset-0 bg-gradient-to-t from-navy-900 via-navy-900/70 to-navy-900/40 z-10"></div>
 
         <div class="relative z-20 max-w-4xl mx-auto space-y-6">
             
-            <!-- Hero Pill Tag -->
             <div class="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-cyanGlow/10 border border-cyanGlow/30 text-cyanGlow text-xs font-bold tracking-wider uppercase backdrop-blur-md">
                 <span class="w-2 h-2 rounded-full bg-cyanGlow animate-ping"></span>
-                CAR WASHINGTON • PREMIUM WASH & LOUNGE
+                CAR WASHINGTON • WASH & LOUNGE
             </div>
 
-            <!-- Hero Headline -->
-            <h1 class="text-4xl sm:text-6xl md:text-7xl font-black tracking-tight text-white leading-tight">
+            <h1 class="text-3xl sm:text-5xl md:text-6xl font-black tracking-tight text-white leading-tight">
                 Car Washington <br>
                 <span class="text-gradient-cyan">Clean, Care</span> & <span class="text-gradient-amber">Crave</span>
             </h1>
 
-            <!-- Hero Subtitle -->
-            <p class="text-slate-300 text-base sm:text-lg max-w-2xl mx-auto font-normal leading-relaxed">
+            <p class="text-slate-300 text-sm sm:text-base max-w-2xl mx-auto font-normal leading-relaxed">
                 Top-Tier Car Wash & Detailing Services paired with the Best Hot Fresh Kotas in Town! Relax in our executive lounge while our experts restore your ride.
             </p>
 
-            <!-- Admin WhatsApp Quick Contact -->
+            <!-- Admin Contacts Pill -->
             <div class="inline-flex flex-wrap justify-center items-center gap-3 bg-navy-800/90 border border-slate-700/60 px-4 py-2 rounded-xl text-xs sm:text-sm text-slate-300">
-                <span class="text-emerald-400 font-bold">💬 Admin Contacts:</span>
+                <span class="text-emerald-400 font-bold">💬 WhatsApp Admins:</span>
                 <a href="https://wa.me/27794789949" target="_blank" class="text-white font-bold underline hover:text-emerald-400 transition-colors">Admin 1: 079 478 9949</a>
                 <span class="text-slate-500">•</span>
                 <a href="https://wa.me/27672109991" target="_blank" class="text-white font-bold underline hover:text-emerald-400 transition-colors">Admin 2: 067 210 9991</a>
             </div>
 
-            <!-- Action Buttons -->
-            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
-                <a href="#booking" class="w-full sm:w-auto bg-gradient-to-r from-cyanGlow to-cyanAccent hover:from-cyanAccent hover:to-cyanGlow text-navy-900 font-black px-8 py-4 rounded-xl text-base shadow-lg glow-cyan transition-all flex items-center justify-center gap-2">
-                    🚗 Book Car Wash Slot
+            <!-- CTA Buttons -->
+            <div class="flex flex-col sm:flex-row items-center justify-center gap-4 pt-2">
+                <a href="#booking" class="w-full sm:w-auto bg-gradient-to-r from-cyanGlow to-cyanAccent hover:opacity-90 text-navy-900 font-black px-8 py-3.5 rounded-xl text-sm shadow-lg glow-cyan transition-all flex items-center justify-center gap-2">
+                    🚗 Book Wash Slot
                 </a>
-                <a href="#kota-menu" class="w-full sm:w-auto bg-gradient-to-r from-amberGold to-amberHover hover:opacity-90 text-navy-900 font-black px-8 py-4 rounded-xl text-base shadow-lg glow-amber transition-all flex items-center justify-center gap-2">
+                <a href="#kota-menu" class="w-full sm:w-auto bg-gradient-to-r from-amberGold to-amberHover hover:opacity-90 text-navy-900 font-black px-8 py-3.5 rounded-xl text-sm shadow-lg glow-amber transition-all flex items-center justify-center gap-2">
                     🍔 Order Kotas Ahead
                 </a>
             </div>
@@ -232,28 +230,27 @@
         </div>
     </header>
 
-    <!-- MAIN INTERACTIVE CONTAINER -->
-    <main class="max-w-7xl mx-auto px-4 lg:px-8 py-12 space-y-16">
+    <!-- MAIN APP CONTAINER -->
+    <main class="relative z-20 max-w-7xl mx-auto px-4 lg:px-8 py-10 space-y-16">
 
-        <!-- LIVE CUSTOMER ORDER TRACKER (DYNAMIC) -->
+        <!-- LIVE CUSTOMER ORDER TRACKER -->
         <section id="customer-tracker-container" class="hidden">
-            <div class="glass-card rounded-2xl p-6 sm:p-8 border-cyanGlow/40 text-center space-y-4">
+            <div class="glass-card rounded-2xl p-6 sm:p-8 border-cyanGlow/40 text-center space-y-4 shadow-xl">
                 <div class="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-cyanGlow/10 text-cyanGlow text-xs font-bold uppercase">
-                    Live Tracking System
+                    Live Tracking Active
                 </div>
-                <h2 class="text-2xl font-bold text-white">Your Order Details</h2>
+                <h2 class="text-xl sm:text-2xl font-bold text-white">Your Order Details</h2>
                 <div id="tracker-order-id" class="text-sm text-slate-300"></div>
                 
                 <div id="tracker-badge-container" class="py-2"></div>
                 
-                <p class="text-xs text-amberGold bg-amberGold/10 py-2 px-4 rounded-lg inline-block font-semibold">
-                    👉 Keep this tab open or switch back to check live updates from Admin!
+                <p class="text-xs text-amberGold bg-amberGold/10 py-2.5 px-4 rounded-xl inline-block font-semibold border border-amberGold/20">
+                    👉 Keep this tab open to get live status sync updates from Admin!
                 </p>
 
-                <!-- Feedback Form on Completed -->
                 <div id="feedback-container" class="hidden mt-4 pt-4 border-t border-slate-700/50 max-w-md mx-auto">
-                    <p class="text-sm font-bold text-slate-200 mb-2">Rate Your Experience</p>
-                    <div class="flex justify-center gap-4 text-2xl cursor-pointer">
+                    <p class="text-xs sm:text-sm font-bold text-slate-200 mb-3">Rate Your Car Washington Experience</p>
+                    <div class="flex justify-center gap-6 text-3xl cursor-pointer">
                         <span onclick="sendFeedback('🤩')" class="hover:scale-125 transition-transform">🤩</span>
                         <span onclick="sendFeedback('👍')" class="hover:scale-125 transition-transform">👍</span>
                         <span onclick="sendFeedback('😐')" class="hover:scale-125 transition-transform">😐</span>
@@ -261,120 +258,120 @@
                 </div>
 
                 <div class="pt-2">
-                    <button onclick="location.reload()" class="bg-navy-700 hover:bg-navy-600 text-slate-200 text-xs font-semibold py-2 px-6 rounded-lg transition-colors">
+                    <button onclick="location.reload()" class="bg-navy-700 hover:bg-navy-600 text-slate-200 text-xs font-semibold py-2 px-5 rounded-xl transition-colors">
                         Place Another Order
                     </button>
                 </div>
             </div>
         </section>
 
-        <!-- SERVICES & PRICING + BOOKING FORM -->
+        <!-- SERVICES & BOOKING SECTION -->
         <section id="services" class="space-y-8">
             <div class="text-center space-y-2">
-                <h2 class="text-3xl font-extrabold text-white">Services & Pricing</h2>
-                <p class="text-slate-400 text-sm">Select your car wash packages and fresh kota meals below</p>
+                <h2 class="text-2xl sm:text-3xl font-black text-white">Services & Pricing Menu</h2>
+                <p class="text-slate-400 text-xs sm:text-sm">Select your car wash packages and fresh kota meals below</p>
             </div>
 
             <div id="booking" class="grid lg:grid-cols-12 gap-8 items-start">
 
-                <!-- SERVICES / MENU CHECKLIST -->
-                <div class="lg:col-col-span-7 lg:col-span-7 space-y-6">
+                <!-- MENU CHECKLIST -->
+                <div class="lg:col-span-7 space-y-6">
                     
-                    <!-- Car Wash Services Accordion -->
-                    <div class="glass-card rounded-2xl p-6 space-y-4">
+                    <!-- Car Wash Services -->
+                    <div class="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
                         <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                            <h3 class="text-lg font-bold text-cyanGlow flex items-center gap-2">
+                            <h3 class="text-base sm:text-lg font-extrabold text-cyanGlow flex items-center gap-2">
                                 <span>🚗</span> Car Wash Packages
                             </h3>
-                            <span class="text-xs text-slate-400">Select multiple if needed</span>
+                            <span class="text-xs text-slate-400">Select options</span>
                         </div>
 
                         <div class="space-y-3">
-                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/80 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
                                 <div class="space-y-1">
                                     <p class="font-bold text-white text-sm">Express Exterior Wash</p>
                                     <p class="text-xs text-slate-400">High-foam body wash, wheel clean & micro-fiber dry</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span class="font-extrabold text-cyanGlow text-base">R50</span>
+                                    <span class="font-black text-cyanGlow text-base">R50</span>
                                     <input type="checkbox" class="order-item w-5 h-5 accent-cyanGlow rounded cursor-pointer" data-name="Express Wash" data-price="50">
                                 </div>
                             </label>
 
-                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/80 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
                                 <div class="space-y-1">
                                     <p class="font-bold text-white text-sm">Executive Full Wash</p>
                                     <p class="text-xs text-slate-400">Exterior wash, deep interior vacuum, dashboard shine & tire dressing</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span class="font-extrabold text-cyanGlow text-base">R80</span>
+                                    <span class="font-black text-cyanGlow text-base">R80</span>
                                     <input type="checkbox" class="order-item w-5 h-5 accent-cyanGlow rounded cursor-pointer" data-name="Executive Wash" data-price="80">
                                 </div>
                             </label>
 
-                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/80 border border-slate-800 hover:border-cyanGlow/50 transition-all cursor-pointer">
                                 <div class="space-y-1">
                                     <p class="font-bold text-white text-sm">Engine Bay Degrease & Polish</p>
                                     <p class="text-xs text-slate-400">Deep steam degreasing and protective plastic coating</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span class="font-extrabold text-cyanGlow text-base">R50</span>
+                                    <span class="font-black text-cyanGlow text-base">R50</span>
                                     <input type="checkbox" class="order-item w-5 h-5 accent-cyanGlow rounded cursor-pointer" data-name="Engine Wash" data-price="50">
                                 </div>
                             </label>
                         </div>
                     </div>
 
-                    <!-- Kota Menu Accordion -->
-                    <div id="kota-menu" class="glass-card rounded-2xl p-6 space-y-4">
+                    <!-- Kota Menu -->
+                    <div id="kota-menu" class="glass-card rounded-2xl p-5 sm:p-6 space-y-4">
                         <div class="flex items-center justify-between pb-3 border-b border-slate-800">
-                            <h3 class="text-lg font-bold text-amberGold flex items-center gap-2">
+                            <h3 class="text-base sm:text-lg font-extrabold text-amberGold flex items-center gap-2">
                                 <span>🍔</span> Hot Fresh Kota Menu
                             </h3>
-                            <span class="text-xs text-slate-400">Prepared fresh to order</span>
+                            <span class="text-xs text-slate-400">Fresh to order</span>
                         </div>
 
                         <div class="space-y-3">
-                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/80 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
                                 <div class="space-y-1">
                                     <p class="font-bold text-white text-sm">Small Pocket Kota</p>
                                     <p class="text-xs text-slate-400">Quarter loaf, crispy golden chips & spicy atchar</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span class="font-extrabold text-amberGold text-base">R15</span>
+                                    <span class="font-black text-amberGold text-base">R15</span>
                                     <input type="checkbox" class="order-item w-5 h-5 accent-amberGold rounded cursor-pointer" data-name="Small Pocket Kota" data-price="15">
                                 </div>
                             </label>
 
-                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/80 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
                                 <div class="space-y-1">
                                     <p class="font-bold text-white text-sm">Standard Town Kota</p>
                                     <p class="text-xs text-slate-400">Quarter loaf, polony, golden chips, atchar & fried egg</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span class="font-extrabold text-amberGold text-base">R25</span>
+                                    <span class="font-black text-amberGold text-base">R25</span>
                                     <input type="checkbox" class="order-item w-5 h-5 accent-amberGold rounded cursor-pointer" data-name="Standard Kota" data-price="25">
                                 </div>
                             </label>
 
-                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/80 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
                                 <div class="space-y-1">
                                     <p class="font-bold text-white text-sm">Classic Cheese Kota</p>
                                     <p class="text-xs text-slate-400">Polony, chips, atchar & double melted cheddar cheese</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span class="font-extrabold text-amberGold text-base">R35</span>
+                                    <span class="font-black text-amberGold text-base">R35</span>
                                     <input type="checkbox" class="order-item w-5 h-5 accent-amberGold rounded cursor-pointer" data-name="Classic Kota" data-price="35">
                                 </div>
                             </label>
 
-                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/60 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
+                            <label class="flex items-center justify-between p-4 rounded-xl bg-navy-800/80 border border-slate-800 hover:border-amberGold/50 transition-all cursor-pointer">
                                 <div class="space-y-1">
                                     <p class="font-bold text-white text-sm">The Beast Executive Kota</p>
                                     <p class="text-xs text-slate-400">Smoked russian sausage, fried egg, melted cheese, polony & chips</p>
                                 </div>
                                 <div class="flex items-center gap-3">
-                                    <span class="font-extrabold text-amberGold text-base">R55</span>
+                                    <span class="font-black text-amberGold text-base">R55</span>
                                     <input type="checkbox" class="order-item w-5 h-5 accent-amberGold rounded cursor-pointer" data-name="Beast Kota" data-price="55">
                                 </div>
                             </label>
@@ -383,23 +380,23 @@
 
                 </div>
 
-                <!-- BOOKING DETAILS & SLOT SELECTION FORM -->
-                <div class="lg:col-span-5 glass-card rounded-2xl p-6 space-y-5 sticky top-24">
-                    <h3 class="text-lg font-bold text-white border-b border-slate-800 pb-3 flex items-center gap-2">
+                <!-- BOOKING DETAILS & SLOT SELECTION -->
+                <div class="lg:col-span-5 glass-card rounded-2xl p-5 sm:p-6 space-y-5 sticky top-24">
+                    <h3 class="text-base sm:text-lg font-bold text-white border-b border-slate-800 pb-3 flex items-center gap-2">
                         <span>📝</span> Slot & Contact Information
                     </h3>
 
                     <div class="space-y-4 text-xs sm:text-sm">
-                        <!-- Booking Date -->
+                        <!-- Date -->
                         <div class="space-y-1.5">
                             <label class="font-semibold text-slate-300">Select Booking Date</label>
-                            <input type="date" id="booking-date" onchange="checkSlotAvailability()" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
+                            <input type="date" id="booking-date" onchange="checkSlotAvailability()" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
                         </div>
 
-                        <!-- Time Slot Picker -->
+                        <!-- 2-Hour Time Slot Picker -->
                         <div class="space-y-1.5">
                             <label class="font-semibold text-slate-300">Select 2-Hour Time Slot</label>
-                            <select id="booking-time" onchange="checkSlotAvailability()" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
+                            <select id="booking-time" onchange="checkSlotAvailability()" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
                                 <option value="">-- Choose Slot --</option>
                                 <option value="08:00 - 10:00">08:00 AM - 10:00 AM</option>
                                 <option value="10:00 - 12:00">10:00 AM - 12:00 PM</option>
@@ -409,32 +406,32 @@
                             </select>
                         </div>
 
-                        <!-- Live Slot Indicator Badge -->
+                        <!-- Live Slot Indicator -->
                         <div id="slot-status" class="hidden p-3 rounded-xl font-bold text-xs text-center transition-all"></div>
 
-                        <!-- Queue Preference -->
+                        <!-- Queue Style -->
                         <div class="space-y-1.5">
-                            <label class="font-semibold text-slate-300">Queue Style</label>
-                            <select id="queue-style" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
+                            <label class="font-semibold text-slate-300">Queue Preference</label>
+                            <select id="queue-style" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-white focus:outline-none focus:border-cyanGlow transition-colors">
                                 <option value="Wait & Chill (Staying on-site)">☕ Wait & Chill (Enjoy lounge while waiting)</option>
                                 <option value="Drop & Go (Leaving car)">🚗 Drop & Go (Collect vehicle later)</option>
                             </select>
                         </div>
 
-                        <!-- Customer Name -->
+                        <!-- Full Name -->
                         <div class="space-y-1.5">
                             <label class="font-semibold text-slate-300">Full Name</label>
-                            <input type="text" id="cust-name" placeholder="Enter your full name" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow transition-colors">
+                            <input type="text" id="cust-name" placeholder="Enter your full name" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow transition-colors">
                         </div>
 
-                        <!-- Car Model / Instructions -->
+                        <!-- Custom Instructions -->
                         <div class="space-y-1.5">
-                            <label class="font-semibold text-slate-300">Car Model / Kota Customizations</label>
-                            <textarea id="cust-note" rows="2" placeholder="e.g. Silver Golf 7 / Extra sauce on Kota" class="w-full bg-navy-900/90 border border-slate-700 rounded-xl p-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow transition-colors"></textarea>
+                            <label class="font-semibold text-slate-300">Car Model / Kota Notes</label>
+                            <textarea id="cust-note" rows="2" placeholder="e.g. Silver Golf 7 / Extra sauce on Kota" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow transition-colors"></textarea>
                         </div>
 
-                        <!-- Submit CTA Button -->
-                        <button onclick="submitOrder()" class="w-full bg-gradient-to-r from-cyanGlow via-cyanAccent to-cyanGlow hover:opacity-90 text-navy-900 font-extrabold p-4 rounded-xl text-base shadow-lg glow-cyan transition-all mt-2">
+                        <!-- Submit Button -->
+                        <button onclick="submitOrder()" class="w-full bg-gradient-to-r from-cyanGlow via-cyanAccent to-cyanGlow hover:opacity-90 text-navy-900 font-extrabold p-4 rounded-xl text-sm sm:text-base shadow-lg glow-cyan transition-all mt-2">
                             Confirm Order & Send to WhatsApp
                         </button>
                     </div>
@@ -444,46 +441,46 @@
         </section>
 
         <!-- SPECIAL COMBOS BANNER -->
-        <section id="combos" class="glass-card rounded-2xl p-8 border-amberGold/30 relative overflow-hidden">
+        <section id="combos" class="glass-card rounded-2xl p-6 sm:p-8 border-amberGold/30 relative overflow-hidden">
             <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
                 <div class="space-y-2 text-center md:text-left">
-                    <span class="text-xs font-bold text-amberGold tracking-wider uppercase bg-amberGold/10 px-3 py-1 rounded-full">Popular Combo Deal</span>
-                    <h3 class="text-2xl sm:text-3xl font-extrabold text-white">The Washington Special Combo</h3>
-                    <p class="text-slate-300 text-sm max-w-xl">
-                        Get an Executive Full Wash + Beast Kota + Soft Drink for only <span class="text-amberGold font-extrabold text-lg">R125</span> (Save R20!)
+                    <span class="text-xs font-bold text-amberGold tracking-wider uppercase bg-amberGold/10 px-3 py-1 rounded-full border border-amberGold/20">Popular Combo Deal</span>
+                    <h3 class="text-xl sm:text-3xl font-extrabold text-white">The Washington Special Combo</h3>
+                    <p class="text-slate-300 text-xs sm:text-sm max-w-xl">
+                        Get an Executive Full Wash + Beast Kota + Soft Drink for only <span class="text-amberGold font-extrabold text-base sm:text-lg">R125</span> (Save R20!)
                     </p>
                 </div>
-                <a href="#booking" class="bg-gradient-to-r from-amberGold to-amberHover text-navy-900 font-extrabold px-6 py-3 rounded-xl text-sm shadow-md glow-amber transition-all whitespace-nowrap">
+                <a href="#booking" class="bg-gradient-to-r from-amberGold to-amberHover text-navy-900 font-extrabold px-6 py-3 rounded-xl text-xs sm:text-sm shadow-md glow-amber transition-all whitespace-nowrap">
                     Claim Combo Deal
                 </a>
             </div>
         </section>
 
-        <!-- ABOUT US SECTION -->
-        <section id="about" class="glass-card rounded-2xl p-8 space-y-6">
+        <!-- ABOUT US -->
+        <section id="about" class="glass-card rounded-2xl p-6 sm:p-8 space-y-6">
             <div class="max-w-3xl space-y-4">
                 <div class="inline-flex items-center gap-2 text-cyanGlow text-xs font-bold uppercase tracking-wider">
                     <span>🏢</span> About Car Washington
                 </div>
-                <h2 class="text-3xl font-extrabold text-white">Top-Tier Detailing & Township Flavor</h2>
-                <p class="text-slate-300 leading-relaxed text-sm sm:text-base">
+                <h2 class="text-2xl sm:text-3xl font-extrabold text-white">Top-Tier Detailing & Township Flavor</h2>
+                <p class="text-slate-300 leading-relaxed text-xs sm:text-base">
                     At <strong>Car Washington</strong>, we redefine township car care. While our detailing experts restore your vehicle with premium high-foam technology, you can relax in our executive lounge and indulge in hot, freshly prepared Kasi Kotas made from top-grade ingredients.
                 </p>
 
-                <!-- Admin Contact Cards -->
+                <!-- Admin Contacts Grid -->
                 <div class="pt-4 border-t border-slate-800 grid sm:grid-cols-2 gap-4">
-                    <div class="p-3 rounded-xl bg-navy-800/60 border border-slate-800 flex items-center justify-between">
+                    <div class="p-4 rounded-xl bg-navy-800/80 border border-slate-800 flex items-center justify-between">
                         <div>
-                            <p class="text-xs text-slate-400">Admin 1 Support</p>
+                            <p class="text-xs text-slate-400 font-semibold">Admin 1 Support</p>
                             <p class="text-base font-bold text-emerald-400">079 478 9949</p>
                         </div>
                         <a href="https://wa.me/27794789949" target="_blank" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors">
                             💬 Message
                         </a>
                     </div>
-                    <div class="p-3 rounded-xl bg-navy-800/60 border border-slate-800 flex items-center justify-between">
+                    <div class="p-4 rounded-xl bg-navy-800/80 border border-slate-800 flex items-center justify-between">
                         <div>
-                            <p class="text-xs text-slate-400">Admin 2 Support</p>
+                            <p class="text-xs text-slate-400 font-semibold">Admin 2 Support</p>
                             <p class="text-base font-bold text-emerald-400">067 210 9991</p>
                         </div>
                         <a href="https://wa.me/27672109991" target="_blank" class="bg-emerald-500/20 hover:bg-emerald-500/30 text-emerald-400 border border-emerald-500/40 font-bold px-3 py-1.5 rounded-lg text-xs transition-colors">
@@ -494,22 +491,22 @@
             </div>
         </section>
 
-        <!-- ADMIN PORTAL (SECURE DASHBOARD) -->
-        <section id="admin" class="glass-card rounded-2xl p-8 border-slate-700/80 space-y-6">
+        <!-- ADMIN PORTAL -->
+        <section id="admin" class="glass-card rounded-2xl p-6 sm:p-8 border-slate-700/80 space-y-6">
             <div class="flex items-center justify-between pb-4 border-b border-slate-800">
-                <h2 class="text-2xl font-extrabold text-white flex items-center gap-2">
+                <h2 class="text-xl sm:text-2xl font-extrabold text-white flex items-center gap-2">
                     <span>🔐</span> Admin Management Portal
                 </h2>
-                <span class="text-xs text-slate-400">Authorized Personnel Only</span>
+                <span class="text-xs text-slate-400">Authorized Personnel</span>
             </div>
 
             <!-- PIN LOGIN FORM -->
             <div id="pin-login" class="max-w-md space-y-4">
                 <p class="text-xs text-slate-400">Enter Admin Email and Security PIN to access live queue management.</p>
                 <div class="space-y-3">
-                    <input type="email" id="admin-email" placeholder="Admin Email" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow">
-                    <input type="password" id="admin-pin" maxlength="4" placeholder="4-Digit Security PIN" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow">
-                    <button onclick="verifyAdminLogin()" class="w-full bg-cyanGlow hover:bg-cyanAccent text-navy-900 font-extrabold p-3 rounded-xl text-sm transition-colors">
+                    <input type="email" id="admin-email" placeholder="Admin Email" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow">
+                    <input type="password" id="admin-pin" maxlength="4" placeholder="4-Digit Security PIN" class="w-full bg-navy-900 border border-slate-700 rounded-xl p-3 text-xs sm:text-sm text-white placeholder-slate-500 focus:outline-none focus:border-cyanGlow">
+                    <button onclick="verifyAdminLogin()" class="w-full bg-cyanGlow hover:bg-cyanAccent text-navy-900 font-extrabold p-3 rounded-xl text-xs sm:text-sm transition-colors">
                         Admin Login
                     </button>
                 </div>
@@ -518,13 +515,13 @@
             <!-- ADMIN DASHBOARD PANEL -->
             <div id="admin-dashboard" class="hidden space-y-6">
                 <div class="flex items-center justify-between">
-                    <p id="admin-welcome-msg" class="text-sm font-bold text-cyanGlow"></p>
+                    <p id="admin-welcome-msg" class="text-xs sm:text-sm font-bold text-cyanGlow"></p>
                     <button onclick="adminLogout()" class="text-xs text-red-400 hover:underline">Log Out</button>
                 </div>
 
                 <!-- CONTROLS GRID -->
                 <div class="grid md:grid-cols-2 gap-4">
-                    <!-- Max Capacity Control -->
+                    <!-- Capacity Limit Control -->
                     <div class="p-4 rounded-xl bg-navy-800/80 border border-slate-800 space-y-2">
                         <label class="text-xs font-bold text-slate-300">Set Max Slot Capacity (Per 2-Hour Slot)</label>
                         <select id="max-spot-limit" onchange="saveMaxSpots()" class="w-full bg-navy-900 border border-slate-700 rounded-lg p-2 text-xs text-white">
@@ -544,19 +541,19 @@
                     </div>
                 </div>
 
-                <!-- STATS DISPLAY -->
-                <div class="grid grid-cols-2 sm:grid-cols-2 gap-4">
+                <!-- STATS -->
+                <div class="grid grid-cols-2 gap-4">
                     <div class="p-4 rounded-xl bg-navy-800/60 border border-slate-800 text-center">
                         <p class="text-xs text-slate-400">Total Orders Today</p>
-                        <p id="stat-count" class="text-2xl font-black text-cyanGlow">0</p>
+                        <p id="stat-count" class="text-xl sm:text-2xl font-black text-cyanGlow">0</p>
                     </div>
                     <div class="p-4 rounded-xl bg-navy-800/60 border border-slate-800 text-center">
-                        <p class="text-xs text-slate-400">Total Revenue</p>
-                        <p id="stat-revenue" class="text-2xl font-black text-emerald-400">R0</p>
+                        <p class="text-xs text-slate-400">Total Revenue Today</p>
+                        <p id="stat-revenue" class="text-xl sm:text-2xl font-black text-emerald-400">R0</p>
                     </div>
                 </div>
 
-                <!-- ACTIVE ORDERS LIST -->
+                <!-- ACTIVE ORDERS QUEUE -->
                 <div class="space-y-3">
                     <div class="flex items-center justify-between">
                         <h3 class="text-sm font-bold text-white">Live Customer Orders Queue</h3>
@@ -570,12 +567,12 @@
     </main>
 
     <!-- FOOTER -->
-    <footer class="border-t border-slate-800/80 bg-navy-900 py-8 text-center text-xs text-slate-500 space-y-2">
+    <footer class="relative z-20 border-t border-slate-800/80 bg-navy-900 py-8 text-center text-xs text-slate-500 space-y-2">
         <p class="font-bold text-slate-400">CAR WASHINGTON • CLEAN • CARE • CRAVE</p>
-        <p>WhatsApp Admins: 079 478 9949 / 067 210 9991 | &copy; 2026 Car Washington. All rights reserved.</p>
+        <p>WhatsApp Admins: 079 478 9949 / 067 210 9991 | &copy; Car Washington. All rights reserved.</p>
     </footer>
 
-    <!-- MULTI-ADMIN WHATSAPP DISPATCH MODAL -->
+    <!-- MULTI-ADMIN WHATSAPP MODAL -->
     <div id="admin-modal" class="hidden fixed inset-0 bg-navy-900/90 backdrop-blur-md z-50 flex items-center justify-center p-4">
         <div class="glass-card rounded-2xl max-w-md w-full p-6 text-center space-y-5 border-cyanGlow/40 shadow-2xl">
             <div class="w-12 h-12 rounded-full bg-emerald-500/20 border border-emerald-500/40 text-emerald-400 text-2xl flex items-center justify-center mx-auto">
@@ -587,109 +584,99 @@
             </div>
 
             <div class="space-y-3 pt-2">
-                <button id="send-admin1-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-all">
+                <button id="send-admin1-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all">
                     <span>💬</span> Send to Admin 1 (079 478 9949)
                 </button>
-                <button id="send-admin2-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-all">
+                <button id="send-admin2-btn" class="w-full bg-emerald-600 hover:bg-emerald-500 text-white font-extrabold py-3 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all">
                     <span>💬</span> Send to Admin 2 (067 210 9991)
                 </button>
-                <button id="send-both-btn" class="w-full bg-cyanGlow hover:bg-cyanAccent text-navy-900 font-extrabold py-3 px-4 rounded-xl text-sm flex items-center justify-center gap-2 transition-all">
+                <button id="send-both-btn" class="w-full bg-cyanGlow hover:bg-cyanAccent text-navy-900 font-extrabold py-3 px-4 rounded-xl text-xs sm:text-sm flex items-center justify-center gap-2 transition-all">
                     <span>🚀</span> Notify Both Admins at Once
                 </button>
             </div>
 
-            <button onclick="closeAdminModal()" class="text-xs text-slate-400 hover:underline pt-2">Close Modal</button>
+            <button onclick="closeAdminModal()" class="text-xs text-slate-400 hover:underline pt-2">Close Window</button>
         </div>
     </div>
 
     <!-- JAVASCRIPT LOGIC -->
     <script>
-        // Interactive Animated Soapy Bubbles Engine
-        (function initBubbles() {
-            const canvas = document.getElementById('bubble-canvas');
-            if (!canvas) return;
-            const ctx = canvas.getContext('2d');
-            let width = (canvas.width = window.innerWidth);
-            let height = (canvas.height = window.innerHeight);
+        // Bubble Engine Initializer
+        window.addEventListener('DOMContentLoaded', function() {
+            try {
+                const canvas = document.getElementById('bubble-canvas');
+                if (canvas) {
+                    const ctx = canvas.getContext('2d');
+                    let width = (canvas.width = window.innerWidth);
+                    let height = (canvas.height = window.innerHeight);
 
-            window.addEventListener('resize', () => {
-                width = canvas.width = window.innerWidth;
-                height = canvas.height = window.innerHeight;
-            });
+                    window.addEventListener('resize', () => {
+                        width = canvas.width = window.innerWidth;
+                        height = canvas.height = window.innerHeight;
+                    });
 
-            const bubbles = Array.from({ length: 35 }, () => createBubble(true));
+                    const bubbles = Array.from({ length: 30 }, () => ({
+                        x: Math.random() * width,
+                        y: Math.random() * height,
+                        radius: Math.random() * 18 + 6,
+                        speedY: Math.random() * 1.0 + 0.3,
+                        pulse: Math.random() * Math.PI,
+                        opacity: Math.random() * 0.35 + 0.25
+                    }));
 
-            function createBubble(randomY = false) {
-                return {
-                    x: Math.random() * width,
-                    y: randomY ? Math.random() * height : height + Math.random() * 100,
-                    radius: Math.random() * 22 + 8,
-                    speedY: Math.random() * 1.2 + 0.4,
-                    speedX: Math.sin(Math.random() * Math.PI * 2) * 0.6,
-                    pulse: Math.random() * Math.PI,
-                    opacity: Math.random() * 0.4 + 0.35
-                };
-            }
+                    function animateBubbles() {
+                        ctx.clearRect(0, 0, width, height);
 
-            function animateBubbles() {
-                ctx.clearRect(0, 0, width, height);
+                        bubbles.forEach((b) => {
+                            b.y -= b.speedY;
+                            b.x += Math.sin(b.pulse) * 0.4;
+                            b.pulse += 0.02;
 
-                bubbles.forEach((b) => {
-                    b.y -= b.speedY;
-                    b.x += Math.sin(b.pulse) * 0.5;
-                    b.pulse += 0.02;
+                            if (b.y < -b.radius * 2) {
+                                b.y = height + b.radius * 2;
+                                b.x = Math.random() * width;
+                            }
 
-                    if (b.y < -b.radius * 2) {
-                        Object.assign(b, createBubble(false));
+                            ctx.save();
+                            ctx.beginPath();
+                            ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
+
+                            const gradient = ctx.createRadialGradient(
+                                b.x - b.radius * 0.3,
+                                b.y - b.radius * 0.3,
+                                b.radius * 0.1,
+                                b.x,
+                                b.y,
+                                b.radius
+                            );
+                            gradient.addColorStop(0, `rgba(255, 255, 255, ${b.opacity + 0.2})`);
+                            gradient.addColorStop(0.5, `rgba(6, 182, 212, ${b.opacity * 0.4})`);
+                            gradient.addColorStop(1, `rgba(245, 158, 11, ${b.opacity * 0.2})`);
+
+                            ctx.fillStyle = gradient;
+                            ctx.fill();
+                            ctx.lineWidth = 1;
+                            ctx.strokeStyle = `rgba(255, 255, 255, ${b.opacity + 0.2})`;
+                            ctx.stroke();
+                            ctx.restore();
+                        });
+
+                        requestAnimationFrame(animateBubbles);
                     }
 
-                    // Draw glossy iridescent bubble shell
-                    ctx.save();
-                    ctx.beginPath();
-                    ctx.arc(b.x, b.y, b.radius, 0, Math.PI * 2);
-
-                    // Bubble Radial Gradient Fill
-                    const gradient = ctx.createRadialGradient(
-                        b.x - b.radius * 0.3,
-                        b.y - b.radius * 0.3,
-                        b.radius * 0.1,
-                        b.x,
-                        b.y,
-                        b.radius
-                    );
-                    gradient.addColorStop(0, `rgba(255, 255, 255, ${b.opacity + 0.2})`);
-                    gradient.addColorStop(0.5, `rgba(56, 189, 248, ${b.opacity * 0.4})`);
-                    gradient.addColorStop(0.85, `rgba(244, 114, 182, ${b.opacity * 0.25})`);
-                    gradient.addColorStop(1, `rgba(6, 182, 212, ${b.opacity * 0.6})`);
-
-                    ctx.fillStyle = gradient;
-                    ctx.fill();
-
-                    // Glossy Highlight Ring
-                    ctx.lineWidth = 1.2;
-                    ctx.strokeStyle = `rgba(255, 255, 255, ${b.opacity + 0.3})`;
-                    ctx.stroke();
-
-                    // Bubble Top Crescent Reflection Highlight
-                    ctx.beginPath();
-                    ctx.arc(b.x - b.radius * 0.35, b.y - b.radius * 0.35, b.radius * 0.3, 0, Math.PI * 2);
-                    ctx.fillStyle = `rgba(255, 255, 255, ${b.opacity + 0.4})`;
-                    ctx.fill();
-
-                    ctx.restore();
-                });
-
-                requestAnimationFrame(animateBubbles);
+                    animateBubbles();
+                }
+            } catch(e) {
+                console.log("Canvas animation non-critical warning: ", e);
             }
+        });
 
-            animateBubbles();
-        })();
-
-        // Authorized Admin Emails & Shared PIN
+        // Config & Admin Auth Details
         const validAdminEmails = [
             "cyprianmaruping09@gmail.com",
             "admin@carwashington.co.za",
-            "owner@carwashington.co.za"
+            "owner@carwashington.co.za",
+            "admin"
         ];
         const sharedPin = "1472";
 
@@ -704,11 +691,13 @@
         // Slideshow Loop
         const slides = document.querySelectorAll('.slide');
         let currentSlide = 0;
-        setInterval(() => {
-            slides[currentSlide].classList.remove('active');
-            currentSlide = (currentSlide + 1) % slides.length;
-            slides[currentSlide].classList.add('active');
-        }, 4000);
+        if (slides.length > 0) {
+            setInterval(() => {
+                slides[currentSlide].classList.remove('active');
+                currentSlide = (currentSlide + 1) % slides.length;
+                slides[currentSlide].classList.add('active');
+            }, 4000);
+        }
 
         window.onload = function() {
             checkAndCleanExpiredData();
@@ -851,7 +840,7 @@
 
             let itemListStr = orderItems.map(i => `- ${i.name} (R${i.price})`).join('\n');
             let bookingStr = hasCarWash ? `\n*Booking:* ${bookingDate} @ ${bookingTime} (${queueStyle})` : '';
-            currentOrderMessage = `*NEW CAR WASHINGTON ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Open Admin dashboard to Confirm this booking!`;
+            currentOrderMessage = `*NEW CAR WASHINGTON ORDER: #${orderId}*\n*Customer:* ${name}${bookingStr}\n*Items:*\n${itemListStr}\n*Total:* R${total}\n*Notes:* ${note}\n\n*Action Required:* Confirm booking on Admin Portal!`;
 
             openAdminModal();
         }
@@ -898,12 +887,12 @@
             let bookingInfo = order.bookingDate !== 'N/A (Food Only)' ? `<br>📅 Slot: ${order.bookingDate} (${order.bookingTime}) | 📌 ${order.queueStyle}` : '';
             document.getElementById('tracker-order-id').innerHTML = `<strong>Order #${order.id}</strong> | Name: ${order.name}${bookingInfo}`;
             
-            let badgeHtml = '<span class="px-4 py-2 rounded-full bg-cyanGlow/20 text-cyanGlow font-bold text-sm border border-cyanGlow/30">Status: Pending Admin Confirmation</span>';
+            let badgeHtml = '<span class="px-4 py-2 rounded-full bg-cyanGlow/20 text-cyanGlow font-bold text-xs sm:text-sm border border-cyanGlow/30">Status: Pending Admin Confirmation</span>';
             if (order.status === 'Confirmed') {
-                badgeHtml = '<span class="px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-sm border border-emerald-500/30">Status: Order Confirmed ✔</span>';
+                badgeHtml = '<span class="px-4 py-2 rounded-full bg-emerald-500/20 text-emerald-300 font-bold text-xs sm:text-sm border border-emerald-500/30">Status: Order Confirmed ✔</span>';
             }
             if (order.status === 'Completed') {
-                badgeHtml = '<span class="px-4 py-2 rounded-full bg-blue-500/20 text-blue-300 font-bold text-sm border border-blue-500/30">Status: Order Done / Ready 🎉</span>';
+                badgeHtml = '<span class="px-4 py-2 rounded-full bg-blue-500/20 text-blue-300 font-bold text-xs sm:text-sm border border-blue-500/30">Status: Order Done / Ready 🎉</span>';
                 document.getElementById('feedback-container').classList.remove('hidden');
                 if (statusSyncInterval) clearInterval(statusSyncInterval);
             }
@@ -920,7 +909,7 @@
             const email = document.getElementById('admin-email').value.trim().toLowerCase();
             const pin = document.getElementById('admin-pin').value.trim();
 
-            if ((validAdminEmails.includes(email) || email === 'admin') && pin === sharedPin) {
+            if ((validAdminEmails.includes(email) || validAdminEmails.some(e => email.includes(e))) && pin === sharedPin) {
                 localStorage.setItem('kasi_admin_logged_in', 'true');
                 localStorage.setItem('kasi_logged_email', email);
                 document.getElementById('pin-login').classList.add('hidden');
@@ -996,13 +985,13 @@
                     <div class="p-4 rounded-xl bg-navy-900 border border-slate-800 space-y-2 text-xs">
                         <div class="flex items-center justify-between">
                             <span class="font-bold text-white text-sm">#${order.id} - ${order.name}</span>
-                            <span class="font-bold text-amberGold">R${order.total}</span>
+                            <span class="font-bold text-amberGold text-sm">R${order.total}</span>
                         </div>
                         <p class="text-slate-400">Items: ${itemsStr}${bookingInfo}</p>
                         <p class="text-slate-400">Status: <strong class="text-white">${order.status}</strong></p>
                         <div class="flex gap-2 pt-1">
-                            <button onclick="updateOrderStatus('${order.id}', 'Confirmed')" class="bg-emerald-600 text-white px-3 py-1.5 rounded-lg font-bold">Confirm</button>
-                            <button onclick="updateOrderStatus('${order.id}', 'Completed')" class="bg-blue-600 text-white px-3 py-1.5 rounded-lg font-bold">Mark Done</button>
+                            <button onclick="updateOrderStatus('${order.id}', 'Confirmed')" class="bg-emerald-600 hover:bg-emerald-500 text-white px-3 py-1.5 rounded-lg font-bold transition-colors">Confirm</button>
+                            <button onclick="updateOrderStatus('${order.id}', 'Completed')" class="bg-blue-600 hover:bg-blue-500 text-white px-3 py-1.5 rounded-lg font-bold transition-colors">Mark Done</button>
                         </div>
                     </div>
                 `;
